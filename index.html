@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:wght@400;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0f; --surface: #12121a; --border: #2a2a3a;
+  --text: #e8e6e3; --muted: #8a8a9a; --accent: #ff9500; --accent2: #00d4aa;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:var(--bg); color:var(--text); font-family:'Source Serif 4',Georgia,serif;
+  min-height:100vh;
+}
+header {
+  text-align:center; padding:5rem 2rem 3rem;
+}
+header h1 {
+  font-family:'Playfair Display',serif; font-size:3rem; font-weight:900;
+  background:linear-gradient(135deg,#fff,#ccc);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+}
+header p { color:var(--muted); margin-top:0.8rem; font-size:1.1rem; }
+.posts { max-width:700px; margin:0 auto; padding:0 2rem 4rem; }
+.post-card {
+  display:block; background:var(--surface); border:1px solid var(--border);
+  border-radius:12px; padding:1.8rem; margin-bottom:1.2rem;
+  text-decoration:none; transition:border-color 0.3s, transform 0.2s;
+}
+.post-card:hover { border-color:var(--accent); transform:translateY(-2px); }
+.post-card h2 {
+  font-family:'Playfair Display',serif; font-size:1.4rem; color:#fff; margin-bottom:0.5rem;
+}
+.post-card p { color:var(--muted); font-size:0.95rem; line-height:1.6; margin-bottom:0.8rem; }
+.post-meta {
+  font-family:'JetBrains Mono',monospace; font-size:0.72rem; color:var(--muted);
+  display:flex; gap:1.5rem; flex-wrap:wrap;
+}
+.post-meta .tag {
+  color:var(--accent); border:1px solid rgba(255,149,0,0.3);
+  padding:0.15rem 0.5rem; border-radius:12px;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Blog</h1>
+  <p>Hands-on labs, deep dives, and field notes from the cloud.</p>
+</header>
+
+<div class="posts">
+
+  <a href="aws-devops-agent/index.html" class="post-card">
+    <h2>I Tested AWS DevOps Agent — Here's What Happened When I Broke My EC2 Instance</h2>
+    <p>A deliberate CPU stress test on a t2.medium, and watching Amazon's frontier AI agent investigate the incident in real time.</p>
+    <div class="post-meta">
+      <span>March 22, 2026</span>
+      <span>8 min read</span>
+      <span class="tag">AWS</span>
+      <span class="tag">DevOps</span>
+      <span class="tag">AIOps</span>
+    </div>
+  </a>
+
+  <!-- ADD FUTURE BLOGS HERE:
+  <a href="your-folder-name/index.html" class="post-card">
+    <h2>Title</h2>
+    <p>Description.</p>
+    <div class="post-meta">
+      <span>Date</span>
+      <span>X min read</span>
+      <span class="tag">Tag</span>
+    </div>
+  </a>
+  -->
+
+</div>
+
+</body>
+</html>
