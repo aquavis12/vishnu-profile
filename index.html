@@ -476,6 +476,83 @@ const o=new IntersectionObserver(e=>{e.forEach(e=>{if(e.isIntersecting){e.target
 document.querySelectorAll('.fu').forEach(e=>o.observe(e));
 document.querySelectorAll('nav a[href^="#"]').forEach(a=>a.addEventListener('click',()=>document.querySelector('.nav-links').classList.remove('open')));
 function openLB(el){document.getElementById('lbi').src=el.querySelector('img').src;document.getElementById('lb').classList.add('on')}
+
+// === VIEW & LIKE COUNTER (using CountAPI) ===
+const NS='vishnurachapudi-com';
+const VIEW_KEY='page-views';
+const LIKE_KEY='page-likes';
+
+// Increment views on page load
+async function trackView(){
+  try{
+    const r=await fetch('https://api.countapi.xyz/hit/'+NS+'/'+VIEW_KEY);
+    const d=await r.json();
+    document.getElementById('viewCount').textContent=formatNum(d.value);
+  }catch(e){
+    // Fallback: use localStorage count
+    let v=parseInt(localStorage.getItem('vr_views')||'0')+1;
+    localStorage.setItem('vr_views',v);
+    document.getElementById('viewCount').textContent=formatNum(v);
+  }
+}
+
+// Get likes count
+async function getLikes(){
+  try{
+    const r=await fetch('https://api.countapi.xyz/get/'+NS+'/'+LIKE_KEY);
+    const d=await r.json();
+    document.getElementById('likeCount').textContent=formatNum(d.value||0);
+  }catch(e){
+    let l=parseInt(localStorage.getItem('vr_likes')||'0');
+    document.getElementById('likeCount').textContent=formatNum(l);
+  }
+  // Check if user already liked
+  if(localStorage.getItem('vr_liked')==='1'){
+    document.getElementById('likeBtn').classList.add('liked');
+    document.getElementById('heartIcon').textContent='♥';
+  }
+}
+
+// Toggle like
+async function toggleLike(){
+  const btn=document.getElementById('likeBtn');
+  const icon=document.getElementById('heartIcon');
+  const cnt=document.getElementById('likeCount');
+  const liked=localStorage.getItem('vr_liked')==='1';
+
+  if(liked){
+    // Unlike
+    localStorage.setItem('vr_liked','0');
+    btn.classList.remove('liked');
+    icon.textContent='♡';
+    let cur=parseInt(cnt.textContent.replace(/,/g,''))||0;
+    cnt.textContent=formatNum(Math.max(0,cur-1));
+    // Decrement on server (CountAPI doesn't support decrement, so we just track locally)
+  }else{
+    // Like
+    localStorage.setItem('vr_liked','1');
+    btn.classList.add('liked');
+    icon.textContent='♥';
+    try{
+      const r=await fetch('https://api.countapi.xyz/hit/'+NS+'/'+LIKE_KEY);
+      const d=await r.json();
+      cnt.textContent=formatNum(d.value);
+    }catch(e){
+      let l=parseInt(localStorage.getItem('vr_likes')||'0')+1;
+      localStorage.setItem('vr_likes',l);
+      cnt.textContent=formatNum(l);
+    }
+  }
+}
+
+function formatNum(n){
+  if(!n)return '0';
+  return n.toLocaleString();
+}
+
+// Init
+trackView();
+getLikes();  
 </script>
 </body>
 </html>
