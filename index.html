@@ -185,17 +185,6 @@ footer{border-top:1px solid var(--border);padding:3rem 2rem 2.5rem;text-align:ce
 .fu{opacity:0;transform:translateY(25px);transition:opacity .6s,transform .6s;}
 .fu.v{opacity:1;transform:translateY(0);}
 
-/* View/Like Counter */
-.counter-bar{position:fixed;bottom:1.5rem;right:1.5rem;z-index:90;display:flex;gap:.5rem;align-items:center;}
-.counter-pill{display:flex;align-items:center;gap:.4rem;background:var(--surface);border:1px solid var(--border);border-radius:99px;padding:.45rem .9rem;font-family:'Space Mono',monospace;font-size:.72rem;color:var(--muted);backdrop-filter:blur(12px);transition:all .3s;cursor:default;box-shadow:0 4px 20px rgba(0,0,0,.4);}
-.counter-pill .icon{font-size:.9rem;}
-.counter-pill .cnt{color:var(--text);font-weight:700;min-width:1.5ch;text-align:center;}
-.like-btn{cursor:pointer;user-select:none;}
-.like-btn:hover{border-color:var(--rose);color:var(--rose);}
-.like-btn.liked{border-color:var(--rose);color:var(--rose);background:rgba(244,63,94,.1);}
-.like-btn.liked .icon{animation:heartPop .4s ease;}
-@keyframes heartPop{0%{transform:scale(1)}50%{transform:scale(1.3)}100%{transform:scale(1)}}
-
 /* Responsive */
 @media(max-width:900px){
   .hero-inner{flex-direction:column;text-align:center;}
@@ -479,95 +468,13 @@ footer{border-top:1px solid var(--border);padding:3rem 2rem 2.5rem;text-align:ce
 <!-- LIGHTBOX -->
 <div class="lb" id="lb" onclick="this.classList.remove('on')"><span class="x">×</span><img id="lbi" src="" alt=""></div>
 
-<!-- VIEW/LIKE COUNTER -->
-<div class="counter-bar">
-  <div class="counter-pill"><span class="icon">👁</span><span class="cnt" id="viewCount">—</span> views</div>
-  <div class="counter-pill like-btn" id="likeBtn" onclick="toggleLike()"><span class="icon" id="heartIcon">♡</span><span class="cnt" id="likeCount">—</span></div>
-</div>  
 
 <script>
 !function(){const s=document.getElementById('stars');for(let i=0;i<100;i++){const e=document.createElement('i');const z=Math.random()*2+.5;e.style.cssText='width:'+z+'px;height:'+z+'px;top:'+Math.random()*100+'%;left:'+Math.random()*100+'%;--d:'+(Math.random()*5+2)+'s;animation-delay:'+Math.random()*5+'s;opacity:'+(.1+Math.random()*.4);s.appendChild(e)}}();
 const o=new IntersectionObserver(e=>{e.forEach(e=>{if(e.isIntersecting){e.target.classList.add('v');o.unobserve(e.target)}})},{threshold:.07});
 document.querySelectorAll('.fu').forEach(e=>o.observe(e));
 document.querySelectorAll('nav a[href^="#"]').forEach(a=>a.addEventListener('click',()=>document.querySelector('.nav-links').classList.remove('open')));
-function openLB(el){document.getElementById('lbi').src=el.querySelector('img').src;document.getElementById('lb').classList.add('on')}
-
-// === VIEW & LIKE COUNTER (using CountAPI) ===
-const NS='vishnurachapudi-com';
-const VIEW_KEY='page-views';
-const LIKE_KEY='page-likes';
-
-// Increment views on page load
-async function trackView(){
-  try{
-    const r=await fetch('https://api.countapi.xyz/hit/'+NS+'/'+VIEW_KEY);
-    const d=await r.json();
-    document.getElementById('viewCount').textContent=formatNum(d.value);
-  }catch(e){
-    // Fallback: use localStorage count
-    let v=parseInt(localStorage.getItem('vr_views')||'0')+1;
-    localStorage.setItem('vr_views',v);
-    document.getElementById('viewCount').textContent=formatNum(v);
-  }
-}
-
-// Get likes count
-async function getLikes(){
-  try{
-    const r=await fetch('https://api.countapi.xyz/get/'+NS+'/'+LIKE_KEY);
-    const d=await r.json();
-    document.getElementById('likeCount').textContent=formatNum(d.value||0);
-  }catch(e){
-    let l=parseInt(localStorage.getItem('vr_likes')||'0');
-    document.getElementById('likeCount').textContent=formatNum(l);
-  }
-  // Check if user already liked
-  if(localStorage.getItem('vr_liked')==='1'){
-    document.getElementById('likeBtn').classList.add('liked');
-    document.getElementById('heartIcon').textContent='♥';
-  }
-}
-
-// Toggle like
-async function toggleLike(){
-  const btn=document.getElementById('likeBtn');
-  const icon=document.getElementById('heartIcon');
-  const cnt=document.getElementById('likeCount');
-  const liked=localStorage.getItem('vr_liked')==='1';
-
-  if(liked){
-    // Unlike
-    localStorage.setItem('vr_liked','0');
-    btn.classList.remove('liked');
-    icon.textContent='♡';
-    let cur=parseInt(cnt.textContent.replace(/,/g,''))||0;
-    cnt.textContent=formatNum(Math.max(0,cur-1));
-    // Decrement on server (CountAPI doesn't support decrement, so we just track locally)
-  }else{
-    // Like
-    localStorage.setItem('vr_liked','1');
-    btn.classList.add('liked');
-    icon.textContent='♥';
-    try{
-      const r=await fetch('https://api.countapi.xyz/hit/'+NS+'/'+LIKE_KEY);
-      const d=await r.json();
-      cnt.textContent=formatNum(d.value);
-    }catch(e){
-      let l=parseInt(localStorage.getItem('vr_likes')||'0')+1;
-      localStorage.setItem('vr_likes',l);
-      cnt.textContent=formatNum(l);
-    }
-  }
-}
-
-function formatNum(n){
-  if(!n)return '0';
-  return n.toLocaleString();
-}
-
-// Init
-trackView();
-getLikes();  
+function openLB(el){document.getElementById('lbi').src=el.querySelector('img').src;document.getElementById('lb').classList.add('on')} 
 </script>
 </body>
 </html>
