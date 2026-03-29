@@ -358,7 +358,7 @@
 <section id="path">
   <div class="container">
     <div class="stag blue">Path details</div>
-    <h2>10 hops traced — the full<br/>verified path (dummy data)</h2>
+    <h2>10 hops traced — the full<br/>verified path</h2>
     <p>The forward path from the jump server to the TGW attachment was fully reachable. Here's every hop the analyzer walked, with all identifiers replaced with dummy values:</p>
 
     <div class="analysis-card">
@@ -486,82 +486,6 @@
     </div>
 
     <p>Forward path: <strong style="color:var(--green)">fully reachable</strong>. But the analyzer also ran the reverse path — and that's where it found the break.</p>
-  </div>
-</section>
-
-<!-- SUPPORTED RESOURCES -->
-<section id="supported">
-  <div class="container">
-    <div class="stag blue">Official support · verified from AWS docs</div>
-    <h2>What Reachability Analyzer<br/>can actually analyze</h2>
-    <p>Before running an analysis, it helps to know exactly what resource types are supported. Here's the complete list verified directly from the <a href="https://docs.aws.amazon.com/vpc/latest/reachability/how-reachability-analyzer-works.html" style="color:var(--accent2)">official AWS documentation</a>.</p>
-
-    <h3 style="margin-top:2rem">Sources &amp; Destinations</h3>
-    <p style="margin-bottom:1rem">These resource types can be used as either the <strong style="color:var(--text)">source</strong> or <strong style="color:var(--text)">destination</strong> of a path:</p>
-
-    <table class="ftable">
-      <thead>
-        <tr><th>Resource Type</th><th>Example Use Case</th><th>Notes</th></tr>
-      </thead>
-      <tbody>
-        <tr><td><code>EC2 Instance</code></td><td>Instance A → Instance B</td><td><span class="pill pg">✓ Supported</span></td></tr>
-        <tr><td><code>Network Interface (ENI)</code></td><td>ENI → RDS ENI · Web → DB</td><td><span class="pill pg">✓ Supported</span></td></tr>
-        <tr><td><code>Internet Gateway (IGW)</code></td><td>IGW → EC2 instance (inbound)</td><td><span class="pill pg">✓ Supported</span></td></tr>
-        <tr><td><code>Transit Gateway</code></td><td>TGW → spoke VPC instance</td><td><span class="pill pg">✓ Supported</span></td></tr>
-        <tr><td><code>Transit Gateway Attachment</code></td><td>VPC attachment → attachment</td><td><span class="pill pg">✓ Supported</span></td></tr>
-        <tr><td><code>Virtual Private Gateway (VGW)</code></td><td>On-prem VPN → VPC</td><td><span class="pill pg">✓ Supported</span></td></tr>
-        <tr><td><code>VPC Endpoint</code></td><td>EC2 → S3 VPC endpoint</td><td><span class="pill pg">✓ Supported</span></td></tr>
-        <tr><td><code>VPC Endpoint Service</code></td><td>PrivateLink consumer → service</td><td><span class="pill pg">✓ Supported</span></td></tr>
-        <tr><td><code>VPC Peering Connection</code></td><td>Peered VPC A → VPC B</td><td><span class="pill pg">✓ Supported</span></td></tr>
-        <tr><td><code>IP Address</code></td><td>Any source → specific IP</td><td><span class="pill pp">Destination only</span></td></tr>
-      </tbody>
-    </table>
-
-    <h3 style="margin-top:2.5rem">Intermediate Components</h3>
-    <p style="margin-bottom:1rem">These can be <strong style="color:var(--text)">included or excluded</strong> from analysis when creating a path — useful when you want to test connectivity bypassing a specific appliance:</p>
-
-    <table class="ftable">
-      <thead>
-        <tr><th>Intermediate Component</th><th>Include / Exclude Use Case</th></tr>
-      </thead>
-      <tbody>
-        <tr><td><code>Load Balancers</code> (ALB, NLB, CLB, GWLB)</td><td>Test path through or around a load balancer</td></tr>
-        <tr><td><code>NAT Gateway</code></td><td>Verify private subnet outbound via NAT</td></tr>
-        <tr><td><code>AWS Network Firewall</code></td><td>Exclude firewall to test underlying routing</td></tr>
-        <tr><td><code>Transit Gateway</code></td><td>Trace cross-VPC path via TGW</td></tr>
-        <tr><td><code>Transit Gateway Attachment</code></td><td>Verify specific VPC attachment routing</td></tr>
-        <tr><td><code>VPC Peering Connection</code></td><td>Test peering path between VPCs</td></tr>
-      </tbody>
-    </table>
-
-    <h3 style="margin-top:2.5rem">Constraints to know</h3>
-    <div class="steps">
-      <div class="step">
-        <div class="snum2" style="background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.25);color:var(--accent3)">!</div>
-        <div class="step-body"><h4>Same Region only</h4><p>Source and destination must be in the same AWS Region. Cross-region paths are not supported.</p></div>
-      </div>
-      <div class="step">
-        <div class="snum2" style="background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.25);color:var(--accent3)">!</div>
-        <div class="step-body"><h4>Same VPC or connected via peering / TGW</h4><p>Resources must be in the same VPC, or connected through a VPC peering connection or a Transit Gateway.</p></div>
-      </div>
-      <div class="step">
-        <div class="snum2" style="background:rgba(34,197,94,0.1);border-color:rgba(34,197,94,0.25);color:var(--green)">✓</div>
-        <div class="step-body"><h4>Cross-account supported</h4><p>Source and destination can belong to different AWS accounts within the same AWS Organization. Requires trusted access to be enabled.</p></div>
-      </div>
-      <div class="step">
-        <div class="snum2" style="background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.25);color:var(--accent3)">!</div>
-        <div class="step-body"><h4>IPv4 only</h4><p>Reachability Analyzer supports only resources with an IPv4 address. If a resource has both IPv4 and IPv6, only IPv4 is analyzed.</p></div>
-      </div>
-      <div class="step">
-        <div class="snum2" style="background:rgba(239,68,68,0.1);border-color:rgba(239,68,68,0.25);color:var(--red)">✗</div>
-        <div class="step-body"><h4>Transit Gateway Connect attachments not supported</h4><p>Analysis stops at Connect attachments — connectivity through them cannot be verified.</p></div>
-      </div>
-    </div>
-
-    <div class="callout blue">
-      <div class="clabel blue">Pro tip — IGW paths</div>
-      <p>Internet gateways cannot be used as an <em>intermediate</em> component. If your path goes through an IGW, split it into two analyses: source → IGW, then IGW → destination. This is a documented AWS limitation.</p>
-    </div>
   </div>
 </section>
 
@@ -694,6 +618,82 @@
       <span class="tag">Network Troubleshooting</span><span class="tag">Route Tables</span><span class="tag">Security Groups</span>
       <span class="tag">NACLs</span><span class="tag">Hub and Spoke</span><span class="tag">Asymmetric Routing</span>
       <span class="tag">AWS Networking</span>
+    </div>
+  </div>
+</section>
+
+ <!-- SUPPORTED RESOURCES -->
+<section id="supported">
+  <div class="container">
+    <div class="stag blue">Official support · verified from AWS docs</div>
+    <h2>What Reachability Analyzer<br/>can actually analyze</h2>
+    <p>Before running an analysis, it helps to know exactly what resource types are supported. Here's the complete list verified directly from the <a href="https://docs.aws.amazon.com/vpc/latest/reachability/how-reachability-analyzer-works.html" style="color:var(--accent2)">official AWS documentation</a>.</p>
+
+    <h3 style="margin-top:2rem">Sources &amp; Destinations</h3>
+    <p style="margin-bottom:1rem">These resource types can be used as either the <strong style="color:var(--text)">source</strong> or <strong style="color:var(--text)">destination</strong> of a path:</p>
+
+    <table class="ftable">
+      <thead>
+        <tr><th>Resource Type</th><th>Example Use Case</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>EC2 Instance</code></td><td>Instance A → Instance B</td><td><span class="pill pg">✓ Supported</span></td></tr>
+        <tr><td><code>Network Interface (ENI)</code></td><td>ENI → RDS ENI · Web → DB</td><td><span class="pill pg">✓ Supported</span></td></tr>
+        <tr><td><code>Internet Gateway (IGW)</code></td><td>IGW → EC2 instance (inbound)</td><td><span class="pill pg">✓ Supported</span></td></tr>
+        <tr><td><code>Transit Gateway</code></td><td>TGW → spoke VPC instance</td><td><span class="pill pg">✓ Supported</span></td></tr>
+        <tr><td><code>Transit Gateway Attachment</code></td><td>VPC attachment → attachment</td><td><span class="pill pg">✓ Supported</span></td></tr>
+        <tr><td><code>Virtual Private Gateway (VGW)</code></td><td>On-prem VPN → VPC</td><td><span class="pill pg">✓ Supported</span></td></tr>
+        <tr><td><code>VPC Endpoint</code></td><td>EC2 → S3 VPC endpoint</td><td><span class="pill pg">✓ Supported</span></td></tr>
+        <tr><td><code>VPC Endpoint Service</code></td><td>PrivateLink consumer → service</td><td><span class="pill pg">✓ Supported</span></td></tr>
+        <tr><td><code>VPC Peering Connection</code></td><td>Peered VPC A → VPC B</td><td><span class="pill pg">✓ Supported</span></td></tr>
+        <tr><td><code>IP Address</code></td><td>Any source → specific IP</td><td><span class="pill pp">Destination only</span></td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="margin-top:2.5rem">Intermediate Components</h3>
+    <p style="margin-bottom:1rem">These can be <strong style="color:var(--text)">included or excluded</strong> from analysis when creating a path — useful when you want to test connectivity bypassing a specific appliance:</p>
+
+    <table class="ftable">
+      <thead>
+        <tr><th>Intermediate Component</th><th>Include / Exclude Use Case</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>Load Balancers</code> (ALB, NLB, CLB, GWLB)</td><td>Test path through or around a load balancer</td></tr>
+        <tr><td><code>NAT Gateway</code></td><td>Verify private subnet outbound via NAT</td></tr>
+        <tr><td><code>AWS Network Firewall</code></td><td>Exclude firewall to test underlying routing</td></tr>
+        <tr><td><code>Transit Gateway</code></td><td>Trace cross-VPC path via TGW</td></tr>
+        <tr><td><code>Transit Gateway Attachment</code></td><td>Verify specific VPC attachment routing</td></tr>
+        <tr><td><code>VPC Peering Connection</code></td><td>Test peering path between VPCs</td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="margin-top:2.5rem">Constraints to know</h3>
+    <div class="steps">
+      <div class="step">
+        <div class="snum2" style="background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.25);color:var(--accent3)">!</div>
+        <div class="step-body"><h4>Same Region only</h4><p>Source and destination must be in the same AWS Region. Cross-region paths are not supported.</p></div>
+      </div>
+      <div class="step">
+        <div class="snum2" style="background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.25);color:var(--accent3)">!</div>
+        <div class="step-body"><h4>Same VPC or connected via peering / TGW</h4><p>Resources must be in the same VPC, or connected through a VPC peering connection or a Transit Gateway.</p></div>
+      </div>
+      <div class="step">
+        <div class="snum2" style="background:rgba(34,197,94,0.1);border-color:rgba(34,197,94,0.25);color:var(--green)">✓</div>
+        <div class="step-body"><h4>Cross-account supported</h4><p>Source and destination can belong to different AWS accounts within the same AWS Organization. Requires trusted access to be enabled.</p></div>
+      </div>
+      <div class="step">
+        <div class="snum2" style="background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.25);color:var(--accent3)">!</div>
+        <div class="step-body"><h4>IPv4 only</h4><p>Reachability Analyzer supports only resources with an IPv4 address. If a resource has both IPv4 and IPv6, only IPv4 is analyzed.</p></div>
+      </div>
+      <div class="step">
+        <div class="snum2" style="background:rgba(239,68,68,0.1);border-color:rgba(239,68,68,0.25);color:var(--red)">✗</div>
+        <div class="step-body"><h4>Transit Gateway Connect attachments not supported</h4><p>Analysis stops at Connect attachments — connectivity through them cannot be verified.</p></div>
+      </div>
+    </div>
+
+    <div class="callout blue">
+      <div class="clabel blue">Pro tip — IGW paths</div>
+      <p>Internet gateways cannot be used as an <em>intermediate</em> component. If your path goes through an IGW, split it into two analyses: source → IGW, then IGW → destination. This is a documented AWS limitation.</p>
     </div>
   </div>
 </section>
