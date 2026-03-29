@@ -1,1 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Stop Guessing. Start Tracing. | AWS Reachability Analyzer Deep Dive</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0b0f1a; --bg2: #111827; --bg3: #1a2235;
+    --border: #1e2d45; --border2: #2a3f5f;
+    --text: #e2e8f0; --text2: #94a3b8; --text3: #64748b;
+    --accent: #00d4aa; --accent2: #0ea5e9; --accent3: #f59e0b;
+    --red: #ef4444; --green: #22c55e; --purple: #a78bfa;
+    --mono: 'JetBrains Mono', monospace; --sans: 'Sora', sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--text); line-height: 1.7; font-size: 16px; }
 
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(11,15,26,0.94); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2.5rem; display: flex; align-items: center; justify-content: space-between; height: 60px;
+  }
+  .nav-logo { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--accent); letter-spacing: 0.05em; }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a { font-size: 13px; color: var(--text2); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-tag { font-family: var(--mono); font-size: 11px; background: rgba(0,212,170,0.1); color: var(--accent); border: 1px solid rgba(0,212,170,0.2); padding: 4px 10px; border-radius: 20px; }
+
+  .hero {
+    min-height: 94vh; display: flex; align-items: center; justify-content: center;
+    padding: 6rem 2rem 4rem; position: relative; overflow: hidden; text-align: center;
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(0,212,170,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,212,170,0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  .hero-glow {
+    position: absolute; width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(14,165,233,0.08) 0%, transparent 70%);
+    top: 50%; left: 50%; transform: translate(-50%,-50%); pointer-events: none;
+  }
+  .hero-content { position: relative; max-width: 920px; }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--mono); font-size: 12px; font-weight: 500; color: var(--accent2);
+    letter-spacing: 0.1em; text-transform: uppercase;
+    background: rgba(14,165,233,0.08); border: 1px solid rgba(14,165,233,0.2);
+    padding: 6px 16px; border-radius: 20px; margin-bottom: 2rem;
+  }
+  .hero-eyebrow::before { content: ''; width: 6px; height: 6px; background: var(--accent2); border-radius: 50%; animation: blink 2s infinite; }
+  @keyframes blink { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.4;transform:scale(0.7);} }
+
+  h1 {
+    font-size: clamp(2.2rem, 5vw, 3.8rem); font-weight: 800; line-height: 1.15;
+    letter-spacing: -0.02em; margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  h1 span {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .hero-sub { font-size: 1.1rem; color: var(--text2); max-width: 640px; margin: 0 auto 2.5rem; font-weight: 400; line-height: 1.8; }
+  .hero-meta { display: flex; align-items: center; justify-content: center; gap: 2rem; flex-wrap: wrap; }
+  .hero-meta-item { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 12px; color: var(--text3); }
+  .dot { width: 6px; height: 6px; border-radius: 50%; }
+  .dg { background: var(--green); } .db { background: var(--accent2); } .da { background: var(--accent3); } .dr { background: var(--red); }
+
+  .agents-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; max-width: 960px; margin: 3rem auto 0; }
+  .agent-card { background: var(--bg2); padding: 2rem 1.5rem; transition: background 0.2s; position: relative; }
+  .agent-card:hover { background: var(--bg3); }
+  .agent-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 1rem; }
+  .i-teal { background: rgba(0,212,170,0.12); } .i-blue { background: rgba(14,165,233,0.12); } .i-amber { background: rgba(245,158,11,0.12); }
+  .agent-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .agent-card p { font-size: 13px; color: var(--text2); line-height: 1.6; }
+  .abadge { position: absolute; top: 1.2rem; right: 1.2rem; font-family: var(--mono); font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 4px; }
+  .b-new { background: rgba(0,212,170,0.15); color: var(--accent); }
+  .b-warn { background: rgba(239,68,68,0.15); color: var(--red); }
+  .b-ok { background: rgba(34,197,94,0.15); color: var(--green); }
+
+  .container { max-width: 800px; margin: 0 auto; padding: 0 2rem; }
+  section { padding: 5rem 0; }
+  section + section { border-top: 1px solid var(--border); }
+
+  .stag { display: inline-flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+  .stag::before { content: ''; width: 16px; height: 1px; background: var(--accent); }
+  .stag.blue { color: var(--accent2); }
+  .stag.blue::before { background: var(--accent2); }
+  .stag.amber { color: var(--accent3); }
+  .stag.amber::before { background: var(--accent3); }
+  .stag.red { color: var(--red); }
+  .stag.red::before { background: var(--red); }
+
+  h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 800; line-height: 1.2; letter-spacing: -0.02em; margin-bottom: 1.2rem; }
+  h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.75rem; }
+  p { color: var(--text2); margin-bottom: 1.25rem; line-height: 1.8; }
+  p:last-child { margin-bottom: 0; }
+  code { font-family: var(--mono); font-size: 12px; color: var(--accent); background: rgba(0,212,170,0.08); padding: 2px 6px; border-radius: 4px; }
+
+  .callout { background: var(--bg2); border: 1px solid var(--border2); border-left: 3px solid var(--accent); border-radius: 0 12px 12px 0; padding: 1.25rem 1.5rem; margin: 2rem 0; }
+  .callout.blue { border-left-color: var(--accent2); }
+  .callout.amber { border-left-color: var(--accent3); }
+  .callout.red { border-left-color: var(--red); }
+  .callout.green { border-left-color: var(--green); }
+  .clabel { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.5rem; }
+  .clabel.teal { color: var(--accent); } .clabel.blue { color: var(--accent2); } .clabel.amber { color: var(--accent3); } .clabel.red { color: var(--red); } .clabel.green { color: var(--green); }
+  .callout p { margin: 0; font-size: 14px; }
+
+  .terminal { background: #050810; border: 1px solid var(--border2); border-radius: 12px; overflow: hidden; margin: 1.5rem 0; }
+  .tbar { background: var(--bg2); padding: 8px 16px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border); }
+  .tdots { display: flex; gap: 6px; }
+  .tdots span { width: 10px; height: 10px; border-radius: 50%; }
+  .tdots span:nth-child(1){background:#ff5f57;} .tdots span:nth-child(2){background:#febc2e;} .tdots span:nth-child(3){background:#28c840;}
+  .tbar span { font-family: var(--mono); font-size: 11px; color: var(--text3); }
+  .tbody { padding: 1.25rem 1.5rem; font-family: var(--mono); font-size: 13px; line-height: 1.9; }
+  .tp { color: var(--accent); } .tc { color: var(--text); } .to { color: var(--text2); } .ts { color: var(--green); } .ti { color: var(--accent2); } .tr { color: var(--red); } .tw { color: var(--accent3); }
+
+  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; margin: 2.5rem 0; }
+  .stat-cell { background: var(--bg2); padding: 1.5rem 1.25rem; text-align: center; }
+  .snum { font-family: var(--mono); font-size: 2.2rem; font-weight: 700; line-height: 1; margin-bottom: 4px; }
+  .slbl { font-size: 12px; color: var(--text3); }
+  .ssub { font-family: var(--mono); font-size: 11px; margin-top: 2px; }
+
+  .steps { margin: 2rem 0; }
+  .step { display: flex; gap: 1.25rem; padding: 1.25rem 0; border-bottom: 1px solid var(--border); }
+  .step:last-child { border-bottom: none; }
+  .snum2 { flex-shrink: 0; width: 32px; height: 32px; border-radius: 8px; background: rgba(0,212,170,0.1); border: 1px solid rgba(0,212,170,0.25); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--accent); }
+  .step-body h4 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .step-body p { font-size: 13px; margin: 0; }
+
+  .ftable { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 13px; }
+  .ftable th { text-align: left; padding: 10px 12px; font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3); border-bottom: 1px solid var(--border2); }
+  .ftable td { padding: 10px 12px; border-bottom: 1px solid var(--border); color: var(--text2); }
+  .ftable tr:last-child td { border-bottom: none; }
+  .ftable tr:hover td { background: rgba(255,255,255,0.02); }
+  .pill { display: inline-flex; align-items: center; gap: 5px; font-family: var(--mono); font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 4px; }
+  .pp { background: rgba(14,165,233,0.12); color: var(--accent2); }
+  .pg { background: rgba(34,197,94,0.12); color: var(--green); }
+  .pr2 { background: rgba(239,68,68,0.12); color: var(--red); }
+  .pw { background: rgba(245,158,11,0.12); color: var(--accent3); }
+
+  /* Reachability path card */
+  .path-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 12px; overflow: hidden; margin: 2rem 0; }
+  .path-head { padding: 1rem 1.25rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+  .path-head h4 { font-size: 14px; font-weight: 700; font-family: var(--mono); }
+  .path-steps { padding: 0.5rem 0; }
+  .path-hop { display: flex; align-items: flex-start; gap: 12px; padding: 10px 1.25rem; border-bottom: 1px solid var(--border); transition: background 0.15s; }
+  .path-hop:last-child { border-bottom: none; }
+  .path-hop:hover { background: rgba(255,255,255,0.02); }
+  .hop-num { font-family: var(--mono); font-size: 11px; color: var(--text3); width: 20px; flex-shrink: 0; padding-top: 2px; }
+  .hop-icon { font-size: 16px; flex-shrink: 0; }
+  .hop-body { flex: 1; }
+  .hop-type { font-family: var(--mono); font-size: 11px; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 2px; }
+  .hop-name { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+  .hop-detail { font-size: 12px; color: var(--text3); font-family: var(--mono); }
+  .hop-status { flex-shrink: 0; }
+
+  /* Analysis summary card */
+  .analysis-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 16px; overflow: hidden; margin: 2rem 0; }
+  .ac-head { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .ac-head h4 { font-size: 14px; font-weight: 700; }
+  .ac-body { padding: 1.5rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  .ac-field { }
+  .ac-label { font-family: var(--mono); font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+  .ac-value { font-size: 13px; color: var(--text); font-family: var(--mono); }
+
+  .pipeline { display: flex; margin: 2rem 0; background: var(--bg2); border: 1px solid var(--border2); border-radius: 12px; overflow: hidden; }
+  .pstep { flex: 1; padding: 1rem; text-align: center; border-right: 1px solid var(--border); }
+  .pstep:last-child { border-right: none; }
+  .pname { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--text3); margin-top: 6px; letter-spacing: 0.05em; }
+  .picon { font-size: 18px; }
+  .p-done .pname { color: var(--green); }
+  .p-active { background: rgba(239,68,68,0.05); }
+  .p-active .pname { color: var(--red); }
+  .p-done2 { background: rgba(14,165,233,0.05); }
+  .p-done2 .pname { color: var(--accent2); }
+
+  .toc { background: var(--bg2); border: 1px solid var(--border2); border-radius: 12px; padding: 1.25rem 1.5rem; margin: 2rem 0; }
+  .toc-title { font-family: var(--mono); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 1rem; }
+  .toc ol { padding-left: 1.2rem; }
+  .toc li { margin-bottom: 6px; }
+  .toc a { font-size: 13px; color: var(--accent2); text-decoration: none; }
+  .toc a:hover { color: var(--accent); }
+
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 1.5rem 0; }
+  .tag { font-family: var(--mono); font-size: 11px; font-weight: 500; padding: 4px 12px; border-radius: 6px; background: var(--bg3); color: var(--text2); border: 1px solid var(--border2); }
+
+  .cta-box { background: linear-gradient(135deg, rgba(0,212,170,0.06) 0%, rgba(14,165,233,0.06) 100%); border: 1px solid rgba(0,212,170,0.2); border-radius: 20px; padding: 3rem; text-align: center; margin: 3rem 0; }
+  .cta-box h2 { margin-bottom: 1rem; }
+  .cta-box p { max-width: 520px; margin: 0 auto 2rem; }
+  .cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: #000; font-family: var(--mono); font-size: 13px; font-weight: 700; padding: 12px 28px; border-radius: 8px; text-decoration: none; transition: opacity 0.2s; }
+  .cta-btn:hover { opacity: 0.85; }
+
+  footer { border-top: 1px solid var(--border); padding: 2.5rem 2rem; text-align: center; font-family: var(--mono); font-size: 12px; color: var(--text3); }
+  footer a { color: var(--accent); text-decoration: none; }
+
+  @media (max-width: 768px) {
+    .agents-row, .stats-row { grid-template-columns: 1fr; }
+    .pipeline { flex-direction: column; }
+    .pstep { border-right: none; border-bottom: 1px solid var(--border); }
+    .nav-links { display: none; }
+    h1 { font-size: 2rem; }
+    .ac-body { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">$ aws-reachability --trace</div>
+  <div class="nav-links">
+    <a href="#problem">The Problem</a>
+    <a href="#analyzer">Reachability Analyzer</a>
+    <a href="#supported">Supported Resources</a>
+    <a href="#findings">Findings</a>
+    <a href="#fix">The Fix</a>
+    <a href="#results">Results</a>
+  </div>
+  <span class="nav-tag">March 28, 2026</span>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">AWS Networking · VPC · Transit Gateway · Real Incident</div>
+    <h1>Stop Guessing.<br/><span>Start Tracing.</span><br/>How AWS Reachability Analyzer<br/>Found Our Broken Network in Minutes</h1>
+    <p class="hero-sub">A complete walkthrough of diagnosing a silent Transit Gateway routing failure across 10 VPCs — using AWS Reachability Analyzer to pinpoint the exact broken hop without touching a single security group rule.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item"><span class="dot dr"></span>10 VPCs · 1 Transit Gateway</div>
+      <div class="hero-meta-item"><span class="dot db"></span>1 missing route · root cause</div>
+      <div class="hero-meta-item"><span class="dot dg"></span>Reachable in &lt; 2 minutes</div>
+    </div>
+    <div class="agents-row">
+      <div class="agent-card">
+        <div class="agent-icon i-teal">🔍</div>
+        <span class="abadge b-new">FREE</span>
+        <h3>Reachability Analyzer</h3>
+        <p>Logical path analysis — walks your real network config hop by hop. No traffic sent. $0.10 per analysis.</p>
+      </div>
+      <div class="agent-card">
+        <div class="agent-icon i-blue">🌐</div>
+        <span class="abadge b-ok">10 VPCs</span>
+        <h3>Transit Gateway Hub</h3>
+        <p>Hub-and-spoke TGW connecting all VPCs across regions. Route tables, attachments, propagations.</p>
+      </div>
+      <div class="agent-card">
+        <div class="agent-icon i-amber">⚠️</div>
+        <span class="abadge b-warn">ROOT CAUSE</span>
+        <h3>Missing Return Route</h3>
+        <p>Destination VPC subnet route table had no route back through TGW — traffic arrived and had nowhere to go.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INTRO -->
+<section>
+  <div class="container">
+    <div class="toc">
+      <div class="toc-title">In this post</div>
+      <ol>
+        <li><a href="#problem">The environment — 10 VPCs, 1 TGW, complete silence</a></li>
+        <li><a href="#analyzer">AWS Reachability Analyzer — how it works</a></li>
+        <li><a href="#path">The verified path — 10 hops, all green</a></li>
+        <li><a href="#findings">The actual root cause — NO_ROUTE_TO_DESTINATION</a></li>
+        <li><a href="#fix">The fix — one route entry</a></li>
+        <li><a href="#results">Final results &amp; takeaways</a></li>
+      </ol>
+    </div>
+    <p>AWS networking is deceptively quiet when it's broken. No alarms. No flashing red lights. Just a ping that never returns, a replication agent going offline, and a jump server that's an island in its own VPC. That's exactly what we faced last week.</p>
+    <p>The environment: a hub-and-spoke Transit Gateway connecting 10 VPCs. A Windows jump server at <code>10.110.10.174</code> that couldn't reach anything in the <code>10.13.0.0/16</code> range. The routing looked correct everywhere we checked. The security groups looked open. The TGW route tables looked fine. Everything looked fine — until we actually traced it.</p>
+  </div>
+</section>
+
+<!-- THE PROBLEM -->
+<section id="problem">
+  <div class="container">
+    <div class="stag">The starting point</div>
+    <h2>10 VPCs, 1 TGW, and a jump<br/>server that couldn't talk to anything</h2>
+    <p>The complaint was simple: connectivity from the jump server (<code>10.110.0.0/16</code> VPC) to the target network (<code>10.13.0.0/16</code>) was completely broken. No error messages, no timeout logs — just silence. Before touching anything, we needed to understand the full picture.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="snum2">01</div>
+        <div class="step-body"><h4>Jump server VPC — 10.110.0.0/16</h4><p>Windows jump server at <code>10.110.10.174</code>, hosted in <code>vpc-dummy-hub-01</code>. Subnet route table had a route for <code>10.13.0.0/16</code> pointing at the TGW. Looked correct.</p></div>
+      </div>
+      <div class="step">
+        <div class="snum2">02</div>
+        <div class="step-body"><h4>Transit Gateway — tgw-dummy-hub-01</h4><p>Central hub with 10 VPC attachments. TGW route table <code>tgw-rtb-dummy-01</code> had a propagated active route for <code>10.13.0.0/16</code>. Also looked correct.</p></div>
+      </div>
+      <div class="step">
+        <div class="snum2">03</div>
+        <div class="step-body"><h4>Destination VPC — AZ-IVANTI-NETWORKS (10.13.0.0/16)</h4><p>Target network hosting the Ivanti appliance. VPC attachment <code>tgw-attach-dummy-ivanti</code> was active and propagated. Still looked fine on paper.</p></div>
+      </div>
+      <div class="step">
+        <div class="snum2">04</div>
+        <div class="step-body"><h4>Security groups and NACLs — all permissive</h4><p>Jump server SG allowed all outbound. NACLs on both sides had Rule 100: Allow ALL. No obvious blocks anywhere in the chain.</p></div>
+      </div>
+      <div class="step">
+        <div class="snum2">05</div>
+        <div class="step-body"><h4>Manual inspection failed to find the issue</h4><p>After checking 6 separate console sections across two AWS accounts, the network still appeared correctly configured. Time to stop guessing.</p></div>
+      </div>
+    </div>
+
+    <div class="callout amber">
+      <div class="clabel amber">The old way</div>
+      <p>Manual AWS network debugging means checking Security Groups → NACLs → Route Tables → TGW Route Tables → Destination SGs → return path. That's 6+ console hops per direction, and you're still only as confident as your ability to read static config. Human error loves static config.</p>
+    </div>
+  </div>
+</section>
+
+<!-- REACHABILITY ANALYZER -->
+<section id="analyzer">
+  <div class="container">
+    <div class="stag blue">The tool</div>
+    <h2>AWS Reachability Analyzer —<br/>logical path execution</h2>
+    <p>AWS Reachability Analyzer doesn't send real traffic. It performs <strong style="color:var(--text)">logical path analysis</strong> — walking your actual network configuration as AWS sees it, hop by hop, and telling you exactly where a packet would die. It evaluates Security Groups, NACLs, route tables, TGW route tables, peering connections, and VPN attachments in a single analysis run.</p>
+
+    <div class="terminal">
+      <div class="tbar">
+        <div class="tdots"><span></span><span></span><span></span></div>
+        <span>VPC → Reachability Analyzer → Create path</span>
+      </div>
+      <div class="tbody">
+        <div><span class="tp">source_type</span>     <span class="tc">instance</span></div>
+        <div><span class="tp">source</span>          <span class="ti">i-0dummy12345abcdef</span>  <span class="to"># Windows Jump Server</span></div>
+        <div><span class="tp">destination_type</span> <span class="tc">instance</span></div>
+        <div><span class="tp">destination</span>      <span class="ti">i-0dummy98765fedcba</span>  <span class="to"># Target in 10.13.10.x</span></div>
+        <div><span class="tp">protocol</span>         <span class="tc">TCP</span></div>
+        <div><span class="tp">destination_port</span> <span class="tc">22</span></div>
+        <div>&nbsp;</div>
+        <div><span class="to"># Analysis runs in ~90 seconds</span></div>
+        <div><span class="ts">✓ Analysis complete — path ID: nip-0dummy1b35057d8b20</span></div>
+        <div><span class="tw">⚠ Reachability status: NOT REACHABLE</span></div>
+        <div><span class="tr">✗ ExplanationCode: NO_ROUTE_TO_DESTINATION</span></div>
+        <div><span class="to">  RouteTable: rtb-0dummy8b7fd02136c64be</span></div>
+        <div><span class="to">  VPC: vpc-0dummy4602d8c81581a19 (AZ-IVANTI-NETWORKS)</span></div>
+      </div>
+    </div>
+
+    <p>One analysis. One definitive answer. The route table <code>rtb-0dummy8b7fd02136c64be</code> in the destination VPC had no route back to the TGW for the <code>10.110.0.0/16</code> network. Traffic was arriving at the Ivanti VPC correctly — but the return path was completely absent.</p>
+
+    <div class="callout">
+      <div class="clabel teal">Cost: $0.10</div>
+      <p>That's the cost of one Reachability Analyzer run. Ten cents for a definitive, auditable, hop-by-hop network trace that would have taken an experienced network engineer an hour of console archaeology. Run it before you touch a single security group rule.</p>
+    </div>
+  </div>
+</section>
+
+<!-- THE PATH -->
+<section id="path">
+  <div class="container">
+    <div class="stag blue">Path details</div>
+    <h2>10 hops traced — the full<br/>verified path (dummy data)</h2>
+    <p>The forward path from the jump server to the TGW attachment was fully reachable. Here's every hop the analyzer walked, with all identifiers replaced with dummy values:</p>
+
+    <div class="analysis-card">
+      <div class="ac-head">
+        <h4>Analysis Summary — nia-0dummy34b64a96621d6</h4>
+        <span class="pill pg">✓ Forward: Reachable</span>
+      </div>
+      <div class="ac-body">
+        <div class="ac-field"><div class="ac-label">Analysis ID</div><div class="ac-value">nia-0dummy34b64a96621d6</div></div>
+        <div class="ac-field"><div class="ac-label">Path ID</div><div class="ac-value">nip-0dummy1b35057d8b20</div></div>
+        <div class="ac-field"><div class="ac-label">Source</div><div class="ac-value">i-0dummy12345abcdef<br/><span style="color:var(--text3);font-size:11px">Windows Jump Server</span></div></div>
+        <div class="ac-field"><div class="ac-label">Destination</div><div class="ac-value">tgw-attach-0dummy607148015<br/><span style="color:var(--text3);font-size:11px">transit-gateway-ivanti</span></div></div>
+        <div class="ac-field"><div class="ac-label">Protocol</div><div class="ac-value">TCP · all ports</div></div>
+        <div class="ac-field"><div class="ac-label">Analysis date</div><div class="ac-value">March 28, 2026 · 17:59 UTC+5:30</div></div>
+      </div>
+    </div>
+
+    <div class="path-card">
+      <div class="path-head">
+        <h4>Path Components (10 hops)</h4>
+        <span class="pill pg">All succeeded</span>
+      </div>
+      <div class="path-steps">
+        <div class="path-hop">
+          <span class="hop-num">1</span>
+          <span class="hop-icon">💻</span>
+          <div class="hop-body">
+            <div class="hop-type">EC2 Instance · Source</div>
+            <div class="hop-name">i-0dummy12345abcdef (Windows Jump Server)</div>
+            <div class="hop-detail">Src: 10.110.10.174/32 → Dst: 10.13.0.0/16 · TCP</div>
+          </div>
+          <span class="hop-status"><span class="pill pg">✓</span></span>
+        </div>
+        <div class="path-hop">
+          <span class="hop-num">2</span>
+          <span class="hop-icon">🔌</span>
+          <div class="hop-body">
+            <div class="hop-type">Network Interface</div>
+            <div class="hop-name">eni-0dummy8c6ee50faa83c</div>
+            <div class="hop-detail">VPC: vpc-0dummy hub · Subnet: subnet-0dummy2edef17759ba1ed</div>
+          </div>
+          <span class="hop-status"><span class="pill pg">✓</span></span>
+        </div>
+        <div class="path-hop">
+          <span class="hop-num">3</span>
+          <span class="hop-icon">🛡️</span>
+          <div class="hop-body">
+            <div class="hop-type">Security Group · Outbound</div>
+            <div class="hop-name">sg-0dummy53442a155f21136e (launch-wizard-4)</div>
+            <div class="hop-detail">Rule: Allow ALL · CIDR: 0.0.0.0/0</div>
+          </div>
+          <span class="hop-status"><span class="pill pg">✓</span></span>
+        </div>
+        <div class="path-hop">
+          <span class="hop-num">4</span>
+          <span class="hop-icon">🚧</span>
+          <div class="hop-body">
+            <div class="hop-type">Network ACL · Outbound</div>
+            <div class="hop-name">acl-0dummy49fdb76feab45ab</div>
+            <div class="hop-detail">Rule 100: Allow ALL · CIDR: 0.0.0.0/0</div>
+          </div>
+          <span class="hop-status"><span class="pill pg">✓</span></span>
+        </div>
+        <div class="path-hop">
+          <span class="hop-num">5</span>
+          <span class="hop-icon">🗺️</span>
+          <div class="hop-body">
+            <div class="hop-type">Route Table</div>
+            <div class="hop-name">rtb-0dummy0ea803a46035428cc (internet-route)</div>
+            <div class="hop-detail">10.13.0.0/16 → tgw-0dummy8a75e8d36b34e481 · Active</div>
+          </div>
+          <span class="hop-status"><span class="pill pg">✓</span></span>
+        </div>
+        <div class="path-hop">
+          <span class="hop-num">6</span>
+          <span class="hop-icon">🚧</span>
+          <div class="hop-body">
+            <div class="hop-type">Network ACL · Inbound</div>
+            <div class="hop-name">acl-0dummy49fdb76feab45ab</div>
+            <div class="hop-detail">Rule 100: Allow ALL · CIDR: 0.0.0.0/0</div>
+          </div>
+          <span class="hop-status"><span class="pill pg">✓</span></span>
+        </div>
+        <div class="path-hop">
+          <span class="hop-num">7</span>
+          <span class="hop-icon">🔌</span>
+          <div class="hop-body">
+            <div class="hop-type">Network Interface · TGW ENI</div>
+            <div class="hop-name">eni-0dummy10cec6f44e66fdc7</div>
+            <div class="hop-detail">Attached to tgw-attach-0dummy f47e6199b8fa84a3 · Subnet: subnet-0dummy</div>
+          </div>
+          <span class="hop-status"><span class="pill pg">✓</span></span>
+        </div>
+        <div class="path-hop">
+          <span class="hop-num">8</span>
+          <span class="hop-icon">🌐</span>
+          <div class="hop-body">
+            <div class="hop-type">Transit Gateway Attachment</div>
+            <div class="hop-name">tgw-attach-0dummyf47e6199b8fa84a3 (hub-attachment)</div>
+            <div class="hop-detail">TGW: tgw-0dummy8a75e8d36b34e481</div>
+          </div>
+          <span class="hop-status"><span class="pill pg">✓</span></span>
+        </div>
+        <div class="path-hop">
+          <span class="hop-num">9</span>
+          <span class="hop-icon">🗺️</span>
+          <div class="hop-body">
+            <div class="hop-type">TGW Route Table</div>
+            <div class="hop-name">tgw-rtb-0dummy625a5c9492e01380</div>
+            <div class="hop-detail">Route for 10.13.0.0/16 → tgw-attach-0dummyivanti · Active, Propagated</div>
+          </div>
+          <span class="hop-status"><span class="pill pg">✓</span></span>
+        </div>
+        <div class="path-hop">
+          <span class="hop-num">10</span>
+          <span class="hop-icon">🎯</span>
+          <div class="hop-body">
+            <div class="hop-type">Transit Gateway Attachment · Destination</div>
+            <div class="hop-name">tgw-attach-0dummyivanti (transit-gateway-ivanti)</div>
+            <div class="hop-detail">Inbound: 10.13.0.0/16 · Src: 10.110.10.174/32 · TCP</div>
+          </div>
+          <span class="hop-status"><span class="pill pg">✓</span></span>
+        </div>
+      </div>
+    </div>
+
+    <p>Forward path: <strong style="color:var(--green)">fully reachable</strong>. But the analyzer also ran the reverse path — and that's where it found the break.</p>
+  </div>
+</section>
+
+<!-- SUPPORTED RESOURCES -->
+<section id="supported">
+  <div class="container">
+    <div class="stag blue">Official support · verified from AWS docs</div>
+    <h2>What Reachability Analyzer<br/>can actually analyze</h2>
+    <p>Before running an analysis, it helps to know exactly what resource types are supported. Here's the complete list verified directly from the <a href="https://docs.aws.amazon.com/vpc/latest/reachability/how-reachability-analyzer-works.html" style="color:var(--accent2)">official AWS documentation</a>.</p>
+
+    <h3 style="margin-top:2rem">Sources &amp; Destinations</h3>
+    <p style="margin-bottom:1rem">These resource types can be used as either the <strong style="color:var(--text)">source</strong> or <strong style="color:var(--text)">destination</strong> of a path:</p>
+
+    <table class="ftable">
+      <thead>
+        <tr><th>Resource Type</th><th>Example Use Case</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>EC2 Instance</code></td><td>Instance A → Instance B</td><td><span class="pill pg">✓ Supported</span></td></tr>
+        <tr><td><code>Network Interface (ENI)</code></td><td>ENI → RDS ENI · Web → DB</td><td><span class="pill pg">✓ Supported</span></td></tr>
+        <tr><td><code>Internet Gateway (IGW)</code></td><td>IGW → EC2 instance (inbound)</td><td><span class="pill pg">✓ Supported</span></td></tr>
+        <tr><td><code>Transit Gateway</code></td><td>TGW → spoke VPC instance</td><td><span class="pill pg">✓ Supported</span></td></tr>
+        <tr><td><code>Transit Gateway Attachment</code></td><td>VPC attachment → attachment</td><td><span class="pill pg">✓ Supported</span></td></tr>
+        <tr><td><code>Virtual Private Gateway (VGW)</code></td><td>On-prem VPN → VPC</td><td><span class="pill pg">✓ Supported</span></td></tr>
+        <tr><td><code>VPC Endpoint</code></td><td>EC2 → S3 VPC endpoint</td><td><span class="pill pg">✓ Supported</span></td></tr>
+        <tr><td><code>VPC Endpoint Service</code></td><td>PrivateLink consumer → service</td><td><span class="pill pg">✓ Supported</span></td></tr>
+        <tr><td><code>VPC Peering Connection</code></td><td>Peered VPC A → VPC B</td><td><span class="pill pg">✓ Supported</span></td></tr>
+        <tr><td><code>IP Address</code></td><td>Any source → specific IP</td><td><span class="pill pp">Destination only</span></td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="margin-top:2.5rem">Intermediate Components</h3>
+    <p style="margin-bottom:1rem">These can be <strong style="color:var(--text)">included or excluded</strong> from analysis when creating a path — useful when you want to test connectivity bypassing a specific appliance:</p>
+
+    <table class="ftable">
+      <thead>
+        <tr><th>Intermediate Component</th><th>Include / Exclude Use Case</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>Load Balancers</code> (ALB, NLB, CLB, GWLB)</td><td>Test path through or around a load balancer</td></tr>
+        <tr><td><code>NAT Gateway</code></td><td>Verify private subnet outbound via NAT</td></tr>
+        <tr><td><code>AWS Network Firewall</code></td><td>Exclude firewall to test underlying routing</td></tr>
+        <tr><td><code>Transit Gateway</code></td><td>Trace cross-VPC path via TGW</td></tr>
+        <tr><td><code>Transit Gateway Attachment</code></td><td>Verify specific VPC attachment routing</td></tr>
+        <tr><td><code>VPC Peering Connection</code></td><td>Test peering path between VPCs</td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="margin-top:2.5rem">Constraints to know</h3>
+    <div class="steps">
+      <div class="step">
+        <div class="snum2" style="background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.25);color:var(--accent3)">!</div>
+        <div class="step-body"><h4>Same Region only</h4><p>Source and destination must be in the same AWS Region. Cross-region paths are not supported.</p></div>
+      </div>
+      <div class="step">
+        <div class="snum2" style="background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.25);color:var(--accent3)">!</div>
+        <div class="step-body"><h4>Same VPC or connected via peering / TGW</h4><p>Resources must be in the same VPC, or connected through a VPC peering connection or a Transit Gateway.</p></div>
+      </div>
+      <div class="step">
+        <div class="snum2" style="background:rgba(34,197,94,0.1);border-color:rgba(34,197,94,0.25);color:var(--green)">✓</div>
+        <div class="step-body"><h4>Cross-account supported</h4><p>Source and destination can belong to different AWS accounts within the same AWS Organization. Requires trusted access to be enabled.</p></div>
+      </div>
+      <div class="step">
+        <div class="snum2" style="background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.25);color:var(--accent3)">!</div>
+        <div class="step-body"><h4>IPv4 only</h4><p>Reachability Analyzer supports only resources with an IPv4 address. If a resource has both IPv4 and IPv6, only IPv4 is analyzed.</p></div>
+      </div>
+      <div class="step">
+        <div class="snum2" style="background:rgba(239,68,68,0.1);border-color:rgba(239,68,68,0.25);color:var(--red)">✗</div>
+        <div class="step-body"><h4>Transit Gateway Connect attachments not supported</h4><p>Analysis stops at Connect attachments — connectivity through them cannot be verified.</p></div>
+      </div>
+    </div>
+
+    <div class="callout blue">
+      <div class="clabel blue">Pro tip — IGW paths</div>
+      <p>Internet gateways cannot be used as an <em>intermediate</em> component. If your path goes through an IGW, split it into two analyses: source → IGW, then IGW → destination. This is a documented AWS limitation.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FINDINGS -->
+<section id="findings">
+  <div class="container">
+    <div class="stag red">Root cause</div>
+    <h2>NO_ROUTE_TO_DESTINATION —<br/>the exact broken hop</h2>
+    <p>The reverse path analysis returned a definitive error code pointing to a single resource. No ambiguity, no guesswork:</p>
+
+    <div class="terminal">
+      <div class="tbar">
+        <div class="tdots"><span></span><span></span><span></span></div>
+        <span>Reverse path analysis result</span>
+      </div>
+      <div class="tbody">
+        <div><span class="tr">ExplanationCode</span>  <span class="tc">NO_ROUTE_TO_DESTINATION</span></div>
+        <div><span class="tw">RouteTable</span>       <span class="ti">rtb-0dummy8b7fd02136c64be</span></div>
+        <div><span class="tw">VPC</span>              <span class="ti">vpc-0dummy4602d8c81581a19</span></div>
+        <div><span class="tw">VPC Name</span>         <span class="tc">AZ-IVANTI-NETWORKS</span></div>
+        <div>&nbsp;</div>
+        <div><span class="to"># Route table had only 2 routes:</span></div>
+        <div><span class="ts">0.0.0.0/0</span>       <span class="tc">→ igw-0dummy6bda2b518458269b</span>  <span class="to">(internet gateway)</span></div>
+        <div><span class="ts">10.13.0.0/16</span>    <span class="tc">→ local</span></div>
+        <div>&nbsp;</div>
+        <div><span class="tr">MISSING:</span>        <span class="tc">10.110.0.0/16 → tgw-0dummy8a75e8d36b34e481</span></div>
+        <div><span class="tr">RESULT:</span>         <span class="tc">Return traffic dropped. Connection fails.</span></div>
+      </div>
+    </div>
+
+    <p>The destination VPC's subnet route table was pointed entirely at an internet gateway for external traffic and had a local route for its own CIDR — but <strong style="color:var(--text)">no route back through the Transit Gateway</strong> for any of the internal <code>10.x.x.x</code> networks. Traffic from the jump server was arriving at the Ivanti VPC successfully. The response packets had nowhere to go.</p>
+
+    <div class="callout red">
+      <div class="clabel red">Classic TGW gotcha</div>
+      <p>Asymmetric routing is the most common Transit Gateway mistake. Forward path and return path use <strong>different route tables</strong> — both must be configured correctly. Reachability Analyzer exposes this instantly. Manual inspection almost always misses it.</p>
+    </div>
+
+    <h3 style="margin-top:2rem">What we checked manually vs. what the analyzer found</h3>
+    <table class="ftable">
+      <thead>
+        <tr><th>Component</th><th>Manual check</th><th>Analyzer result</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Jump server Security Group</td><td>Looks open ✓</td><td><span class="pill pg">✓ Confirmed open</span></td></tr>
+        <tr><td>Jump server NACL</td><td>Looks open ✓</td><td><span class="pill pg">✓ Rule 100 Allow ALL</span></td></tr>
+        <tr><td>Source subnet route table</td><td>Has TGW route ✓</td><td><span class="pill pg">✓ 10.13.0.0/16 → TGW</span></td></tr>
+        <tr><td>TGW route table</td><td>Has 10.13 route ✓</td><td><span class="pill pg">✓ Propagated, Active</span></td></tr>
+        <tr><td>Destination VPC attachment</td><td>Active ✓</td><td><span class="pill pg">✓ Reachable</span></td></tr>
+        <tr><td><strong style="color:var(--text)">Destination subnet route table</strong></td><td>Not checked ✗</td><td><span class="pill pr2">✗ NO_ROUTE_TO_DESTINATION</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- THE FIX -->
+<section id="fix">
+  <div class="container">
+    <div class="stag">The fix</div>
+    <h2>One route entry. Problem solved.</h2>
+    <p>Navigate to <strong style="color:var(--text)">VPC → Route Tables → rtb-0dummy8b7fd02136c64be</strong> → Edit routes → Add route:</p>
+
+    <div class="terminal">
+      <div class="tbar">
+        <div class="tdots"><span></span><span></span><span></span></div>
+        <span>rtb-0dummy8b7fd02136c64be · Edit routes</span>
+      </div>
+      <div class="tbody">
+        <div><span class="to"># Before (2 routes — broken)</span></div>
+        <div><span class="ts">0.0.0.0/0</span>       <span class="tc">→ igw-0dummyb  </span><span class="to">(internet gateway)</span></div>
+        <div><span class="ts">10.13.0.0/16</span>    <span class="tc">→ local</span></div>
+        <div>&nbsp;</div>
+        <div><span class="to"># After (3 routes — fixed)</span></div>
+        <div><span class="ts">0.0.0.0/0</span>       <span class="tc">→ igw-0dummyb</span></div>
+        <div><span class="ts">10.13.0.0/16</span>    <span class="tc">→ local</span></div>
+        <div><span class="tp">10.0.0.0/8</span>      <span class="tc">→ tgw-0dummy8a75e8d36b34e481</span>  <span class="ts">← ADD THIS</span></div>
+        <div>&nbsp;</div>
+        <div><span class="to"># 10.0.0.0/8 covers all internal VPCs via TGW</span></div>
+        <div><span class="to"># local route for 10.13.0.0/16 takes priority automatically</span></div>
+      </div>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="snum2" style="background:rgba(34,197,94,0.1);border-color:rgba(34,197,94,0.25);color:var(--green)">✓</div>
+        <div class="step-body"><h4>Navigate to destination subnet route table</h4><p>VPC → Route Tables → filter by VPC <code>vpc-0dummy4602d8c81581a19</code> (AZ-IVANTI-NETWORKS)</p></div>
+      </div>
+      <div class="step">
+        <div class="snum2" style="background:rgba(34,197,94,0.1);border-color:rgba(34,197,94,0.25);color:var(--green)">✓</div>
+        <div class="step-body"><h4>Add route: 10.0.0.0/8 → Transit Gateway</h4><p>Destination: <code>10.0.0.0/8</code> · Target: Transit Gateway → select <code>tgw-0dummy8a75e8d36b34e481</code> · Save</p></div>
+      </div>
+      <div class="step">
+        <div class="snum2" style="background:rgba(34,197,94,0.1);border-color:rgba(34,197,94,0.25);color:var(--green)">✓</div>
+        <div class="step-body"><h4>Re-run Reachability Analyzer</h4><p>Create a new analysis on the same path. Status changes from NOT REACHABLE to <strong style="color:var(--green)">REACHABLE</strong> within 90 seconds.</p></div>
+      </div>
+      <div class="step">
+        <div class="snum2" style="background:rgba(34,197,94,0.1);border-color:rgba(34,197,94,0.25);color:var(--green)">✓</div>
+        <div class="step-body"><h4>Verify connectivity from the jump server</h4><p>Run <code>ping 10.13.10.1</code> or <code>traceroute 10.13.10.1</code> from the Windows jump server. Response arrives. Problem closed.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section id="results">
+  <div class="container">
+    <div class="stag">Final results</div>
+    <h2>What Reachability Analyzer found<br/>in a single analysis run</h2>
+
+    <div class="stats-row">
+      <div class="stat-cell"><div class="snum" style="color:var(--accent)">10</div><div class="slbl">hops traced</div><div class="ssub" style="color:var(--text3)">full path verified</div></div>
+      <div class="stat-cell"><div class="snum" style="color:var(--green)">$0.10</div><div class="slbl">total cost</div><div class="ssub" style="color:var(--text3)">per analysis run</div></div>
+      <div class="stat-cell"><div class="snum" style="color:var(--accent2)">90s</div><div class="slbl">time to result</div><div class="ssub" style="color:var(--text3)">vs. 60+ min manual</div></div>
+      <div class="stat-cell"><div class="snum" style="color:var(--purple)">1</div><div class="slbl">route entry fix</div><div class="ssub" style="color:var(--green)">problem closed</div></div>
+    </div>
+
+    <h3>What worked exceptionally well</h3>
+    <p>The <strong style="color:var(--text)">ExplanationCode: NO_ROUTE_TO_DESTINATION</strong> output was the standout — a machine-readable, unambiguous diagnosis pointing to a specific route table in a specific VPC. No interpretation required. Compare this to the manual approach where we had already checked 5 of the 6 components correctly and still had no answer.</p>
+    <p>The <strong style="color:var(--text)">reverse path analysis</strong> was equally critical. Forward path was reachable — if we'd stopped there, we would have concluded the network was fine. Always run both directions. Asymmetric routing failures are invisible from one side.</p>
+
+    <h3 style="margin-top:2rem">The one rule</h3>
+    <p>Don't touch a security group rule, NACL, or route table until you've run Reachability Analyzer first. It will tell you exactly what's wrong — and exactly what <em>isn't</em> wrong, so you stop changing things that don't need changing and creating new problems in the process.</p>
+
+    <div class="callout green">
+      <div class="clabel green">Bottom line</div>
+      <p>AWS Reachability Analyzer is the single most underused tool in the VPC console. For $0.10 and 90 seconds you get a hop-by-hop audit trail of your network path — the kind of diagnosis that used to require a senior network engineer, a whiteboard, and an hour of console archaeology. Run it first. Always.</p>
+    </div>
+
+    <div class="tags">
+      <span class="tag">AWS VPC</span><span class="tag">Transit Gateway</span><span class="tag">Reachability Analyzer</span>
+      <span class="tag">Network Troubleshooting</span><span class="tag">Route Tables</span><span class="tag">Security Groups</span>
+      <span class="tag">NACLs</span><span class="tag">Hub and Spoke</span><span class="tag">Asymmetric Routing</span>
+      <span class="tag">AWS Networking</span>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section style="padding:4rem 0">
+  <div class="container">
+    <div class="cta-box">
+      <div class="stag" style="justify-content:center;margin-bottom:1rem">Try it yourself</div>
+      <h2>Is your network really reachable?</h2>
+      <p>AWS Reachability Analyzer is available in the VPC console under Network Manager. Create a path, run an analysis, and get a definitive answer in 90 seconds.</p>
+      <a href="https://aws.amazon.com/vpc/reachability-analyzer/" class="cta-btn">Open Reachability Analyzer →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p style="font-size:11px">Published: March 28, 2026 · AWS VPC · Transit Gateway · Reachability Analyzer · Network Troubleshooting · Route Tables · Hub and Spoke</p>
+</footer>
+
+</body>
+</html>
