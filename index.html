@@ -1,701 +1,1061 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vishnu Rachapudi — 14x AWS | Cloud &amp; AI Engineer</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;500;600;700;800;900&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-:root{
-  --bg:#04040a;--surface:#0b0b18;--surface2:#10101f;
-  --border:#1a1a35;--border2:#252550;
-  --text:#e8e6f0;--muted:#8080a0;--dim:#505070;
-  --amber:#ff9f1c;--amber2:#ffbf60;--amber-glow:rgba(255,159,28,.12);
-  --cyan:#00e5c8;--cyan-glow:rgba(0,229,200,.1);
-  --violet:#8b5cf6;--rose:#f43f5e;
-  --r:14px;--rs:8px;
-}
-[data-theme="light"]{
-  --bg:#f8f6f0;--surface:#ffffff;--surface2:#f0ede6;
-  --border:#e2ddd6;--border2:#cdc8be;
-  --text:#1a1814;--muted:#6b6560;--dim:#a09a92;
-  --amber:#d4820a;--amber2:#b86e00;--amber-glow:rgba(212,130,10,.1);
-  --cyan:#008875;--cyan-glow:rgba(0,136,117,.1);
-  --violet:#6d3fd4;--rose:#c92d47;
-}
-[data-theme="light"] nav{background:rgba(248,246,240,.92);}
-[data-theme="light"] .stars{opacity:0.08;}
-[data-theme="light"] .hero::before{background:radial-gradient(circle,rgba(212,130,10,.07),transparent 70%);}
-[data-theme="light"] .dropdown-menu{background:rgba(255,255,255,.97);}
-[data-theme="light"] .lb{background:rgba(0,0,0,.85);}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-/* Fix gradient text becoming invisible on white bg */
-[data-theme="light"] .hero-text h1 .n{background:linear-gradient(135deg,#111,#444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-[data-theme="light"] .hero-text h1 .r{background:linear-gradient(135deg,var(--amber),var(--amber2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-[data-theme="light"] h1{background:linear-gradient(135deg,#111,#444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-[data-theme="light"] h1 span{background:linear-gradient(135deg,var(--amber),var(--amber2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  <!-- ═══ PRIMARY SEO ═══ -->
+  <title>Vishnu Rachapudi — 14x AWS Certified Cloud & AI Engineer | AWS Community Builder</title>
+  <meta name="description" content="Vishnu Rachapudi is a 14x AWS Certified Cloud & AI Engineer at SUDO Consultants, Hyderabad. AWS Community Builder (Security), international speaker, and author of 50+ technical blog posts on AWS, Gen AI, DevOps, and cloud security." />
+  <meta name="keywords" content="Vishnu Rachapudi, AWS Certified, Cloud Engineer, AI Engineer, AWS Community Builder, Hyderabad, SUDO Consultants, AWS Security, Gen AI, Bedrock, Terraform, DevOps, Cloud Architecture, 14x AWS" />
+  <meta name="author" content="Vishnu Rachapudi" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <link rel="canonical" href="https://www.vishnurachapudi.com/" />
 
-/* Fix other gradient/transparent text */
-[data-theme="light"] .sh{color:#111;-webkit-text-fill-color:#111;}
-[data-theme="light"] .sh em{color:var(--amber);-webkit-text-fill-color:var(--amber);}
-[data-theme="light"] .tt{color:#111;}
-[data-theme="light"] .aw h4{color:#111;}
-[data-theme="light"] .sc h3{color:#111;}
-[data-theme="light"] .yk h4{color:#111;}
-[data-theme="light"] .bf h3{color:#111;}
-[data-theme="light"] .bc h4{color:#111;}
-[data-theme="light"] .pr-title{color:#111;}
-[data-theme="light"] .agent-card h3{color:#111;}
-[data-theme="light"] .step-body h4{color:#111;}
-[data-theme="light"] .ac .av{color:#111;}
-[data-theme="light"] .cc{color:#444;}
-[data-theme="light"] .hero-sub{color:var(--muted);}
-[data-theme="light"] .hero-sub b{color:#111;}
-[data-theme="light"] .about-text b{color:#111;}
-[data-theme="light"] .logo{color:var(--amber);}
-[data-theme="light"] .cn{color:var(--amber);}
+  <!-- ═══ OPEN GRAPH (Facebook / LinkedIn) ═══ -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.vishnurachapudi.com/" />
+  <meta property="og:title" content="Vishnu Rachapudi — 14x AWS Certified Cloud & AI Engineer" />
+  <meta property="og:description" content="14x AWS Certified Cloud & AI Engineer, AWS Community Builder (Security), international conference speaker, and author of 50+ technical articles on AWS, Gen AI, and Cloud Security." />
+  <meta property="og:image" content="https://www.vishnurachapudi.com/profile.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Vishnu Rachapudi — Cloud & AI Engineer" />
+  <meta property="og:site_name" content="Vishnu Rachapudi" />
+  <meta property="og:locale" content="en_IN" />
 
-/* Ensure cards and surfaces have visible borders */
-[data-theme="light"] .stats{box-shadow:0 2px 12px rgba(0,0,0,.08);}
-[data-theme="light"] .bf,.bf:hover,[data-theme="light"] .bc,[data-theme="light"] .aw,[data-theme="light"] .sc,[data-theme="light"] .yk{box-shadow:0 1px 6px rgba(0,0,0,.07);}
+  <!-- ═══ TWITTER CARD ═══ -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://www.vishnurachapudi.com/" />
+  <meta name="twitter:title" content="Vishnu Rachapudi — 14x AWS Certified Cloud & AI Engineer" />
+  <meta name="twitter:description" content="14x AWS Certified Cloud & AI Engineer, AWS Community Builder (Security), international speaker. Building, writing, and speaking about cloud." />
+  <meta name="twitter:image" content="https://www.vishnurachapudi.com/profile.png" />
+  <meta name="twitter:image:alt" content="Vishnu Rachapudi" />
 
-/* Nav links readable */
-[data-theme="light"] .nav-links a{color:#555;}
-[data-theme="light"] .nav-links a:hover{color:var(--amber);}
-[data-theme="light"] .nav-dropdown>a{color:#555;}
-[data-theme="light"] .dropdown-menu a{color:#555;}
-[data-theme="light"] .dropdown-menu a:hover{color:var(--amber);}
+  <!-- ═══ STRUCTURED DATA — Person ═══ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Vishnu Rachapudi",
+    "alternateName": "Venkata Pavan Vishnu Rachapudi",
+    "url": "https://www.vishnurachapudi.com/",
+    "image": "https://www.vishnurachapudi.com/profile.png",
+    "jobTitle": "Cloud & AI Engineer",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "SUDO Consultants",
+      "address": { "@type": "PostalAddress", "addressLocality": "Hyderabad", "addressCountry": "IN" }
+    },
+    "alumniOf": {
+      "@type": "CollegeOrUniversity",
+      "name": "Chaitanya Bharathi Institute of Technology"
+    },
+    "knowsAbout": ["Amazon Web Services", "Cloud Architecture", "Generative AI", "AWS Security", "DevOps", "Terraform", "Agentic AI", "AWS Bedrock"],
+    "award": ["AWS Golden Jacket", "14x AWS Certified", "AWS Community Builder (Security)", "Trundl Hackathon Winner"],
+    "email": "rachapudivishnu9@gmail.com",
+    "sameAs": [
+      "https://www.linkedin.com/in/vishnu-rachapudi-28956920b/",
+      "https://dev.to/vishnu_rachapudi_75e73248",
+      "https://github.com/aquavis12",
+      "https://www.credly.com/users/venkata-pavan-vishnu-rachapudi",
+      "https://builder.aws.com/community/@vishnu1999",
+      "https://technodiaryvishnu.hashnode.dev"
+    ]
+  }
+  </script>
 
-/* Footer */
-[data-theme="light"] footer{border-top-color:var(--border);}
-[data-theme="light"] .fl a{color:#666;}
-[data-theme="light"] .divider{background:linear-gradient(90deg,transparent,var(--border),transparent);}
-.theme-toggle{
-  width:34px;height:34px;border-radius:50%;
-  border:1px solid var(--border2);background:var(--surface2);
-  color:var(--muted);cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  font-size:15px;transition:all .3s;flex-shrink:0;outline:none;
-}
-.theme-toggle:hover{border-color:var(--amber);color:var(--amber);background:var(--amber-glow);transform:rotate(20deg);}
-html{scroll-behavior:smooth;scroll-padding-top:80px;}
-body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;line-height:1.6;overflow-x:hidden;}
-a{color:inherit;text-decoration:none;}
-::selection{background:var(--amber);color:#000;}
+  <!-- ═══ STRUCTURED DATA — WebSite (Sitelinks search) ═══ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Vishnu Rachapudi",
+    "url": "https://www.vishnurachapudi.com/",
+    "description": "Personal website of Vishnu Rachapudi — 14x AWS Certified Cloud & AI Engineer, AWS Community Builder, and international speaker.",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://www.vishnurachapudi.com/?s={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
 
-/* Stars */
-.stars{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
-.stars i{position:absolute;border-radius:50%;background:#fff;animation:tw var(--d,4s) ease-in-out infinite alternate;}
-@keyframes tw{0%{opacity:.1;transform:scale(.8)}100%{opacity:.8;transform:scale(1.2)}}
+  <!-- ═══ STRUCTURED DATA — BreadcrumbList ═══ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.vishnurachapudi.com/" },
+      { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://dev.to/vishnu_rachapudi_75e73248" },
+      { "@type": "ListItem", "position": 3, "name": "Certifications", "item": "https://www.credly.com/users/venkata-pavan-vishnu-rachapudi" }
+    ]
+  }
+  </script>
 
-/* Nav */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;backdrop-filter:blur(18px);background:rgba(4,4,10,.8);border-bottom:1px solid var(--border);}
-.nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:.85rem 2rem;}
-.logo{font-family:'Space Mono',monospace;font-weight:700;font-size:1.1rem;color:var(--amber);}
-.logo span{color:var(--muted);font-weight:400;}
-.nav-links{display:flex;gap:1.8rem;align-items:center;}
-.nav-links a{font-size:.82rem;font-weight:500;color:var(--muted);transition:color .3s;letter-spacing:.04em;text-transform:uppercase;}
-.nav-links a:hover{color:var(--amber);}
+  <!-- ═══ STRUCTURED DATA — FAQPage (boosts rich snippets) ═══ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How many AWS certifications does Vishnu Rachapudi have?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Vishnu Rachapudi holds 14 AWS certifications, including all Professional and Specialty exams, making him one of the few to hold the AWS Golden Jacket." }
+      },
+      {
+        "@type": "Question",
+        "name": "Where does Vishnu Rachapudi work?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Vishnu Rachapudi works as a Cloud & AI Engineer at SUDO Consultants, Hyderabad, India." }
+      },
+      {
+        "@type": "Question",
+        "name": "What topics does Vishnu Rachapudi speak about?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Vishnu speaks at AWS Community Days and international conferences on topics including Agentic AI on AWS, Amazon Q Suite, AWS Bedrock, and cloud security." }
+      }
+    ]
+  }
+  </script>
 
-/* Blog dropdown */
-.nav-dropdown{position:relative;}
-.nav-dropdown > a{display:flex;align-items:center;gap:.3rem;cursor:pointer;}
-.nav-dropdown > a::after{content:'▾';font-size:.7rem;transition:transform .25s;}
-.nav-dropdown:hover > a::after{transform:rotate(180deg);}
-.nav-dropdown > a{font-size:.82rem;font-weight:500;color:var(--muted);transition:color .3s;letter-spacing:.04em;text-transform:uppercase;}
-.nav-dropdown:hover > a{color:var(--amber);}
-.dropdown-menu{
-  position:absolute;top:calc(100% + 12px);right:0;
-  background:rgba(11,11,24,.97);backdrop-filter:blur(18px);
-  border:1px solid var(--border2);border-radius:var(--r);
-  min-width:280px;padding:.5rem 0;
-  opacity:0;visibility:hidden;transform:translateY(-8px);
-  transition:opacity .25s,transform .25s,visibility .25s;
-  z-index:200;
-}
-.nav-dropdown:hover .dropdown-menu{opacity:1;visibility:visible;transform:translateY(0);}
-.dropdown-menu a{
-  display:block;padding:.65rem 1.1rem;
-  font-size:.78rem;font-weight:500;color:var(--muted);
-  text-transform:none;letter-spacing:0;
-  transition:background .2s,color .2s;
-  border-left:2px solid transparent;
-}
-.dropdown-menu a:hover{background:var(--amber-glow);color:var(--amber);border-left-color:var(--amber);}
-.dropdown-divider{height:1px;background:var(--border);margin:.3rem .8rem;}
-.dropdown-label{
-  padding:.4rem 1.1rem .2rem;
-  font-family:'Space Mono',monospace;font-size:.6rem;
-  color:var(--dim);text-transform:uppercase;letter-spacing:.1em;
-}
+  <!-- ═══ STRUCTURED DATA — ProfilePage ═══ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    "dateCreated": "2023-03-01",
+    "dateModified": "2026-03-01",
+    "mainEntity": {
+      "@type": "Person",
+      "name": "Vishnu Rachapudi",
+      "identifier": "vishnu-rachapudi",
+      "description": "14x AWS Certified Cloud & AI Engineer, AWS Community Builder (Security), international speaker, and author of 50+ technical articles on AWS, Gen AI, and cloud security.",
+      "interactionStatistic": [
+        { "@type": "InteractionCounter", "interactionType": "https://schema.org/WriteAction", "userInteractionCount": 50 },
+        { "@type": "InteractionCounter", "interactionType": "https://schema.org/SpeakableSpecification", "userInteractionCount": 6 }
+      ]
+    }
+  }
+  </script>
 
-.ham{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:4px;}
-.ham span{width:20px;height:2px;background:var(--muted);border-radius:2px;}
+  <!-- ═══ PERFORMANCE ═══ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <link rel="preload" as="image" href="https://www.vishnurachapudi.com/profile.png" />
 
-/* Hero */
-.hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:7rem 2rem 5rem;}
-.hero::before{content:'';position:absolute;width:600px;height:600px;background:radial-gradient(circle,rgba(255,159,28,.07),transparent 70%);top:5%;left:50%;transform:translateX(-50%);pointer-events:none;}
-.hero-inner{position:relative;z-index:1;max-width:960px;display:flex;align-items:center;gap:3.5rem;width:100%;}
-.hero-pic img{width:200px;height:200px;border-radius:50%;object-fit:cover;border:3px solid var(--amber);box-shadow:0 0 40px rgba(255,159,28,.15);}
-.hero-text{flex:1;}
-.badge{display:inline-flex;align-items:center;gap:.4rem;background:var(--amber-glow);border:1px solid rgba(255,159,28,.25);padding:.35rem .9rem;border-radius:99px;font-family:'Space Mono',monospace;font-size:.68rem;color:var(--amber);margin-bottom:1.2rem;letter-spacing:.05em;text-transform:uppercase;}
-.badge i{width:6px;height:6px;border-radius:50%;background:var(--amber);animation:pulse 2s ease-in-out infinite;}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-.hero-text h1{font-size:clamp(2.2rem,5vw,4rem);font-weight:900;line-height:1.05;letter-spacing:-.03em;margin-bottom:.8rem;}
-.hero-text h1 .n{display:block;background:linear-gradient(135deg,#fff,#bbb);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.hero-text h1 .r{display:block;background:linear-gradient(135deg,var(--amber),var(--amber2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:.48em;margin-top:.25rem;}
-.hero-sub{font-family:'Crimson Pro',serif;font-size:1.15rem;color:var(--muted);max-width:500px;line-height:1.65;margin-bottom:1.8rem;}
-.hero-sub b{color:var(--text);font-weight:600;}
-.hero-links{display:flex;gap:.6rem;flex-wrap:wrap;}
-.hero-links a{padding:.5rem 1.1rem;border-radius:99px;font-size:.8rem;font-weight:600;transition:all .3s;}
-.bp{background:var(--amber);color:#000;}
-.bp:hover{background:var(--amber2);transform:translateY(-2px);box-shadow:0 6px 24px rgba(255,159,28,.25);}
-.bg{border:1px solid var(--border2);color:var(--muted);}
-.bg:hover{border-color:var(--amber);color:var(--amber);}
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* Stats */
-.stats{position:relative;z-index:1;max-width:860px;margin:-2.5rem auto 0;display:grid;grid-template-columns:repeat(4,1fr);background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;}
-.st{padding:1.5rem .8rem;text-align:center;border-right:1px solid var(--border);}
-.st:last-child{border-right:none;}
-.st .n{font-family:'Space Mono',monospace;font-size:1.6rem;font-weight:700;color:var(--amber);}
-.st .l{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:.2rem;}
+    :root {
+      --bg:        #08090a;
+      --bg2:       #0f1012;
+      --bg3:       #161819;
+      --surface:   #1c1e20;
+      --border:    rgba(255,255,255,0.07);
+      --border2:   rgba(255,255,255,0.14);
+      --text:      #edecea;
+      --muted:     #8a8783;
+      --accent:    #f97316;
+      --accent2:   #fb923c;
+      --gold:      #f59e0b;
+      --link:      #60a5fa;
+      --ff-head:   'Syne', sans-serif;
+      --ff-mono:   'DM Mono', monospace;
+      --ff-body:   'Syne', sans-serif;
+      --r:         10px;
+    }
 
-/* Section */
-section{position:relative;z-index:1;padding:5rem 2rem;}
-.si{max-width:1100px;margin:0 auto;}
-.stag{font-family:'Space Mono',monospace;font-size:.7rem;color:var(--amber);text-transform:uppercase;letter-spacing:.12em;margin-bottom:.5rem;}
-.sh{font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:800;letter-spacing:-.02em;margin-bottom:.8rem;}
-.sh em{color:var(--amber);font-style:normal;}
-.sd{font-family:'Crimson Pro',serif;font-size:1.05rem;color:var(--muted);max-width:560px;margin-bottom:2.5rem;line-height:1.65;}
-.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);max-width:1100px;margin:0 auto;}
+    html { scroll-behavior: smooth; font-size: 16px; }
 
-/* About */
-.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;}
-.about-text p{font-family:'Crimson Pro',serif;font-size:1.05rem;color:var(--muted);line-height:1.75;margin-bottom:1rem;}
-.about-text b{color:var(--text);font-weight:600;}
-.ac{background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:1rem 1.2rem;margin-bottom:.8rem;}
-.ac .al{font-family:'Space Mono',monospace;font-size:.62rem;color:var(--dim);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.3rem;}
-.ac .av{font-weight:600;font-size:.95rem;}
-.ac a{color:var(--amber);}
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--ff-body);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
 
-/* Timeline */
-.tl{position:relative;padding-left:2.5rem;}
-.tl::before{content:'';position:absolute;left:9px;top:6px;bottom:6px;width:2px;background:linear-gradient(180deg,var(--amber),var(--cyan),var(--violet));}
-.ti{position:relative;margin-bottom:1.3rem;padding-left:1.5rem;}
-.ti::before{content:'';position:absolute;left:-2.1rem;top:5px;width:10px;height:10px;border-radius:50%;background:var(--bg);border:2px solid var(--amber);z-index:1;}
-.ti:nth-child(3)::before{border-color:var(--cyan);}
-.ti:nth-child(5)::before{border-color:var(--violet);}
-.ti:last-child::before{background:var(--amber);border-color:var(--amber);box-shadow:0 0 10px rgba(255,159,28,.5);}
-.td{font-family:'Space Mono',monospace;font-size:.68rem;color:var(--dim);letter-spacing:.04em;}
-.tt{font-size:1rem;font-weight:700;color:#fff;margin:.15rem 0;}
-.tp{font-family:'Crimson Pro',serif;color:var(--muted);font-size:.88rem;line-height:1.45;}
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(1.5rem,5vw,4rem);
+      height: 60px;
+      background: rgba(8,9,10,0.85);
+      backdrop-filter: blur(14px);
+      border-bottom: 0.5px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--ff-head);
+      font-weight: 800;
+      font-size: 1.1rem;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 1.75rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.82rem;
+      font-family: var(--ff-mono);
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
 
-/* Speaking */
-.sg{display:grid;gap:1rem;}
-.sc{display:grid;grid-template-columns:auto 1fr auto;gap:1.2rem;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.2rem 1.5rem;transition:border-color .3s,transform .2s;}
-.sc:hover{border-color:var(--cyan);transform:translateY(-2px);}
-.sc .sd2{font-family:'Space Mono',monospace;font-size:.68rem;color:var(--dim);text-align:right;min-width:80px;line-height:1.4;}
-.sc h3{font-size:.98rem;font-weight:700;color:#fff;margin-bottom:.15rem;}
-.sc p{font-family:'Crimson Pro',serif;color:var(--muted);font-size:.9rem;}
-.sloc{font-size:.7rem;color:var(--cyan);font-weight:500;background:var(--cyan-glow);border:1px solid rgba(0,229,200,.2);padding:.2rem .65rem;border-radius:99px;white-space:nowrap;height:fit-content;}
+    /* ── LAYOUT ── */
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 0 clamp(1.25rem,5vw,3rem); }
+    section { padding: 6rem 0; border-bottom: 0.5px solid var(--border); }
 
-/* Gallery */
-.gg{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;}
-.gi{border-radius:var(--rs);overflow:hidden;aspect-ratio:1;cursor:pointer;position:relative;border:1px solid var(--border);transition:border-color .3s,transform .3s;}
-.gi:hover{border-color:var(--amber);transform:scale(1.03);z-index:2;}
-.gi img{width:100%;height:100%;object-fit:cover;display:block;}
-.gi:nth-child(1){grid-column:span 2;grid-row:span 2;aspect-ratio:auto;}
-.gi:nth-child(5){grid-column:span 2;aspect-ratio:16/9;}
-.gi .gl{position:absolute;bottom:0;left:0;right:0;padding:.5rem .7rem;background:linear-gradient(transparent,rgba(0,0,0,.8));font-size:.65rem;color:#fff;font-weight:500;opacity:0;transition:opacity .3s;}
-.gi:hover .gl{opacity:1;}
-.lb{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.92);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;cursor:zoom-out;}
-.lb.on{display:flex;}
-.lb img{max-width:90vw;max-height:85vh;border-radius:var(--r);object-fit:contain;}
-.lb .x{position:absolute;top:1.5rem;right:2rem;font-size:2rem;color:#fff;cursor:pointer;opacity:.7;}
-.lb .x:hover{opacity:1;}
+    /* ── HERO ── */
+    #hero {
+      min-height: 92vh;
+      display: flex; align-items: center;
+      padding: 7rem 0 5rem;
+      border-bottom: 0.5px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    #hero::before {
+      content:'';
+      position: absolute; top: -200px; right: -200px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(249,115,22,0.08) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .hero-inner { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 4rem; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.3rem 0.9rem;
+      border: 0.5px solid rgba(249,115,22,0.4);
+      border-radius: 99px;
+      font-family: var(--ff-mono);
+      font-size: 0.75rem;
+      color: var(--accent2);
+      letter-spacing: 0.06em;
+      margin-bottom: 1.5rem;
+    }
+    .hero-badge::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--accent); display:inline-block; }
+    h1 {
+      font-family: var(--ff-head);
+      font-size: clamp(2.8rem, 6vw, 5.2rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      margin-bottom: 1.25rem;
+    }
+    h1 em { font-style: normal; color: var(--accent); }
+    .hero-sub {
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 520px;
+      margin-bottom: 2.5rem;
+      line-height: 1.65;
+    }
+    .hero-sub strong { color: var(--text); font-weight: 600; }
+    .btn-row { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn {
+      display: inline-block;
+      padding: 0.65rem 1.5rem;
+      border-radius: var(--r);
+      font-family: var(--ff-mono);
+      font-size: 0.8rem;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-primary { background: var(--accent); color: #fff; font-weight: 600; }
+    .btn-primary:hover { background: var(--accent2); }
+    .btn-ghost { border: 0.5px solid var(--border2); color: var(--muted); }
+    .btn-ghost:hover { border-color: var(--muted); color: var(--text); }
+    .hero-avatar {
+      width: clamp(150px, 18vw, 220px);
+      height: clamp(150px, 18vw, 220px);
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--border2);
+      box-shadow: 0 0 0 8px rgba(249,115,22,0.06);
+    }
 
-/* YouTube */
-.yts{background:var(--surface);}
-.yc{display:flex;gap:1.2rem;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding-bottom:.8rem;scrollbar-width:none;}
-.yc::-webkit-scrollbar{display:none;}
-.yk{flex:0 0 400px;scroll-snap-align:start;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:border-color .3s,transform .2s;}
-.yk:hover{border-color:var(--amber);transform:translateY(-3px);}
-.yk iframe{width:100%;aspect-ratio:16/9;border:none;display:block;}
-.yk .yi{padding:.8rem 1rem;}
-.yk h4{font-size:.88rem;font-weight:600;color:#fff;margin-bottom:.2rem;line-height:1.35;}
-.yk p{font-family:'Space Mono',monospace;font-size:.65rem;color:var(--dim);}
-.yn{display:flex;gap:.6rem;margin-top:1.2rem;justify-content:center;}
-.yn button{width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:var(--surface2);color:var(--muted);font-size:1rem;cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center;}
-.yn button:hover{border-color:var(--amber);color:var(--amber);}
+    /* ── STATS ── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 1px;
+      border: 0.5px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+      margin-top: 3.5rem;
+    }
+    .stat {
+      background: var(--bg2);
+      padding: 1.5rem 1.25rem;
+      text-align: center;
+    }
+    .stat-num {
+      font-family: var(--ff-head);
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+    .stat-label { font-size: 0.78rem; color: var(--muted); margin-top: 0.4rem; font-family: var(--ff-mono); letter-spacing: 0.04em; }
 
-/* Awards */
-.awg{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;}
-.aw{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.2rem;transition:border-color .3s,transform .2s;position:relative;overflow:hidden;}
-.aw:hover{border-color:var(--amber);transform:translateY(-2px);}
-.aw::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--amber),var(--cyan));opacity:0;transition:opacity .3s;}
-.aw:hover::before{opacity:1;}
-.aw .y{font-family:'Space Mono',monospace;font-size:.62rem;color:var(--amber);letter-spacing:.08em;}
-.aw h4{font-weight:700;font-size:.98rem;margin:.3rem 0 .2rem;color:#fff;}
-.aw p{font-family:'Crimson Pro',serif;font-size:.85rem;color:var(--muted);}
+    /* ── SECTION HEADERS ── */
+    .sec-label {
+      font-family: var(--ff-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    h2 {
+      font-family: var(--ff-head);
+      font-size: clamp(1.9rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 3rem;
+    }
+    h2 em { font-style: normal; color: var(--accent); }
 
-/* Certs */
-.cs{background:var(--surface);}
-.cg{margin-bottom:2rem;}
-.cgt{font-family:'Space Mono',monospace;font-size:.68rem;color:var(--dim);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.8rem;padding-bottom:.4rem;border-bottom:1px solid var(--border);}
-.cgr{display:flex;flex-wrap:wrap;gap:.6rem;}
-.cc{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);padding:.55rem 1rem;font-size:.82rem;font-weight:500;transition:all .3s;}
-.cc:hover{border-color:var(--amber);background:var(--amber-glow);}
-.cc.a{border-left:3px solid var(--amber);}
-.cc.t{border-left:3px solid var(--violet);}
-.cc.f{border-left:3px solid var(--rose);}
-.cc.o{border-left:3px solid var(--cyan);}
-.cn{font-family:'Space Mono',monospace;font-size:3rem;font-weight:700;color:var(--amber);line-height:1;}
-.ccta a{font-size:.8rem;color:var(--amber);border:1px solid rgba(255,159,28,.3);padding:.45rem 1rem;border-radius:99px;transition:all .3s;display:inline-block;margin-top:1.5rem;}
-.ccta a:hover{background:var(--amber-glow);}
+    /* ── CERT GRID ── */
+    .cert-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 0.75rem;
+    }
+    .cert-chip {
+      display: flex; align-items: center; gap: 0.6rem;
+      padding: 0.6rem 1rem;
+      background: var(--bg2);
+      border: 0.5px solid var(--border);
+      border-radius: var(--r);
+      font-size: 0.82rem;
+      color: var(--text);
+      transition: border-color 0.2s;
+    }
+    .cert-chip:hover { border-color: var(--border2); }
+    .cert-chip span { font-size: 0.75rem; color: var(--muted); font-family: var(--ff-mono); }
 
-/* Blog */
-.bf{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.8rem;margin-bottom:1.2rem;transition:border-color .3s,transform .2s;display:block;}
-.bf:hover{border-color:var(--amber);transform:translateY(-2px);}
-.bf .ft{font-family:'Space Mono',monospace;font-size:.62rem;color:var(--amber);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.5rem;}
-.bf h3{font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:.4rem;line-height:1.3;}
-.bf>p{font-family:'Crimson Pro',serif;color:var(--muted);font-size:.95rem;margin-bottom:.7rem;line-height:1.55;}
-.bm{font-family:'Space Mono',monospace;font-size:.65rem;color:var(--dim);display:flex;gap:1rem;align-items:center;flex-wrap:wrap;}
-.bm .t{color:var(--amber);border:1px solid rgba(255,159,28,.25);padding:.12rem .45rem;border-radius:99px;}
-.bgr{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem;}
-.bc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.2rem;transition:border-color .3s,transform .2s;display:block;}
-.bc:hover{border-color:var(--amber);transform:translateY(-2px);}
-.bc h4{font-size:.92rem;font-weight:600;color:#fff;margin-bottom:.3rem;line-height:1.35;}
-.ba{text-align:center;margin-top:2rem;}
-.ba a{display:inline-flex;align-items:center;gap:.4rem;color:var(--amber);font-weight:600;font-size:.85rem;border:1px solid rgba(255,159,28,.3);padding:.5rem 1.3rem;border-radius:99px;transition:all .3s;}
-.ba a:hover{background:var(--amber-glow);}
+    /* ── TALKS ── */
+    .talks-list { display: flex; flex-direction: column; gap: 1px; border: 0.5px solid var(--border); border-radius: var(--r); overflow: hidden; }
+    .talk-row {
+      display: grid;
+      grid-template-columns: 120px 1fr auto;
+      align-items: start;
+      gap: 1.5rem;
+      padding: 1.25rem 1.5rem;
+      background: var(--bg2);
+      transition: background 0.2s;
+    }
+    .talk-row:hover { background: var(--surface); }
+    .talk-date { font-family: var(--ff-mono); font-size: 0.75rem; color: var(--muted); padding-top: 0.15rem; }
+    .talk-title { font-weight: 600; font-size: 0.95rem; color: var(--text); margin-bottom: 0.2rem; }
+    .talk-event { font-size: 0.8rem; color: var(--muted); }
+    .talk-loc {
+      font-family: var(--ff-mono); font-size: 0.72rem;
+      color: var(--accent2);
+      background: rgba(249,115,22,0.1);
+      padding: 0.2rem 0.6rem;
+      border-radius: 99px;
+      white-space: nowrap;
+    }
 
-/* Blog category filter tabs */
-.blog-tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.8rem;}
-.btab{font-family:'Space Mono',monospace;font-size:.68rem;font-weight:700;padding:.4rem 1rem;border-radius:99px;border:1px solid var(--border2);color:var(--muted);cursor:pointer;transition:all .25s;background:transparent;letter-spacing:.05em;text-transform:uppercase;}
-.btab:hover{border-color:var(--amber);color:var(--amber);}
-.btab.active{background:var(--amber);color:#000;border-color:var(--amber);}
-.blog-post{transition:opacity .3s,transform .3s;}
-.blog-post.hidden{display:none;}
+    /* ── BLOG GRID ── */
+    .blog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1px; border: 0.5px solid var(--border); border-radius: var(--r); overflow: hidden; }
+    .blog-card {
+      background: var(--bg2);
+      padding: 1.5rem;
+      display: flex; flex-direction: column; gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text);
+      transition: background 0.2s;
+    }
+    .blog-card:hover { background: var(--surface); }
+    .blog-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .tag {
+      font-family: var(--ff-mono); font-size: 0.68rem;
+      color: var(--muted); background: var(--surface);
+      padding: 0.15rem 0.5rem; border-radius: 4px;
+      border: 0.5px solid var(--border);
+    }
+    .blog-title { font-size: 0.95rem; font-weight: 600; line-height: 1.4; }
+    .blog-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.55; }
+    .blog-meta { font-family: var(--ff-mono); font-size: 0.72rem; color: var(--muted); margin-top: auto; }
 
-/* Footer */
-footer{border-top:1px solid var(--border);padding:3rem 2rem 2.5rem;text-align:center;position:relative;z-index:1;}
-.fl{display:flex;justify-content:center;gap:1.8rem;margin-bottom:1.5rem;flex-wrap:wrap;}
-.fl a{font-size:.82rem;color:var(--muted);font-weight:500;transition:color .3s;}
-.fl a:hover{color:var(--amber);}
-.fc{font-family:'Space Mono',monospace;font-size:.65rem;color:var(--dim);line-height:1.8;}
+    /* ── AWARDS ── */
+    .award-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 0.75rem; }
+    .award-card {
+      background: var(--bg2);
+      border: 0.5px solid var(--border);
+      border-radius: var(--r);
+      padding: 1.25rem;
+      transition: border-color 0.2s;
+    }
+    .award-card:hover { border-color: rgba(249,115,22,0.35); }
+    .award-year { font-family: var(--ff-mono); font-size: 0.7rem; color: var(--accent); letter-spacing: 0.06em; margin-bottom: 0.5rem; }
+    .award-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.3rem; }
+    .award-org { font-size: 0.8rem; color: var(--muted); }
 
-/* Animate */
-.fu{opacity:0;transform:translateY(25px);transition:opacity .6s,transform .6s;}
-.fu.v{opacity:1;transform:translateY(0);}
+    /* ── TIMELINE ── */
+    .timeline { display: flex; flex-direction: column; gap: 0; }
+    .tl-item { display: grid; grid-template-columns: 120px 1fr; gap: 2rem; padding: 1.5rem 0; border-bottom: 0.5px solid var(--border); }
+    .tl-item:last-child { border-bottom: none; }
+    .tl-date { font-family: var(--ff-mono); font-size: 0.75rem; color: var(--muted); padding-top: 0.2rem; }
+    .tl-title { font-weight: 700; font-size: 0.95rem; color: var(--text); margin-bottom: 0.3rem; }
+    .tl-body { font-size: 0.85rem; color: var(--muted); }
 
-/* Responsive */
-@media(max-width:900px){
-  .hero-inner{flex-direction:column;text-align:center;}
-  .hero-sub{margin:0 auto 1.8rem;}
-  .hero-links{justify-content:center;}
-  .about-grid{grid-template-columns:1fr;}
-  .stats{grid-template-columns:repeat(2,1fr);}
-  .st:nth-child(2){border-right:none;}
-  .st:nth-child(3),.st:nth-child(4){border-top:1px solid var(--border);}
-  .sc{grid-template-columns:1fr;gap:.6rem;}
-  .sc .sd2{text-align:left;}
-  .sloc{width:fit-content;}
-  .gg{grid-template-columns:repeat(2,1fr);}
-  .gi:nth-child(1){grid-column:span 2;grid-row:span 1;}
-  .yk{flex:0 0 85vw;}
-}
-@media(max-width:650px){
-  .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(4,4,10,.96);flex-direction:column;padding:1.2rem 2rem;gap:1rem;border-bottom:1px solid var(--border);}
-  .nav-links.open{display:flex;}
-  .nav-dropdown:hover .dropdown-menu{display:block;opacity:1;visibility:visible;transform:none;position:static;border:none;background:transparent;padding:0 0 0 1rem;}
-  .ham{display:flex;}
-  section{padding:3.5rem 1.2rem;}
-  .hero{padding:6rem 1.2rem 4rem;}
-  .hero-text h1{font-size:2rem;}
-  .hero-pic img{width:150px;height:150px;}
-  .awg,.bgr{grid-template-columns:1fr;}
-  .gg{grid-template-columns:1fr 1fr;}
-  .yk{flex:0 0 90vw;}
-}
-</style>
+    /* ── SOCIAL ── */
+    .social-row { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .soc-link {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.55rem 1.1rem;
+      border: 0.5px solid var(--border);
+      border-radius: var(--r);
+      font-family: var(--ff-mono);
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .soc-link:hover { border-color: var(--border2); color: var(--text); }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 3rem 0;
+      text-align: center;
+      font-family: var(--ff-mono);
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--text); }
+
+    /* ── GOLD BADGE ── */
+    .gold-badge {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.25rem 0.75rem;
+      background: rgba(245,158,11,0.1);
+      border: 0.5px solid rgba(245,158,11,0.3);
+      border-radius: 99px;
+      font-family: var(--ff-mono);
+      font-size: 0.72rem;
+      color: var(--gold);
+      letter-spacing: 0.05em;
+      margin-left: 0.75rem;
+      vertical-align: middle;
+    }
+
+    /* ── GALLERY PREVIEW ── */
+    .gallery-preview-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto auto;
+      gap: 10px;
+    }
+    .gp-item {
+      border-radius: var(--r);
+      overflow: hidden;
+      position: relative;
+      background: var(--bg2);
+      border: 0.5px solid var(--border);
+      cursor: pointer;
+    }
+    .gp-item.featured {
+      grid-row: 1 / 3;
+    }
+    .gp-item img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+    .gp-item:hover img { transform: scale(1.05); }
+    .gp-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%);
+      opacity: 0;
+      transition: opacity 0.25s;
+      display: flex; align-items: flex-end;
+      padding: 0.85rem 1rem;
+    }
+    .gp-item:hover .gp-overlay { opacity: 1; }
+    .gp-caption { font-family: var(--ff-head); font-size: 0.78rem; font-weight: 600; color: #fff; line-height: 1.3; }
+    .gp-tag {
+      position: absolute; top: 0.5rem; left: 0.5rem;
+      padding: 0.15rem 0.5rem;
+      background: rgba(249,115,22,0.85);
+      border-radius: 99px;
+      font-family: var(--ff-mono); font-size: 0.62rem;
+      color: #fff; letter-spacing: 0.04em;
+    }
+    .gallery-cta-row {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 1.5rem; flex-wrap: wrap; gap: 1rem;
+    }
+    .gallery-cta-text { font-size: 0.85rem; color: var(--muted); }
+
+    /* ── LIGHTBOX ── */
+    .lightbox {
+      display: none; position: fixed; inset: 0; z-index: 999;
+      background: rgba(0,0,0,0.93);
+      align-items: center; justify-content: center;
+      padding: 2rem;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 88vw; max-height: 82vh; object-fit: contain; border-radius: var(--r); }
+    .lightbox-info { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); text-align: center; white-space: nowrap; }
+    .lightbox-title { font-family: var(--ff-head); font-size: 1rem; font-weight: 600; color: #fff; }
+    .lightbox-meta { font-family: var(--ff-mono); font-size: 0.72rem; color: rgba(255,255,255,0.5); margin-top: 0.2rem; }
+    .lightbox-close {
+      position: absolute; top: 1.5rem; right: 1.5rem;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--surface); border: 0.5px solid var(--border2);
+      color: var(--text); font-size: 1.1rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .lightbox-nav {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--surface); border: 0.5px solid var(--border2);
+      color: var(--text); font-size: 1.3rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+    }
+    .lightbox-nav:hover { background: var(--border); }
+    .lightbox-prev { left: 1.25rem; }
+    .lightbox-next { right: 1.25rem; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 700px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-avatar { display: none; }
+      .talk-row { grid-template-columns: 1fr; gap: 0.5rem; }
+      .tl-item { grid-template-columns: 1fr; gap: 0.25rem; }
+      .nav-links { display: none; }
+      .gallery-preview-grid { grid-template-columns: 1fr 1fr; }
+      .gp-item.featured { grid-row: auto; }
+    }
+  </style>
 </head>
-<body>
-<div class="stars" id="stars"></div>
 
-<nav>
-  <div class="nav-inner">
-    <a href="#" class="logo">vishnu<span>.</span></a>
-    <div class="ham" onclick="document.querySelector('.nav-links').classList.toggle('open')"><span></span><span></span><span></span></div>
-    <div class="nav-links">
-      <a href="#journey">Journey</a>
-      <a href="#speaking">Speaking</a>
-      <a href="#awards">Awards</a>
-      <a href="#certs">Certs</a>
-      <!-- Blog dropdown -->
-      <div class="nav-dropdown">
-        <a href="#blog">Blog ▾</a>
-        <div class="dropdown-menu">
-          <div class="dropdown-label">All Posts</div>
-          <a href="#blog" onclick="filterBlog('all')">📋 All Posts</a>
-          <div class="dropdown-divider"></div>
-          <div class="dropdown-label">By Category</div>
-          <a href="#blog" onclick="filterBlog('aws')">☁️ AWS</a>
-          <a href="#blog" onclick="filterBlog('networking')">🌐 Networking</a>
-          <a href="#blog" onclick="filterBlog('security')">🔐 Security</a>
-          <a href="#blog" onclick="filterBlog('ai')">🤖 AI / Agentic</a>
-          <a href="#blog" onclick="filterBlog('devops')">⚙️ DevOps</a>
-          <a href="#blog" onclick="filterBlog('finops')">💰 FinOps / DR</a>
-          <div class="dropdown-divider"></div>
-          <div class="dropdown-label">Featured</div>
-          <a href="blogs/aws-security-agent-blog/">🛡️ AWS Security Agent — Pentest</a>
-          <a href="blogs/aws-reachability-blog/">🔍 AWS Reachability Analyzer</a>
-          <a href="blogs/aws-transform-blog/">⚡ AWS Transform — Java Migration</a>
-          <a href="aws-devops-agent/index.html">🤖 AWS DevOps Agent</a>
-          <a href="https://technodiaryvishnu.hashnode.dev/secure-lint-and-validate-your-terraform-like-a-pro" target="_blank">🔷 Terraform Security & Linting</a>
-          <a href="https://dev.to/aws-builders/securing-your-code-with-aws-inspector-a-comprehensive-guide-to-code-security-scanning-499n" target="_blank">🔐 AWS Inspector Code Scanning</a>
-          <div class="dropdown-divider"></div>
-          <a href="https://dev.to/vishnu_rachapudi_75e73248" target="_blank" style="color:var(--cyan)">→ All posts on Dev.to</a>
-          <a href="https://technodiaryvishnu.hashnode.dev" target="_blank" style="color:var(--cyan)">→ All posts on Hashnode</a>
-        </div>
-      </div>
-    </div>
-    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle theme">🌙</button>
-  </div>
+<body>
+
+<!-- ══════════════════════════════ NAV ══════════════════════════════ -->
+<nav role="navigation" aria-label="Main navigation">
+  <a class="nav-logo" href="#hero">vishnu<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">about</a></li>
+    <li><a href="#certifications">certs</a></li>
+    <li><a href="#talks">talks</a></li>
+    <li><a href="#gallery">gallery</a></li>
+    <li><a href="#blog">blog</a></li>
+    <li><a href="#awards">awards</a></li>
+    <li><a href="#timeline">journey</a></li>
+  </ul>
 </nav>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-inner fu">
-    <div class="hero-pic"><img src="profile.png" alt="Vishnu Rachapudi"></div>
-    <div class="hero-text">
-      <div class="badge"><i></i> AWS Community Builder – Security</div>
-      <h1><span class="n">Vishnu Rachapudi</span><span class="r">Cloud &amp; AI Engineer</span></h1>
-      <p class="hero-sub">Cloud &amp; AI Engineer at <b>SUDO Consultants</b>, Hyderabad. <b>14x AWS Certified.</b> AWS Golden Jacket. I build, break, write, and speak — all about cloud.</p>
-      <div class="hero-links">
-        <a href="https://www.linkedin.com/in/vishnu-rachapudi-28956920b/" target="_blank" class="bp">LinkedIn</a>
-        <a href="https://dev.to/vishnu_rachapudi_75e73248" target="_blank" class="bg">Dev.to</a>
-        <a href="https://github.com/aquavis12" target="_blank" class="bg">GitHub</a>
-        <a href="https://www.credly.com/users/venkata-pavan-vishnu-rachapudi" target="_blank" class="bg">Credly</a>
-        <a href="https://builder.aws.com/community/@vishnu1999" target="_blank" class="bg">AWS</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="stats fu">
-  <div class="st"><div class="n">14</div><div class="l">AWS Certs</div></div>
-  <div class="st"><div class="n">6+</div><div class="l">Talks Given</div></div>
-  <div class="st"><div class="n">50+</div><div class="l">Blog Posts</div></div>
-  <div class="st"><div class="n" style="font-size:1rem;line-height:2.3">Golden Jacket</div><div class="l">AWS Achievement</div></div>
-</div>
-
-<!-- ABOUT -->
-<section id="about">
-  <div class="si about-grid fu">
-    <div class="about-text">
-      <div class="stag">About</div>
-      <h2 class="sh">Hey, I'm <em>Vishnu.</em></h2>
-      <p><b>Cloud &amp; AI Engineer</b> at SUDO Consultants, Hyderabad. My world revolves around <b>AWS</b> — architecting production workloads, exploring Gen AI with Bedrock, Q Business, and Agentic AI frameworks.</p>
-      <p><b>14 AWS certifications</b> including all Professional &amp; Specialty exams, plus <b>Terraform, Vault, Fortinet, Oracle Cloud.</b> Multi-cloud, security-first.</p>
-      <p><b>AWS Community Builder (Security)</b>. Active technical writer on Dev.to. Speaker at AWS Community Days across India and internationally.</p>
-    </div>
-    <div>
-      <div class="ac"><div class="al">Role</div><div class="av">Cloud &amp; AI Engineer — SUDO Consultants</div></div>
-      <div class="ac"><div class="al">Education</div><div class="av">Chaitanya Bharathi Institute of Technology, Hyderabad</div></div>
-      <div class="ac"><div class="al">Focus</div><div class="av">AWS Security · Gen AI · AEM · Cloud Architecture</div></div>
-      <div class="ac"><div class="al">Community</div><div class="av"><a href="https://builder.aws.com/community/@vishnu1999" target="_blank">AWS Community Builder →</a></div></div>
-      <div class="ac"><div class="al">Email</div><div class="av"><a href="mailto:rachapudivishnu9@gmail.com"><span>rachapudivishnu9@gmail.com</span></a></div></div>
-    </div>
-  </div>
-</section>
-<div class="divider"></div>
-
-<!-- JOURNEY -->
-<section id="journey">
-  <div class="si">
-    <div class="stag fu">Timeline</div>
-    <h2 class="sh fu">My <em>Journey</em></h2>
-    <div class="tl fu">
-      <div class="ti"><div class="td">Mar 2026</div><div class="tt">14x AWS · Cloud &amp; AI @ SUDO</div><div class="tp">Building, writing, speaking, mentoring. The journey continues.</div></div>
-      <div class="ti"><div class="td">Dec 2025</div><div class="tt">Kochi + MLRIT</div><div class="tp">Spoke at Kochi AI/ML. Workshop at MLRIT.</div></div>
-      <div class="ti"><div class="td">Oct 2025</div><div class="tt">GITEX Global + AWS Community Day UAE</div><div class="tp">First international talks. Enterprise Productivity with Family of Qs.</div></div>
-      <div class="ti"><div class="td">Aug 2025</div><div class="tt">Joined SUDO Consultants</div><div class="tp">Cloud &amp; AI role. New chapter begins.</div></div>
-      <div class="ti"><div class="td">Dec 2024 – Feb 2025</div><div class="tt">7 Certs in 3 Months</div><div class="tp">AI Practitioner → SysOps → DevOps Pro → Data Engineer → ML Associate → ML Specialty → Advanced Networking.</div></div>
-      <div class="ti"><div class="td">Jul 2024</div><div class="tt">Dev.to + Trundl + SAP-C02</div><div class="tp">AWS Community Builders writer. Trundl Hackathon winner. SA Professional passed.</div></div>
-      <div class="ti"><div class="td">May 2024</div><div class="tt">Cloud Engineer at Trundl</div><div class="tp">Stepped into a cloud engineering role, hands-on with infrastructure &amp; delivery.</div></div>
-      <div class="ti"><div class="td">Mar 2023</div><div class="tt">First Blog Post</div><div class="tp">Kafka deep-dive on Hashnode. TechnoDiary begins.</div></div>
-      <div class="ti"><div class="td">Dec 2022 – Oct 2023</div><div class="tt">Developer + SA Associate</div><div class="tp">Deep-diving into building &amp; architecting on AWS.</div></div>
-      <div class="ti"><div class="td">Oct 2022</div><div class="tt">AWS Cloud Practitioner</div><div class="tp">First AWS cert. The spark.</div></div>
-      <div class="ti"><div class="td">Aug 2021</div><div class="tt">Analyst, Technology at MassMutual</div><div class="tp">Where it all began. First step into the tech industry.</div></div>
-    </div>
-  </div>
-</section>
-<div class="divider"></div>
-
-<!-- SPEAKING -->
-<section id="speaking">
-  <div class="si">
-    <div class="stag fu">Speaking &amp; Community</div>
-    <h2 class="sh fu">On <em>Stage</em></h2>
-    <div class="sg fu">
-      <div class="sc"><div class="sd2">Oct 2025<br>Dubai</div><div><h3>AWS Community Day UAE 2025</h3><p>Revolutionizing Enterprise Productivity with Family of Qs</p></div><span class="sloc">UAE</span></div>
-      <div class="sc"><div class="sd2">Oct 2025<br>Gitex</div><div><h3>GITEX GLOBAL 2025</h3><p>Q for the Future — Enterprise Productivity with Family of Qs</p></div><span class="sloc">UAE</span></div>
-      <div class="sc"><div class="sd2">Dec 2025<br>Kochi</div><div><h3>AWS Community Day Kochi (AI/ML)</h3><p>Amazon QuickSuite &amp; Agentic AI</p></div><span class="sloc">India</span></div>
-      <div class="sc"><div class="sd2">Dec 2025<br>Hyderabad</div><div><h3>AWS Student Community Day MLRIT</h3><p>Develop &amp; Deploy using Kiro &amp; App Runner</p></div><span class="sloc">India</span></div>
-      <div class="sc"><div class="sd2">Feb 2026<br>Hyderabad</div><div><h3>AWS User Group Hyderabad</h3><p>Agentic AI on AWS — from SDK to Runtime</p></div><span class="sloc">India</span></div>
-      <div class="sc"><div class="sd2">Mar 2026<br>Punjab</div><div><h3>AWS User Group Punjab</h3><p>AWS Certified AI Practitioner — Roadmap Session</p></div><span class="sloc">India</span></div>
-      <div class="sc"><div class="sd2">Ongoing<br>Online</div><div><h3>TPT TechConnect — Mentor</h3><p>Mentoring cloud engineers on AWS certs &amp; career paths.</p></div><span class="sloc">Mentor</span></div>
-    </div>
-
-    <!-- GALLERY -->
-    <div style="margin-top:3rem;" class="fu">
-      <div class="stag">Moments</div>
-      <h2 class="sh" style="margin-bottom:1.5rem;">Speaker <em>Gallery</em></h2>
-      <div class="gg">
-        <div class="gi" onclick="openLB(this)"><img src="gallery/gallery-12.webp" alt="On stage at Dubai" loading="lazy"><div class="gl">AWS Community Day UAE 2025</div></div>
-        <div class="gi" onclick="openLB(this)"><img src="gallery/gallery-1.png" alt="On stage at Kochi" loading="lazy"><div class="gl">AWS Community Day Kochi — On Stage</div></div>
-        <div class="gi" onclick="openLB(this)"><img src="gallery/gallery-2.png" alt="GITEX Global" loading="lazy"><div class="gl">GITEX Global — Family of Qs</div></div>
-        <div class="gi" onclick="openLB(this)"><img src="gallery/gallery-6.png" alt="AWS booth" loading="lazy"><div class="gl">At the AWS Booth</div></div>
-        <div class="gi" onclick="openLB(this)"><img src="gallery/gallery-11.png" alt="Golden Jacket crew" loading="lazy"><div class="gl">GITEX — Golden Jacket Crew</div></div>
-        <div class="gi" onclick="openLB(this)"><img src="gallery/gallery-7.png" alt="Agentic AI panel" loading="lazy"><div class="gl">Enterprise Agentic AI — AWS × SUDO × IDC</div></div>
-        <div class="gi" onclick="openLB(this)"><img src="gallery/gallery-5.png" alt="Kochi backstage" loading="lazy"><div class="gl">AWS Community Day Kochi</div></div>
-        <div class="gi" onclick="openLB(this)"><img src="gallery/gallery-9.png" alt="SUDO presentation" loading="lazy"><div class="gl">SUDO Story — Conference Talk</div></div>
-        <div class="gi" onclick="openLB(this)"><img src="gallery/gallery-3.png" alt="UAE 2025" loading="lazy"><div class="gl">AWS Community Day UAE 2025</div></div>
-        <div class="gi" onclick="openLB(this)"><img src="gallery/gallery-4.png" alt="Team" loading="lazy"><div class="gl">Team SUDO</div></div>
-        <div class="gi" onclick="openLB(this)"><img src="gallery/gallery-10.png" alt="MLRIT award" loading="lazy"><div class="gl">AWS Student Community Day — MLRIT</div></div>
-        <div class="gi" onclick="openLB(this)"><img src="gallery/gallery-8.png" alt="TPT mentoring" loading="lazy"><div class="gl">TPT TechConnect — Mentoring</div></div>
-      </div>
-    </div>
-
-    <!-- VIDEOS -->
-    <div style="margin-top:3rem;" class="fu">
-      <div class="stag">VishTalks</div>
-      <h2 class="sh" style="margin-bottom:1.5rem;">Watch My <em>Talks & Tutorials</em></h2>
-      <div class="yc" id="yc">
-        <div class="yk">
-          <iframe src="https://www.youtube.com/embed/rQvlmRrE-Xs?si=TY4ZSqnMNoSKsowV" title="Kochi Talk" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-          <div class="yi"><h4>AWS Community Day Kochi — QuickSuite &amp; Agentic AI</h4><p>Dec 2025 · Kochi</p></div>
+<!-- ══════════════════════════════ HERO ══════════════════════════════ -->
+<header id="hero" role="banner">
+  <div class="wrap">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-badge">AWS Community Builder · Security</div>
+        <h1>Vishnu<br>Rachapudi<span class="gold-badge">Golden Jacket</span></h1>
+        <p class="hero-sub">
+          <strong>Cloud & AI Engineer</strong> at SUDO Consultants, Hyderabad.
+          <strong>14x AWS Certified</strong> including all Professional &amp; Specialty exams.
+          I build, break, write, and speak — all about cloud.
+        </p>
+        <div class="btn-row">
+          <a class="btn btn-primary" href="https://www.linkedin.com/in/vishnu-rachapudi-28956920b/" rel="noopener noreferrer" target="_blank" aria-label="Connect with Vishnu on LinkedIn">Connect on LinkedIn</a>
+          <a class="btn btn-ghost" href="https://dev.to/vishnu_rachapudi_75e73248" rel="noopener noreferrer" target="_blank" aria-label="Read Vishnu's blog on Dev.to">Read the Blog</a>
         </div>
-        <div class="yk">
-          <iframe src="https://www.youtube.com/embed/hq-ecyyJH8M?si=mOS2Zj8iAtlY-uFY" title="Punjab Talk" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-          <div class="yi"><h4>AWS AI Practitioner — Roadmap Session</h4><p>Mar 2026 · Punjab</p></div>
-        </div>
-        <div class="yk">
-          <iframe src="https://www.youtube.com/embed/f4Uj-xkZzn4?si=Z2RiBws4dO1uGpaz" title="TPT Connect" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-          <div class="yi"><h4>The 0.1% Cloud Masterclass</h4><p>Jan 2026 · Hyderabad</p></div>
-        </div>
-        <div class="yk">
-          <iframe src="https://www.youtube.com/embed/iE-hfSW42RY?si=l1TKi5MkfJq4jP00" title="Securing Your Code with AWS Inspector" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-          <div class="yi"><h4>Securing Your Code with AWS Inspector: A Comprehensive Guide to Code Security Scanning</h4><p>Jan 2026 · Online</p></div>
-        </div>
-        <div class="yk">
-          <iframe src="https://open.spotify.com/embed/episode/3OTnWRaYcl7FlQtArH3jel?utm_source=generator&amp;theme=0" title="Podcast" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" style="height:152px;"></iframe>
-          <div class="yi"><h4>Learn2Upskill Podcast — AWS Cert Journey</h4><p>Jun 2025 · Spotify</p></div>
+        <div class="stats-row" role="list" aria-label="Career highlights">
+          <div class="stat" role="listitem"><div class="stat-num">14</div><div class="stat-label">AWS Certs</div></div>
+          <div class="stat" role="listitem"><div class="stat-num">20</div><div class="stat-label">Total Certs</div></div>
+          <div class="stat" role="listitem"><div class="stat-num">6+</div><div class="stat-label">Talks Given</div></div>
+          <div class="stat" role="listitem"><div class="stat-num">50+</div><div class="stat-label">Blog Posts</div></div>
         </div>
       </div>
-      <div class="yn">
-        <button onclick="document.getElementById('yc').scrollBy({left:-420,behavior:'smooth'})">←</button>
-        <button onclick="document.getElementById('yc').scrollBy({left:420,behavior:'smooth'})">→</button>
+      <img
+        src="https://www.vishnurachapudi.com/profile.png"
+        alt="Vishnu Rachapudi — Cloud &amp; AI Engineer, 14x AWS Certified"
+        class="hero-avatar"
+        width="220" height="220"
+        loading="eager"
+        fetchpriority="high"
+      />
+    </div>
+  </div>
+</header>
+
+<!-- ══════════════════════════════ ABOUT ══════════════════════════════ -->
+<section id="about" aria-labelledby="about-heading">
+  <div class="wrap">
+    <div class="sec-label">About</div>
+    <h2 id="about-heading">Hey, I'm <em>Vishnu.</em></h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start;" class="about-grid">
+      <div>
+        <p style="color:var(--muted);font-size:1rem;line-height:1.8;margin-bottom:1.25rem;">
+          Cloud &amp; AI Engineer at <strong style="color:var(--text)">SUDO Consultants</strong>, Hyderabad.
+          My world revolves around <strong style="color:var(--text)">AWS</strong> — architecting production workloads,
+          exploring Gen AI with Bedrock, Q Business, and Agentic AI frameworks.
+        </p>
+        <p style="color:var(--muted);font-size:1rem;line-height:1.8;margin-bottom:1.25rem;">
+          I hold <strong style="color:var(--text)">14 AWS certifications</strong> including all Professional &amp;
+          Specialty exams, plus Terraform, Vault, Fortinet, and Oracle Cloud.
+          Multi-cloud, security-first.
+        </p>
+        <p style="color:var(--muted);font-size:1rem;line-height:1.8;">
+          Active <strong style="color:var(--text)">AWS Community Builder (Security)</strong>, technical writer on Dev.to
+          with 50+ articles, and speaker at AWS Community Days across India and internationally.
+        </p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:0.75rem;">
+        <div style="display:grid;grid-template-columns:auto 1fr;gap:0.5rem 1rem;font-size:0.85rem;">
+          <span style="color:var(--muted);font-family:var(--ff-mono);">Role</span><span>Cloud &amp; AI Engineer — SUDO Consultants</span>
+          <span style="color:var(--muted);font-family:var(--ff-mono);">Location</span><span>Hyderabad, India</span>
+          <span style="color:var(--muted);font-family:var(--ff-mono);">Education</span><span>CBIT, Hyderabad</span>
+          <span style="color:var(--muted);font-family:var(--ff-mono);">Focus</span><span>AWS Security · Gen AI · AEM · Cloud Architecture</span>
+          <span style="color:var(--muted);font-family:var(--ff-mono);">Community</span>
+          <span><a href="https://builder.aws.com/community/@vishnu1999" style="color:var(--link);" rel="noopener noreferrer" target="_blank">AWS Community Builder →</a></span>
+          <span style="color:var(--muted);font-family:var(--ff-mono);">Email</span>
+          <span><a href="/cdn-cgi/l/email-protection#d8aab9bbb0b9a8adbcb1aeb1abb0b6ade198bfb5b9b1b4f6bbb7b5" style="color:var(--link);"><span class="__cf_email__" data-cfemail="b6c4d7d5ded7c6c3d2dfc0dfc5ded8c38ff6d1dbd7dfda98d5d9db">[email&#160;protected]</span></a></span>
+        </div>
       </div>
     </div>
   </div>
 </section>
-<div class="divider"></div>
 
-<!-- AWARDS -->
-<section id="awards">
-  <div class="si">
-    <div class="stag fu">Recognition</div>
-    <h2 class="sh fu"><em>Awards</em> &amp; Milestones</h2>
-    <div class="awg fu">
-      <div class="aw"><div class="y">2025</div><h4>Trundl Hackathon Winner</h4><p>IaC for automated Atlassian deployment</p></div>
-      <div class="aw"><div class="y">2025</div><h4>Top Performer — SUDO</h4><p>October 2025</p></div>
-      <div class="aw"><div class="y">2025</div><h4>Champion Team — Trundl</h4><p>Nutanix infra &amp; DR strategy</p></div>
-      <div class="aw"><div class="y">2024</div><h4>Runner-up, AWS Amplify Hackathon</h4><p>AWS User Group India</p></div>
-      <div class="aw"><div class="y">2024</div><h4>Star Performer — Trundl</h4><p>AWS Q Business POC</p></div>
-      <div class="aw"><div class="y">2022</div><h4>Rising Star — MassMutual</h4><p>Annual award, MassMutual India</p></div>
-    </div>
-  </div>
-</section>
-<div class="divider"></div>
+<!-- ══════════════════════════════ CERTIFICATIONS ══════════════════════════════ -->
+<section id="certifications" aria-labelledby="cert-heading">
+  <div class="wrap">
+    <div class="sec-label">Credentials</div>
+    <h2 id="cert-heading"><em>Certifications</em></h2>
 
-<!-- CERTS -->
-<section id="certs" class="cs">
-  <div class="si">
-    <div class="stag fu">Credentials</div>
-    <h2 class="sh fu"><em>Certifications</em></h2>
-    <div style="display:flex;align-items:flex-end;gap:.8rem;margin-bottom:1.5rem;" class="fu">
-      <div class="cn">20</div>
-      <div style="font-size:.85rem;color:var(--muted);">Professional certifications across AWS, HashiCorp, Fortinet &amp; Oracle</div>
+    <p style="color:var(--muted);margin-bottom:2rem;font-size:0.9rem;">20 professional certifications across AWS, HashiCorp, Fortinet &amp; Oracle Cloud</p>
+
+    <h3 style="font-family:var(--ff-mono);font-size:0.8rem;letter-spacing:0.08em;color:var(--muted);margin-bottom:1rem;font-weight:400;">AWS — 14 Certifications</h3>
+    <div class="cert-grid" role="list" aria-label="AWS Certifications">
+      <div class="cert-chip" role="listitem">☁️ <div><div>SA Professional</div><span>Pro</span></div></div>
+      <div class="cert-chip" role="listitem">⚙️ <div><div>DevOps Engineer Pro</div><span>Pro</span></div></div>
+      <div class="cert-chip" role="listitem">🏗️ <div><div>SA Associate</div><span>Associate</span></div></div>
+      <div class="cert-chip" role="listitem">💻 <div><div>Developer Associate</div><span>Associate</span></div></div>
+      <div class="cert-chip" role="listitem">🛠️ <div><div>SysOps Admin</div><span>Associate</span></div></div>
+      <div class="cert-chip" role="listitem">🔐 <div><div>Security Specialty</div><span>Specialty</span></div></div>
+      <div class="cert-chip" role="listitem">🌐 <div><div>Advanced Networking</div><span>Specialty</span></div></div>
+      <div class="cert-chip" role="listitem">🗄️ <div><div>Gen AI Professional</div><span>Specialty</span></div></div>
+      <div class="cert-chip" role="listitem">📊 <div><div>CloudOps Engineer</div><span>Specialty</span></div></div>
+      <div class="cert-chip" role="listitem">🤖 <div><div>ML Specialty</div><span>Specialty</span></div></div>
+      <div class="cert-chip" role="listitem">📦 <div><div>Data Engineer</div><span>Associate</span></div></div>
+      <div class="cert-chip" role="listitem">🧠 <div><div>ML Associate</div><span>Associate</span></div></div>
+      <div class="cert-chip" role="listitem">🤖 <div><div>AI Practitioner</div><span>Foundational</span></div></div>
+      <div class="cert-chip" role="listitem">☁️ <div><div>Cloud Practitioner</div><span>Foundational</span></div></div>
     </div>
-    <div class="cg fu">
-      <div class="cgt">AWS — 14 Certifications</div>
-      <div class="cgr">
-        <span class="cc a">☁️ SA Professional</span><span class="cc a">⚙️ DevOps Engineer Pro</span><span class="cc a">🏗️ SA Associate</span><span class="cc a">💻 Developer Associate</span><span class="cc a">🛠️ SysOps Admin</span><span class="cc a">🔐 Security Specialty</span><span class="cc a">🌐 Adv. Networking</span><span class="cc a">🗄️ Gen AI Professional</span><span class="cc a">📊 CloudOps Engineer</span><span class="cc a">🤖 ML Specialty</span><span class="cc a">📦 Data Engineer</span><span class="cc a">🧠 ML Associate</span><span class="cc a">🤖 AI Practitioner</span><span class="cc a">☁️ Cloud Practitioner</span>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-top:1.5rem;">
+      <div>
+        <h3 style="font-family:var(--ff-mono);font-size:0.8rem;letter-spacing:0.08em;color:var(--muted);margin-bottom:0.75rem;font-weight:400;">HashiCorp</h3>
+        <div style="display:flex;flex-direction:column;gap:0.5rem;">
+          <div class="cert-chip">🔷 <div><div>Terraform Associate</div></div></div>
+          <div class="cert-chip">🔑 <div><div>Vault Associate</div></div></div>
+        </div>
+      </div>
+      <div>
+        <h3 style="font-family:var(--ff-mono);font-size:0.8rem;letter-spacing:0.08em;color:var(--muted);margin-bottom:0.75rem;font-weight:400;">Fortinet</h3>
+        <div style="display:flex;flex-direction:column;gap:0.5rem;">
+          <div class="cert-chip">🛡️ <div><div>NSE 1</div></div></div>
+          <div class="cert-chip">🛡️ <div><div>NSE 2</div></div></div>
+        </div>
+      </div>
+      <div>
+        <h3 style="font-family:var(--ff-mono);font-size:0.8rem;letter-spacing:0.08em;color:var(--muted);margin-bottom:0.75rem;font-weight:400;">Oracle Cloud</h3>
+        <div style="display:flex;flex-direction:column;gap:0.5rem;">
+          <div class="cert-chip">🔶 <div><div>OCI Foundations</div></div></div>
+          <div class="cert-chip">🔶 <div><div>OCI AI Foundations</div></div></div>
+        </div>
       </div>
     </div>
-    <div class="cg fu">
-      <div class="cgt">HashiCorp</div>
-      <div class="cgr"><span class="cc t">🔷 Terraform Associate</span><span class="cc t">🔑 Vault Associate</span></div>
+    <div style="margin-top:1.5rem;">
+      <a href="https://www.credly.com/users/venkata-pavan-vishnu-rachapudi" class="btn btn-ghost" rel="noopener noreferrer" target="_blank" aria-label="View all certifications on Credly">View all on Credly →</a>
     </div>
-    <div class="cg fu">
-      <div class="cgt">Fortinet</div>
-      <div class="cgr"><span class="cc f">🛡️ NSE 1</span><span class="cc f">🛡️ NSE 2</span></div>
-    </div>
-    <div class="cg fu">
-      <div class="cgt">Oracle Cloud</div>
-      <div class="cgr"><span class="cc o">🔶 OCI Foundations</span><span class="cc o">🔶 OCI AI Foundations</span></div>
-    </div>
-    <div class="ccta fu"><a href="https://www.credly.com/users/venkata-pavan-vishnu-rachapudi" target="_blank">View all on Credly →</a></div>
   </div>
 </section>
 
-<!-- BLOG -->
-<section id="blog">
-  <div class="si">
-    <div class="stag fu">Writing</div>
-    <h2 class="sh fu">From the <em>Blog</em></h2>
+<!-- ══════════════════════════════ TALKS ══════════════════════════════ -->
+<section id="talks" aria-labelledby="talks-heading">
+  <div class="wrap">
+    <div class="sec-label">Speaking & Community</div>
+    <h2 id="talks-heading">On <em>Stage</em></h2>
+    <div class="talks-list" role="list" aria-label="Speaking engagements">
 
-    <!-- Category filter tabs -->
-    <div class="blog-tabs fu">
-      <button class="btab active" onclick="filterBlog('all')">All</button>
-      <button class="btab" onclick="filterBlog('aws')">☁️ AWS</button>
-      <button class="btab" onclick="filterBlog('networking')">🌐 Networking</button>
-      <button class="btab" onclick="filterBlog('security')">🔐 Security</button>
-      <button class="btab" onclick="filterBlog('ai')">🤖 AI / Agentic</button>
-      <button class="btab" onclick="filterBlog('devops')">⚙️ DevOps</button>
-      <button class="btab" onclick="filterBlog('finops')">💰 FinOps / DR</button>
+      <article class="talk-row" role="listitem" itemscope itemtype="https://schema.org/Event">
+        <div class="talk-date" itemprop="startDate" content="2025-10-01">Oct 2025</div>
+        <div>
+          <div class="talk-title" itemprop="name">AWS Community Day UAE 2025</div>
+          <div class="talk-event" itemprop="description">Revolutionizing Enterprise Productivity with Family of Qs</div>
+        </div>
+        <div class="talk-loc" itemprop="location">Dubai, UAE</div>
+      </article>
+
+      <article class="talk-row" role="listitem" itemscope itemtype="https://schema.org/Event">
+        <div class="talk-date" itemprop="startDate" content="2025-10-14">Oct 2025</div>
+        <div>
+          <div class="talk-title" itemprop="name">GITEX GLOBAL 2025</div>
+          <div class="talk-event" itemprop="description">Q for the Future — Enterprise Productivity with Family of Qs</div>
+        </div>
+        <div class="talk-loc" itemprop="location">Dubai, UAE</div>
+      </article>
+
+      <article class="talk-row" role="listitem" itemscope itemtype="https://schema.org/Event">
+        <div class="talk-date" itemprop="startDate" content="2025-12-01">Dec 2025</div>
+        <div>
+          <div class="talk-title" itemprop="name">AWS Community Day Kochi (AI/ML)</div>
+          <div class="talk-event" itemprop="description">Amazon QuickSuite &amp; Agentic AI</div>
+        </div>
+        <div class="talk-loc" itemprop="location">Kochi, India</div>
+      </article>
+
+      <article class="talk-row" role="listitem" itemscope itemtype="https://schema.org/Event">
+        <div class="talk-date" itemprop="startDate" content="2025-12-15">Dec 2025</div>
+        <div>
+          <div class="talk-title" itemprop="name">AWS Student Community Day MLRIT</div>
+          <div class="talk-event" itemprop="description">Develop &amp; Deploy using Kiro &amp; App Runner</div>
+        </div>
+        <div class="talk-loc" itemprop="location">Hyderabad, India</div>
+      </article>
+
+      <article class="talk-row" role="listitem" itemscope itemtype="https://schema.org/Event">
+        <div class="talk-date" itemprop="startDate" content="2026-02-01">Feb 2026</div>
+        <div>
+          <div class="talk-title" itemprop="name">AWS User Group Hyderabad</div>
+          <div class="talk-event" itemprop="description">Agentic AI on AWS — from SDK to Runtime</div>
+        </div>
+        <div class="talk-loc" itemprop="location">Hyderabad, India</div>
+      </article>
+
+      <article class="talk-row" role="listitem" itemscope itemtype="https://schema.org/Event">
+        <div class="talk-date" itemprop="startDate" content="2026-03-01">Mar 2026</div>
+        <div>
+          <div class="talk-title" itemprop="name">AWS User Group Punjab</div>
+          <div class="talk-event" itemprop="description">AWS Certified AI Practitioner — Roadmap Session</div>
+        </div>
+        <div class="talk-loc" itemprop="location">Punjab, India</div>
+      </article>
+
     </div>
-
-    <!-- Featured posts -->
-    <a href="blogs/aws-security-agent-blog/" class="bf fu blog-post" data-cat="aws security ai">
-      <div class="ft">★ Latest</div>
-      <h3>I Pentested My Modernized Java App with AWS Security Agent—Here's What It Found</h3>
-      <div class="bm"><span>Mar 2026</span><span>14 min</span><span class="t">AWS</span><span class="t">Security</span><span class="t">Agentic AI</span></div>
-    </a>
-
-    <!-- NEW: Reachability Analyzer blog -->
-    <a href="blogs/aws-reachability-blog/" class="bf fu blog-post" data-cat="aws networking">
-      <div class="ft">🔍 New · Networking</div>
-      <h3>Stop Guessing. Start Tracing. — How AWS Reachability Analyzer Found Our Broken Network in Minutes</h3>
-      <p>10 VPCs, 1 Transit Gateway, and a jump server that couldn't reach anything. A complete walkthrough of diagnosing a silent routing failure hop-by-hop for $0.10.</p>
-      <div class="bm"><span>Mar 2026</span><span>8 min</span><span class="t">AWS</span><span class="t">Networking</span><span class="t">VPC</span><span class="t">Transit Gateway</span></div>
-    </a>
-
-    <a href="blogs/aws-transform-blog/" class="bf fu blog-post" data-cat="aws ai devops">
-      <h3>I Modernized a Legacy Java App with AWS Transform—Here's What Happened</h3>
-      <div class="bm"><span>Mar 2026</span><span>12 min</span><span class="t">AWS</span><span class="t">Transform</span><span class="t">Agentic AI</span></div>
-    </a>
-
-    <a href="aws-devops-agent/index.html" class="bf fu blog-post" data-cat="aws devops ai">
-      <h3>I Tested AWS DevOps Agent — Here's What Happened When I Broke My EC2 Instance</h3>
-      <p>A deliberate CPU stress test on a t2.medium, watching Amazon's frontier AI agent investigate in real time.</p>
-      <div class="bm"><span>Mar 2026</span><span>8 min</span><span class="t">AWS</span><span class="t">DevOps</span><span class="t">AIOps</span></div>
-    </a>
-
-    <div class="bgr fu">
-      <a href="https://builder.aws.com/content/3AIQ6E9f2DnyQaNmHKuCZ5NpUUS/ship-your-mcp-server-to-aws-lambda-in-5-minutes" target="_blank" class="bc blog-post" data-cat="aws ai"><h4>Ship Your MCP Server to AWS Lambda in 5 Minutes</h4><div class="bm"><span>Mar 2026</span><span class="t">Lambda</span><span class="t">AI</span></div></a>
-      <a href="https://dev.to/aws-builders/how-exporting-amis-to-s3-helped-me-recover-customer-resources-during-a-dr-event-29d5" target="_blank" class="bc blog-post" data-cat="aws finops"><h4>How Exporting AMIs to S3 Helped Me Recover Resources During a DR Event</h4><div class="bm"><span class="t">EC2</span><span class="t">DR</span></div></a>
-      <a href="https://dev.to/aws-builders/cloudwatch-is-no-longer-just-for-logs-inside-awss-unified-operational-data-store-1a60" target="_blank" class="bc blog-post" data-cat="aws devops"><h4>CloudWatch Is No Longer Just for Logs: Unified Operational Data Store</h4><div class="bm"><span class="t">CloudWatch</span></div></a>
-      <a href="https://builder.aws.com/content/3AIQ6E9f2DnyQaNmHKuCZ5NpUUS/ship-your-mcp-server-to-aws-lambda-in-5-minutes" target="_blank" class="bc blog-post" data-cat="aws devops"><h4>From Image to HTTPS Endpoint in One Step with ECS Express Mode</h4><div class="bm"><span class="t">ECS</span><span class="t">Docker</span></div></a>
-      <a href="https://dev.to/aws-builders/stop-the-ebs-madness-automate-your-aws-storage-savings-now-p85" target="_blank" class="bc blog-post" data-cat="aws finops"><h4>Stop the EBS Madness: Automate Your AWS Storage Savings</h4><div class="bm"><span class="t">FinOps</span></div></a>
-      <a href="https://dev.to/aws-builders/building-an-aws-daily-helper-assistant-with-strands-agents-and-bedrock-agentcore-2290" target="_blank" class="bc blog-post" data-cat="aws ai"><h4>Building an AWS Daily Helper with Strands Agents &amp; Bedrock AgentCore</h4><div class="bm"><span class="t">GenAI</span><span class="t">Agents</span></div></a>
-      <a href="https://dev.to/aws-builders/building-trustworthy-ai-importance-of-guardrails-in-aws-bedrock-and-q-business-29bd" target="_blank" class="bc blog-post" data-cat="aws ai security"><h4>Building Trustworthy AI: Guardrails in Bedrock &amp; Q Business</h4><div class="bm"><span class="t">AI</span><span class="t">Security</span></div></a>
-      <a href="https://builder.aws.com/content/3AIm3KP38KBLNdhVJVIYo0IWNP4/recovering-ebs-snapshots-with-coldsnap-a-real-dr-story-from-the-field" target="_blank" class="bc blog-post" data-cat="aws finops"><h4>Recovering EBS Snapshots with ColdSnap: A Real DR Story from the Field</h4><div class="bm"><span class="t">DR</span></div></a>
-      <a href="https://dev.to/aws-builders/5-secure-ways-to-connect-to-ec2-instances-including-ssh-key-recovery-made-easy-43ha" target="_blank" class="bc blog-post" data-cat="aws security"><h4>5 Secure Ways to Connect to EC2 Instances — Including SSH Key Recovery Made Easy!</h4><div class="bm"><span class="t">Security</span></div></a>
-      <a href="https://dev.to/aws-builders/securing-your-code-with-aws-inspector-a-comprehensive-guide-to-code-security-scanning-499n" target="_blank" class="bc blog-post" data-cat="aws security"><h4>Securing Your Code with AWS Inspector: A Comprehensive Guide to Code Security Scanning</h4><div class="bm"><span class="t">Security</span><span class="t">Inspector</span></div></a>
-      <a href="https://dev.to/vishnu_rachapudi_75e73248/introduction-to-iam-in-oci-1ffi" target="_blank" class="bc blog-post" data-cat="aws security"><h4>Introduction to IAM in Oracle Cloud Infrastructure</h4><div class="bm"><span class="t">OCI</span><span class="t">IAM</span><span class="t">Security</span></div></a>
-      <a href="https://dev.to/aws-builders/evolution-of-agentic-ai-co-amazon-quicksuite-2kh" target="_blank" class="bc blog-post" data-cat="aws ai"><h4>Evolution of Agentic AI Co — Amazon QuickSuite</h4><div class="bm"><span class="t">AI</span><span class="t">Agentic</span><span class="t">QuickSuite</span></div></a>
-      <a href="https://technodiaryvishnu.hashnode.dev/secure-lint-and-validate-your-terraform-like-a-pro" target="_blank" class="bc blog-post" data-cat="aws devops security"><h4>Secure, Lint and Validate Your Terraform Like a Pro</h4><div class="bm"><span class="t">Terraform</span><span class="t">DevOps</span><span class="t">Security</span></div></a>
-      <a href="https://technodiaryvishnu.hashnode.dev/aws-amplify-just-got-more-secure" target="_blank" class="bc blog-post" data-cat="aws security"><h4>AWS Amplify Just Got More Secure</h4><div class="bm"><span class="t">Amplify</span><span class="t">Security</span></div></a>
-      <a href="https://technodiaryvishnu.hashnode.dev/navigating-the-world-of-cdns" target="_blank" class="bc blog-post" data-cat="aws networking"><h4>Navigating the World of CDNs</h4><div class="bm"><span class="t">CDN</span><span class="t">Networking</span></div></a>
-      <a href="http://technodiaryvishnu.hashnode.dev/amazon-web-services" target="_blank" class="bc blog-post" data-cat="aws"><h4>Amazon Web Services — My First Blog Post ✨</h4><div class="bm"><span class="t">AWS</span><span class="t">Hashnode</span></div></a>
-      <a href="https://dev.to/vishnu_rachapudi_75e73248/oci-journey-part-2-networking-in-oracle-cloud-infrastructure-8lp" target="_blank" class="bc blog-post" data-cat="networking security"><h4>🌐 OCI Journey – Part 2: Networking in Oracle Cloud Infrastructure</h4><div class="bm"><span class="t">OCI</span><span class="t">Networking</span></div></a>
-      <a href="https://dev.to/vishnu_rachapudi_75e73248/oci-journey-part-3-compute-services-in-oracle-cloud-infrastructure-4b27" target="_blank" class="bc blog-post" data-cat="aws"><h4>💻 OCI Journey – Part 3: Compute Services in Oracle Cloud Infrastructure</h4><div class="bm"><span class="t">OCI</span><span class="t">Compute</span></div></a>
-      <a href="https://builder.aws.com/content/2rGVL9euypksp9avE0lKkskbz8j/full-aws-iot-greengrass-demo-end-to-end-setup-and-data-flow-edge-cloud" target="_blank" class="bc blog-post" data-cat="aws devops"><h4>Full AWS IoT Greengrass Demo — End-to-End Setup and Data Flow: Edge to Cloud</h4><div class="bm"><span class="t">AWS</span><span class="t">IoT</span><span class="t">Greengrass</span></div></a>
-      <a href="https://builder.aws.com/content/39yxTbDPETcqmS9iTbAJmmbxSWd/a-cleaner-calmer-way-to-connect-to-amazon-rds" target="_blank" class="bc blog-post" data-cat="aws security"><h4>A Cleaner, Calmer Way to Connect to Amazon RDS</h4><div class="bm"><span class="t">AWS</span><span class="t">RDS</span><span class="t">Security</span></div></a>
-    </div>
-
-    <div class="ba fu"><a href="https://dev.to/vishnu_rachapudi_75e73248" target="_blank">View all 39+ posts on Dev.to →</a></div>
-    <div class="ba fu"><a href="https://builder.aws.com/community/@vishnu1999?tab=articles" target="_blank">View all 4+ posts on AWS Builder →</a></div>
-    <div class="ba fu"><a href="https://technodiaryvishnu.hashnode.dev" target="_blank">Read early posts on Hashnode →</a></div>
   </div>
 </section>
-<div class="divider"></div>
 
-<footer>
-  <div class="fl fu">
-    <a href="https://www.linkedin.com/in/vishnu-rachapudi-28956920b/" target="_blank">LinkedIn</a>
-    <a href="https://dev.to/vishnu_rachapudi_75e73248" target="_blank">Dev.to</a>
-    <a href="https://technodiaryvishnu.hashnode.dev" target="_blank">Hashnode</a>
-    <a href="https://github.com/aquavis12" target="_blank">GitHub</a>
-    <a href="https://www.credly.com/users/venkata-pavan-vishnu-rachapudi" target="_blank">Credly</a>
-    <a href="https://builder.aws.com/community/@vishnu1999" target="_blank">AWS Builder</a>
+<!-- ══════════════════════════════ GALLERY ══════════════════════════════ -->
+<section id="gallery" aria-labelledby="gallery-heading"
+         itemscope itemtype="https://schema.org/ImageGallery">
+  <meta itemprop="name" content="Vishnu Rachapudi — Speaker Gallery" />
+  <meta itemprop="description" content="Photos from AWS Community Day UAE, GITEX Global, Kochi AI/ML, MLRIT, and mentoring sessions." />
+  <div class="wrap">
+    <div class="sec-label">Speaker Gallery</div>
+    <h2 id="gallery-heading">Speaker <em>Moments</em></h2>
+
+    <div class="gallery-preview-grid" role="list" aria-label="Speaker photo gallery preview">
+
+      <!-- Featured: tall left image -->
+      <figure class="gp-item featured" role="listitem"
+              data-src="https://www.vishnurachapudi.com/gallery/gallery-12.webp"
+              data-title="AWS Community Day UAE 2025" data-meta="Dubai, UAE · October 2025"
+              tabindex="0" aria-label="On stage at AWS Community Day UAE 2025 — click to enlarge"
+              itemscope itemtype="https://schema.org/ImageObject" itemprop="image">
+        <span class="gp-tag">International</span>
+        <img
+          src="https://www.vishnurachapudi.com/gallery/gallery-12.webp"
+          alt="Vishnu Rachapudi on stage at AWS Community Day UAE 2025 in Dubai, presenting Enterprise Productivity with Family of Qs"
+          width="600" height="800"
+          loading="lazy"
+          itemprop="contentUrl"
+        />
+        <div class="gp-overlay"><div class="gp-caption">AWS Community Day UAE 2025<br><span style="font-weight:400;opacity:0.7;font-size:0.7rem;">Dubai · Oct 2025</span></div></div>
+        <meta itemprop="name" content="Vishnu Rachapudi on stage at AWS Community Day UAE 2025" />
+        <meta itemprop="datePublished" content="2025-10-01" />
+      </figure>
+
+      <!-- Row 1, col 2 -->
+      <figure class="gp-item" role="listitem"
+              data-src="https://www.vishnurachapudi.com/gallery/gallery-2.png"
+              data-title="GITEX Global 2025" data-meta="Dubai, UAE · October 2025"
+              tabindex="0" aria-label="GITEX Global 2025 — click to enlarge"
+              itemscope itemtype="https://schema.org/ImageObject" itemprop="image">
+        <span class="gp-tag">GITEX</span>
+        <img
+          src="https://www.vishnurachapudi.com/gallery/gallery-2.png"
+          alt="Vishnu Rachapudi presenting Family of Qs at GITEX Global 2025 Dubai"
+          width="600" height="400"
+          loading="lazy"
+          itemprop="contentUrl"
+        />
+        <div class="gp-overlay"><div class="gp-caption">GITEX Global 2025</div></div>
+        <meta itemprop="name" content="Vishnu Rachapudi at GITEX Global 2025" />
+        <meta itemprop="datePublished" content="2025-10-14" />
+      </figure>
+
+      <!-- Row 1, col 3 -->
+      <figure class="gp-item" role="listitem"
+              data-src="https://www.vishnurachapudi.com/gallery/gallery-11.png"
+              data-title="Golden Jacket Crew — GITEX" data-meta="GITEX Global 2025, Dubai"
+              tabindex="0" aria-label="AWS Golden Jacket crew — click to enlarge"
+              itemscope itemtype="https://schema.org/ImageObject" itemprop="image">
+        <span class="gp-tag">Golden Jacket</span>
+        <img
+          src="https://www.vishnurachapudi.com/gallery/gallery-11.png"
+          alt="Vishnu Rachapudi with the AWS Golden Jacket holders crew at GITEX Global 2025"
+          width="600" height="400"
+          loading="lazy"
+          itemprop="contentUrl"
+        />
+        <div class="gp-overlay"><div class="gp-caption">Golden Jacket Crew</div></div>
+        <meta itemprop="name" content="AWS Golden Jacket crew at GITEX 2025" />
+      </figure>
+
+      <!-- Row 2, col 2 -->
+      <figure class="gp-item" role="listitem"
+              data-src="https://www.vishnurachapudi.com/gallery/gallery-1.png"
+              data-title="AWS Community Day Kochi — On Stage" data-meta="Kochi, India · December 2025"
+              tabindex="0" aria-label="AWS Community Day Kochi — click to enlarge"
+              itemscope itemtype="https://schema.org/ImageObject" itemprop="image">
+        <img
+          src="https://www.vishnurachapudi.com/gallery/gallery-1.png"
+          alt="Vishnu Rachapudi on stage at AWS Community Day Kochi AI/ML Edition"
+          width="600" height="400"
+          loading="lazy"
+          itemprop="contentUrl"
+        />
+        <div class="gp-overlay"><div class="gp-caption">AWS Community Day Kochi</div></div>
+        <meta itemprop="name" content="On stage at AWS Community Day Kochi AI/ML" />
+        <meta itemprop="datePublished" content="2025-12-01" />
+      </figure>
+
+      <!-- Row 2, col 3 -->
+      <figure class="gp-item" role="listitem"
+              data-src="https://www.vishnurachapudi.com/gallery/gallery-7.png"
+              data-title="Enterprise Agentic AI Panel — AWS × SUDO × IDC" data-meta="Hyderabad, India"
+              tabindex="0" aria-label="Agentic AI panel discussion — click to enlarge"
+              itemscope itemtype="https://schema.org/ImageObject" itemprop="image">
+        <span class="gp-tag">Panel</span>
+        <img
+          src="https://www.vishnurachapudi.com/gallery/gallery-7.png"
+          alt="Vishnu Rachapudi at an Enterprise Agentic AI panel with AWS, SUDO Consultants, and IDC"
+          width="600" height="400"
+          loading="lazy"
+          itemprop="contentUrl"
+        />
+        <div class="gp-overlay"><div class="gp-caption">Agentic AI — AWS × SUDO × IDC</div></div>
+        <meta itemprop="name" content="Enterprise Agentic AI panel — AWS × SUDO × IDC" />
+      </figure>
+
+    </div>
+
+    <div class="gallery-cta-row">
+      <p class="gallery-cta-text">12 photos · AWS Community Days · GITEX · Mentoring · Panels</p>
+      <a class="btn btn-ghost" href="https://www.vishnurachapudi.com/gallery/" aria-label="View full speaker gallery">View full gallery →</a>
+    </div>
   </div>
-  <div class="fc">Vishnu Rachapudi · Cloud &amp; AI Engineer · AWS Community Builder (Security) · Hyderabad<br>© 2026</div>
-</footer>
+</section>
 
 <!-- LIGHTBOX -->
-<div class="lb" id="lb" onclick="this.classList.remove('on')"><span class="x">×</span><img id="lbi" src="" alt=""></div>
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo lightbox">
+  <button class="lightbox-close" id="lb-close" aria-label="Close lightbox">✕</button>
+  <button class="lightbox-nav lightbox-prev" id="lb-prev" aria-label="Previous photo">‹</button>
+  <img id="lb-img" src="" alt="" />
+  <button class="lightbox-nav lightbox-next" id="lb-next" aria-label="Next photo">›</button>
+  <div class="lightbox-info">
+    <div class="lightbox-title" id="lb-title"></div>
+    <div class="lightbox-meta" id="lb-meta"></div>
+  </div>
+</div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-// Theme toggle
-function toggleTheme() {
-  const html = document.documentElement;
-  const btn = document.getElementById('themeToggle');
-  const isLight = html.getAttribute('data-theme') === 'light';
-  if (isLight) {
-    html.removeAttribute('data-theme');
-    btn.textContent = '🌙';
-    localStorage.setItem('theme', 'dark');
-  } else {
-    html.setAttribute('data-theme', 'light');
-    btn.textContent = '☀️';
-    localStorage.setItem('theme', 'light');
+<!-- ══════════════════════════════ BLOG ══════════════════════════════ -->
+<section id="blog" aria-labelledby="blog-heading">
+  <div class="wrap">
+    <div class="sec-label">Writing</div>
+    <h2 id="blog-heading">From the <em>Blog</em></h2>
+    <div class="blog-grid" role="list" aria-label="Featured blog posts">
+
+      <a class="blog-card" role="listitem" href="https://www.vishnurachapudi.com/blogs/aws-security-agent-blog/" rel="noopener noreferrer" target="_blank"
+         itemscope itemtype="https://schema.org/BlogPosting"
+         aria-label="I Pentested My Modernized Java App with AWS Security Agent — read full article">
+        <div class="blog-tags"><span class="tag">AWS</span><span class="tag">Security</span><span class="tag">Agentic AI</span></div>
+        <div class="blog-title" itemprop="headline">I Pentested My Modernized Java App with AWS Security Agent — Here's What It Found</div>
+        <div class="blog-meta" itemprop="datePublished" content="2026-03-01">Mar 2026 · 14 min read</div>
+      </a>
+
+      <a class="blog-card" role="listitem" href="https://www.vishnurachapudi.com/blogs/aws-reachability-blog/" rel="noopener noreferrer" target="_blank"
+         itemscope itemtype="https://schema.org/BlogPosting"
+         aria-label="Stop Guessing. Start Tracing — read full article">
+        <div class="blog-tags"><span class="tag">AWS</span><span class="tag">Networking</span><span class="tag">VPC</span></div>
+        <div class="blog-title" itemprop="headline">Stop Guessing. Start Tracing. — How AWS Reachability Analyzer Found Our Broken Network</div>
+        <div class="blog-desc" itemprop="description">10 VPCs, 1 Transit Gateway, and a jump server that couldn't reach anything. A complete walkthrough for $0.10.</div>
+        <div class="blog-meta" itemprop="datePublished" content="2026-03-01">Mar 2026 · 8 min read</div>
+      </a>
+
+      <a class="blog-card" role="listitem" href="https://www.vishnurachapudi.com/blogs/aws-transform-blog/" rel="noopener noreferrer" target="_blank"
+         itemscope itemtype="https://schema.org/BlogPosting"
+         aria-label="I Modernized a Legacy Java App with AWS Transform — read full article">
+        <div class="blog-tags"><span class="tag">AWS</span><span class="tag">Transform</span><span class="tag">Agentic AI</span></div>
+        <div class="blog-title" itemprop="headline">I Modernized a Legacy Java App with AWS Transform — Here's What Happened</div>
+        <div class="blog-meta" itemprop="datePublished" content="2026-03-01">Mar 2026 · 12 min read</div>
+      </a>
+
+      <a class="blog-card" role="listitem" href="https://www.vishnurachapudi.com/aws-devops-agent/index.html" rel="noopener noreferrer" target="_blank"
+         itemscope itemtype="https://schema.org/BlogPosting"
+         aria-label="I Tested AWS DevOps Agent — read full article">
+        <div class="blog-tags"><span class="tag">AWS</span><span class="tag">DevOps</span><span class="tag">AIOps</span></div>
+        <div class="blog-title" itemprop="headline">I Tested AWS DevOps Agent — Here's What Happened When I Broke My EC2 Instance</div>
+        <div class="blog-desc" itemprop="description">A deliberate CPU stress test on a t2.medium, watching Amazon's frontier AI agent investigate in real time.</div>
+        <div class="blog-meta" itemprop="datePublished" content="2026-03-01">Mar 2026 · 8 min read</div>
+      </a>
+
+      <a class="blog-card" role="listitem" href="https://dev.to/aws-builders/building-an-aws-daily-helper-assistant-with-strands-agents-and-bedrock-agentcore-2290" rel="noopener noreferrer" target="_blank"
+         itemscope itemtype="https://schema.org/BlogPosting"
+         aria-label="Building an AWS Daily Helper with Strands Agents — read full article">
+        <div class="blog-tags"><span class="tag">Gen AI</span><span class="tag">Agents</span><span class="tag">Bedrock</span></div>
+        <div class="blog-title" itemprop="headline">Building an AWS Daily Helper with Strands Agents &amp; Bedrock AgentCore</div>
+        <div class="blog-meta">Dev.to · AWS Builders</div>
+      </a>
+
+      <a class="blog-card" role="listitem" href="https://technodiaryvishnu.hashnode.dev/secure-lint-and-validate-your-terraform-like-a-pro" rel="noopener noreferrer" target="_blank"
+         itemscope itemtype="https://schema.org/BlogPosting"
+         aria-label="Secure, Lint and Validate Your Terraform Like a Pro — read full article">
+        <div class="blog-tags"><span class="tag">Terraform</span><span class="tag">DevOps</span><span class="tag">Security</span></div>
+        <div class="blog-title" itemprop="headline">Secure, Lint and Validate Your Terraform Like a Pro</div>
+        <div class="blog-meta">Hashnode · TechnoDiary</div>
+      </a>
+
+    </div>
+    <div style="margin-top:1.5rem;display:flex;gap:1rem;flex-wrap:wrap;">
+      <a class="btn btn-ghost" href="https://dev.to/vishnu_rachapudi_75e73248" rel="noopener noreferrer" target="_blank" aria-label="View all blog posts on Dev.to">All posts on Dev.to →</a>
+      <a class="btn btn-ghost" href="https://builder.aws.com/community/@vishnu1999?tab=articles" rel="noopener noreferrer" target="_blank" aria-label="View posts on AWS Builder">AWS Builder posts →</a>
+      <a class="btn btn-ghost" href="https://technodiaryvishnu.hashnode.dev" rel="noopener noreferrer" target="_blank" aria-label="Read Hashnode blog">Hashnode →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════ AWARDS ══════════════════════════════ -->
+<section id="awards" aria-labelledby="awards-heading">
+  <div class="wrap">
+    <div class="sec-label">Recognition</div>
+    <h2 id="awards-heading"><em>Awards</em> &amp; Milestones</h2>
+    <div class="award-grid" role="list" aria-label="Awards and recognition">
+      <div class="award-card" role="listitem" itemscope itemtype="https://schema.org/Award"><div class="award-year">2025</div><div class="award-title" itemprop="name">Trundl Hackathon Winner</div><div class="award-org" itemprop="description">IaC for automated Atlassian deployment</div></div>
+      <div class="award-card" role="listitem" itemscope itemtype="https://schema.org/Award"><div class="award-year">2025</div><div class="award-title" itemprop="name">Top Performer — SUDO</div><div class="award-org">October 2025</div></div>
+      <div class="award-card" role="listitem" itemscope itemtype="https://schema.org/Award"><div class="award-year">2025</div><div class="award-title" itemprop="name">Champion Team — Trundl</div><div class="award-org">Nutanix infra &amp; DR strategy</div></div>
+      <div class="award-card" role="listitem" itemscope itemtype="https://schema.org/Award"><div class="award-year">2024</div><div class="award-title" itemprop="name">Runner-up, AWS Amplify Hackathon</div><div class="award-org">AWS User Group India</div></div>
+      <div class="award-card" role="listitem" itemscope itemtype="https://schema.org/Award"><div class="award-year">2024</div><div class="award-title" itemprop="name">Star Performer — Trundl</div><div class="award-org">AWS Q Business POC</div></div>
+      <div class="award-card" role="listitem" itemscope itemtype="https://schema.org/Award"><div class="award-year">2022</div><div class="award-title" itemprop="name">Rising Star — MassMutual</div><div class="award-org">Annual award, MassMutual India</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════ TIMELINE ══════════════════════════════ -->
+<section id="timeline" aria-labelledby="timeline-heading">
+  <div class="wrap">
+    <div class="sec-label">Journey</div>
+    <h2 id="timeline-heading">My <em>Journey</em></h2>
+    <div class="timeline" role="list" aria-label="Career timeline">
+      <div class="tl-item" role="listitem"><div class="tl-date">Mar 2026</div><div><div class="tl-title">14x AWS · Cloud &amp; AI @ SUDO</div><div class="tl-body">Building, writing, speaking, mentoring. The journey continues.</div></div></div>
+      <div class="tl-item" role="listitem"><div class="tl-date">Dec 2025</div><div><div class="tl-title">Kochi + MLRIT</div><div class="tl-body">Spoke at Kochi AI/ML. Workshop at MLRIT.</div></div></div>
+      <div class="tl-item" role="listitem"><div class="tl-date">Oct 2025</div><div><div class="tl-title">GITEX Global + AWS Community Day UAE</div><div class="tl-body">First international talks. Enterprise Productivity with Family of Qs.</div></div></div>
+      <div class="tl-item" role="listitem"><div class="tl-date">Aug 2025</div><div><div class="tl-title">Joined SUDO Consultants</div><div class="tl-body">Cloud &amp; AI role. New chapter begins.</div></div></div>
+      <div class="tl-item" role="listitem"><div class="tl-date">Dec 2024–Feb 2025</div><div><div class="tl-title">7 Certs in 3 Months</div><div class="tl-body">AI Practitioner → SysOps → DevOps Pro → Data Engineer → ML Associate → ML Specialty → Advanced Networking.</div></div></div>
+      <div class="tl-item" role="listitem"><div class="tl-date">Jul 2024</div><div><div class="tl-title">Dev.to + Trundl + SAP-C02</div><div class="tl-body">AWS Community Builders writer. Trundl Hackathon winner. SA Professional passed.</div></div></div>
+      <div class="tl-item" role="listitem"><div class="tl-date">May 2024</div><div><div class="tl-title">Cloud Engineer at Trundl</div><div class="tl-body">Stepped into a cloud engineering role, hands-on with infrastructure &amp; delivery.</div></div></div>
+      <div class="tl-item" role="listitem"><div class="tl-date">Mar 2023</div><div><div class="tl-title">First Blog Post</div><div class="tl-body">Kafka deep-dive on Hashnode. TechnoDiary begins.</div></div></div>
+      <div class="tl-item" role="listitem"><div class="tl-date">Oct 2022</div><div><div class="tl-title">AWS Cloud Practitioner</div><div class="tl-body">First AWS cert. The spark.</div></div></div>
+      <div class="tl-item" role="listitem"><div class="tl-date">Aug 2021</div><div><div class="tl-title">Analyst, Technology at MassMutual</div><div class="tl-body">Where it all began. First step into the tech industry.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════ CONNECT ══════════════════════════════ -->
+<section id="connect" aria-labelledby="connect-heading" style="border-bottom:none;">
+  <div class="wrap">
+    <div class="sec-label">Connect</div>
+    <h2 id="connect-heading">Find me <em>everywhere</em></h2>
+    <div class="social-row" role="list" aria-label="Social media and professional profiles">
+      <a class="soc-link" role="listitem" href="https://www.linkedin.com/in/vishnu-rachapudi-28956920b/" rel="noopener noreferrer" target="_blank" aria-label="LinkedIn profile">LinkedIn</a>
+      <a class="soc-link" role="listitem" href="https://dev.to/vishnu_rachapudi_75e73248" rel="noopener noreferrer" target="_blank" aria-label="Dev.to blog">Dev.to</a>
+      <a class="soc-link" role="listitem" href="https://github.com/aquavis12" rel="noopener noreferrer" target="_blank" aria-label="GitHub profile">GitHub</a>
+      <a class="soc-link" role="listitem" href="https://www.credly.com/users/venkata-pavan-vishnu-rachapudi" rel="noopener noreferrer" target="_blank" aria-label="Credly certifications">Credly</a>
+      <a class="soc-link" role="listitem" href="https://builder.aws.com/community/@vishnu1999" rel="noopener noreferrer" target="_blank" aria-label="AWS Community Builder profile">AWS Builder</a>
+      <a class="soc-link" role="listitem" href="https://technodiaryvishnu.hashnode.dev" rel="noopener noreferrer" target="_blank" aria-label="Hashnode blog">Hashnode</a>
+      <a class="soc-link" role="listitem" href="/cdn-cgi/l/email-protection#057764666d647570616c736c766d6b703c456268646c692b666a68" aria-label="Email Vishnu">Email</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════ FOOTER ══════════════════════════════ -->
+<footer role="contentinfo">
+  <div class="wrap">
+    <p itemscope itemtype="https://schema.org/Person">
+      <span itemprop="name">Vishnu Rachapudi</span> ·
+      <span itemprop="jobTitle">Cloud &amp; AI Engineer</span> ·
+      <a href="https://builder.aws.com/community/@vishnu1999" rel="noopener noreferrer" target="_blank" itemprop="affiliation">AWS Community Builder (Security)</a> ·
+      <span itemprop="addressLocality">Hyderabad</span>
+    </p>
+    <p style="margin-top:0.5rem;">© 2026 · <a href="https://www.vishnurachapudi.com/">vishnurachapudi.com</a></p>
+  </div>
+</footer>
+
+<style>
+  @media (max-width:700px) {
+    .about-grid { grid-template-columns: 1fr !important; }
   }
-}
-// Restore saved theme
-(function(){
-  const saved = localStorage.getItem('theme');
-  if (saved === 'light') {
-    document.documentElement.setAttribute('data-theme', 'light');
-    document.addEventListener('DOMContentLoaded', () => {
-      const btn = document.getElementById('themeToggle');
-      if (btn) btn.textContent = '☀️';
-    });
-  }
-})();
+</style>
 
-// Stars
-!function(){const s=document.getElementById('stars');for(let i=0;i<100;i++){const e=document.createElement('i');const z=Math.random()*2+.5;e.style.cssText='width:'+z+'px;height:'+z+'px;top:'+Math.random()*100+'%;left:'+Math.random()*100+'%;--d:'+(Math.random()*5+2)+'s;animation-delay:'+Math.random()*5+'s;opacity:'+(.1+Math.random()*.4);s.appendChild(e)}}();
+<script>
+  (function() {
+    var items = Array.from(document.querySelectorAll('.gp-item'));
+    var lb = document.getElementById('lightbox');
+    var lbImg = document.getElementById('lb-img');
+    var lbTitle = document.getElementById('lb-title');
+    var lbMeta = document.getElementById('lb-meta');
+    var current = 0;
 
-// Scroll animations
-const o=new IntersectionObserver(e=>{e.forEach(e=>{if(e.isIntersecting){e.target.classList.add('v');o.unobserve(e.target)}})},{threshold:.07});
-document.querySelectorAll('.fu').forEach(e=>o.observe(e));
-
-// Mobile nav close
-document.querySelectorAll('nav a[href^="#"]').forEach(a=>a.addEventListener('click',()=>document.querySelector('.nav-links').classList.remove('open')));
-
-// Lightbox
-function openLB(el){document.getElementById('lbi').src=el.querySelector('img').src;document.getElementById('lb').classList.add('on')}
-
-// Blog filter
-function filterBlog(cat) {
-  // Update tab styles
-  document.querySelectorAll('.btab').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
-
-  // Filter posts
-  document.querySelectorAll('.blog-post').forEach(post => {
-    if (cat === 'all') {
-      post.classList.remove('hidden');
-    } else {
-      const postCats = post.getAttribute('data-cat') || '';
-      postCats.includes(cat) ? post.classList.remove('hidden') : post.classList.add('hidden');
+    function openLb(idx) {
+      current = idx;
+      var el = items[idx];
+      lbImg.src = el.dataset.src;
+      lbImg.alt = el.querySelector('img').alt;
+      lbTitle.textContent = el.dataset.title;
+      lbMeta.textContent = el.dataset.meta;
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
     }
-  });
-}
+    function closeLb() { lb.classList.remove('open'); document.body.style.overflow = ''; }
+
+    items.forEach(function(el, i) {
+      el.addEventListener('click', function() { openLb(i); });
+      el.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLb(i); } });
+    });
+
+    document.getElementById('lb-close').addEventListener('click', closeLb);
+    document.getElementById('lb-prev').addEventListener('click', function() { openLb((current - 1 + items.length) % items.length); });
+    document.getElementById('lb-next').addEventListener('click', function() { openLb((current + 1) % items.length); });
+    lb.addEventListener('click', function(e) { if (e.target === lb) closeLb(); });
+    document.addEventListener('keydown', function(e) {
+      if (!lb.classList.contains('open')) return;
+      if (e.key === 'Escape') closeLb();
+      if (e.key === 'ArrowLeft') document.getElementById('lb-prev').click();
+      if (e.key === 'ArrowRight') document.getElementById('lb-next').click();
+    });
+  })();
 </script>
+
 </body>
 </html>
