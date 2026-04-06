@@ -53,14 +53,15 @@
     },
     "knowsAbout": ["Amazon Web Services", "Cloud Architecture", "Generative AI", "AWS Security", "DevOps", "Terraform", "Agentic AI", "AWS Bedrock"],
     "award": ["AWS Golden Jacket", "14x AWS Certified", "AWS Community Builder (Security)", "Trundl Hackathon Winner"],
-    "email": "rachapudivishnu9@gmail.com",
     "sameAs": [
       "https://www.linkedin.com/in/vishnu-rachapudi-28956920b/",
       "https://dev.to/vishnu_rachapudi_75e73248",
       "https://github.com/aquavis12",
       "https://www.credly.com/users/venkata-pavan-vishnu-rachapudi",
       "https://builder.aws.com/community/@vishnu1999",
-      "https://technodiaryvishnu.hashnode.dev"
+      "https://technodiaryvishnu.hashnode.dev",
+      "https://www.youtube.com/@VishTalks",
+      "https://open.spotify.com/show/3Yd5JEx6Cl4LS4waAQznho"
     ]
   }
   </script>
@@ -534,6 +535,37 @@
     .lightbox-prev { left: 1.25rem; }
     .lightbox-next { right: 1.25rem; }
 
+    /* ── VISHTALKS ── */
+    .talks-media-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1px;
+      border: 0.5px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+    }
+    .media-card {
+      background: var(--bg2);
+      padding: 1.25rem 1.5rem;
+      display: flex; flex-direction: column; gap: 0.6rem;
+      text-decoration: none; color: var(--text);
+      transition: background 0.2s;
+      position: relative;
+    }
+    .media-card:hover { background: var(--surface); }
+    .media-type-badge {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      font-family: var(--ff-mono); font-size: 0.68rem;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 0.18rem 0.6rem; border-radius: 99px;
+      width: fit-content;
+    }
+    .badge-yt   { background: rgba(255,0,0,0.12);   color: #f87171; border: 0.5px solid rgba(248,113,113,0.3); }
+    .badge-spot { background: rgba(30,215,96,0.1);  color: #4ade80; border: 0.5px solid rgba(74,222,128,0.3); }
+    .badge-conf { background: rgba(249,115,22,0.1); color: var(--accent2); border: 0.5px solid rgba(249,115,22,0.3); }
+    .media-title { font-size: 0.92rem; font-weight: 600; line-height: 1.4; font-family: var(--ff-head); }
+    .media-meta  { font-family: var(--ff-mono); font-size: 0.72rem; color: var(--muted); margin-top: auto; }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 700px) {
       .hero-inner { grid-template-columns: 1fr; }
@@ -557,6 +589,7 @@
     <li><a href="#certifications">certs</a></li>
     <li><a href="#talks">talks</a></li>
     <li><a href="#gallery">gallery</a></li>
+    <li><a href="#media">media</a></li>
     <li><a href="#blog">blog</a></li>
     <li><a href="#awards">awards</a></li>
     <li><a href="#timeline">journey</a></li>
@@ -628,8 +661,6 @@
           <span style="color:var(--muted);font-family:var(--ff-mono);">Focus</span><span>AWS Security · Gen AI · AEM · Cloud Architecture</span>
           <span style="color:var(--muted);font-family:var(--ff-mono);">Community</span>
           <span><a href="https://builder.aws.com/community/@vishnu1999" style="color:var(--link);" rel="noopener noreferrer" target="_blank">AWS Community Builder →</a></span>
-          <span style="color:var(--muted);font-family:var(--ff-mono);">Email</span>
-          <span><a href="/cdn-cgi/l/email-protection#d8aab9bbb0b9a8adbcb1aeb1abb0b6ade198bfb5b9b1b4f6bbb7b5" style="color:var(--link);"><span class="__cf_email__" data-cfemail="b6c4d7d5ded7c6c3d2dfc0dfc5ded8c38ff6d1dbd7dfda98d5d9db">[email&#160;protected]</span></a></span>
         </div>
       </div>
     </div>
@@ -880,6 +911,152 @@
   </div>
 </div>
 
+<!-- ══════════════════════════════ MEDIA / VISHTALKS ══════════════════════════════ -->
+<section id="media" aria-labelledby="media-heading">
+  <div class="wrap">
+    <div class="sec-label">VishTalks</div>
+    <h2 id="media-heading">Watch &amp; <em>Listen</em></h2>
+
+    <div class="talks-media-grid" role="list" aria-label="Video talks and podcast episodes"
+         itemscope itemtype="https://schema.org/ItemList">
+      <meta itemprop="name" content="Vishnu Rachapudi — Talks, Videos &amp; Podcast Episodes" />
+
+      <!-- AWS Certified AI Practitioner Roadmap (Live) -->
+      <div class="media-card" role="listitem"
+           itemscope itemtype="https://schema.org/VideoObject" itemprop="itemListElement">
+        <div class="media-type-badge badge-yt">▶ YouTube</div>
+        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:0.5rem 0;">
+          <iframe
+            src="https://www.youtube.com/embed/hq-ecyyJH8M?si=WJeUEOzrHBBF4pPE"
+            title="AWS Certified AI Practitioner – Roadmap Session"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+            loading="lazy"
+            style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:8px;"
+            itemprop="embedUrl"
+          ></iframe>
+        </div>
+        <div class="media-title" itemprop="name">AWS Certified AI Practitioner — Roadmap Session</div>
+        <div class="media-meta"><time datetime="2026-03-01" itemprop="uploadDate">Mar 2026</time> · Punjab</div>
+        <meta itemprop="description" content="A comprehensive roadmap session for the AWS Certified AI Practitioner exam at AWS User Group Punjab." />
+        <meta itemprop="url" content="https://youtu.be/hq-ecyyJH8M" />
+      </div>
+
+      <!-- AWS Community Day Kochi -->
+      <div class="media-card" role="listitem"
+           itemscope itemtype="https://schema.org/VideoObject" itemprop="itemListElement">
+        <div class="media-type-badge badge-yt">▶ YouTube</div>
+        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:0.5rem 0;">
+          <iframe
+            src="https://www.youtube.com/embed/rQvlmRrE-Xs?si=4N5aBhLazs6O4a-t"
+            title="ACDKOCHI25 | Transforming Enterprise Productivity with Amazon QuickSuite and AWS Transform"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+            loading="lazy"
+            style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:8px;"
+            itemprop="embedUrl"
+          ></iframe>
+        </div>
+        <div class="media-title" itemprop="name">Transforming Enterprise Productivity with Amazon QuickSuite &amp; AWS Transform</div>
+        <div class="media-meta"><time datetime="2025-12-01" itemprop="uploadDate">Dec 2025</time> · AWS Community Day Kochi</div>
+        <meta itemprop="description" content="Vishnu Rachapudi at ACDKOCHI25 — Transforming Enterprise Productivity with Amazon QuickSuite and AWS Transform." />
+        <meta itemprop="url" content="https://youtu.be/rQvlmRrE-Xs" />
+      </div>
+
+      <!-- 0.1% Cloud Masterclass -->
+      <div class="media-card" role="listitem"
+           itemscope itemtype="https://schema.org/VideoObject" itemprop="itemListElement">
+        <div class="media-type-badge badge-yt">▶ YouTube</div>
+        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:0.5rem 0;">
+          <iframe
+            src="https://www.youtube.com/embed/f4Uj-xkZzn4?si=j2auWarJRp9O28MC"
+            title="The 0.1% Cloud Masterclass"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+            loading="lazy"
+            style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:8px;"
+            itemprop="embedUrl"
+          ></iframe>
+        </div>
+        <div class="media-title" itemprop="name">The 0.1% Cloud Masterclass</div>
+        <div class="media-meta"><time datetime="2026-01-01" itemprop="uploadDate">Jan 2026</time> · Hyderabad</div>
+        <meta itemprop="description" content="Vishnu Rachapudi's cloud masterclass — advanced AWS architecture and career strategies for the top 0.1% of cloud engineers." />
+        <meta itemprop="url" content="https://youtu.be/f4Uj-xkZzn4" />
+      </div>
+
+      <!-- AWS Inspector -->
+      <div class="media-card" role="listitem"
+           itemscope itemtype="https://schema.org/VideoObject" itemprop="itemListElement">
+        <div class="media-type-badge badge-yt">▶ YouTube · @CloudAndTFbyVishnu</div>
+        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:0.5rem 0;">
+          <iframe
+            src="https://www.youtube.com/embed/iE-hfSW42RY?si=AyNR6AcpDsCSQ0A6"
+            title="Securing Your Code with AWS Inspector: A Comprehensive Guide to Code Security Scanning"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+            loading="lazy"
+            style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:8px;"
+            itemprop="embedUrl"
+          ></iframe>
+        </div>
+        <div class="media-title" itemprop="name">Securing Your Code with AWS Inspector — Code Security Scanning</div>
+        <div class="media-meta"><time datetime="2026-01-01" itemprop="uploadDate">Jan 2026</time> · Online</div>
+        <meta itemprop="description" content="A comprehensive guide to securing code with AWS Inspector — SAST, SCA, IaC scanning, DevSecOps." />
+        <meta itemprop="url" content="https://youtu.be/iE-hfSW42RY" />
+      </div>
+
+      <!-- AWS App Runner -->
+      <div class="media-card" role="listitem"
+           itemscope itemtype="https://schema.org/VideoObject" itemprop="itemListElement">
+        <div class="media-type-badge badge-yt">▶ YouTube · @CloudAndTFbyVishnu</div>
+        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:0.5rem 0;">
+          <iframe
+            src="https://www.youtube.com/embed/WTHnY_Bg2pI?si=CYijE99ilHFiNcpv"
+            title="AWS App Runner – The Easiest Way to Deploy Containers to the Cloud"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+            loading="lazy"
+            style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:8px;"
+            itemprop="embedUrl"
+          ></iframe>
+        </div>
+        <div class="media-title" itemprop="name">AWS App Runner — The Easiest Way to Deploy Containers to the Cloud</div>
+        <div class="media-meta" itemprop="uploadDate">Tutorial · DevOps · @CloudAndTFbyVishnu</div>
+        <meta itemprop="description" content="Vishnu Rachapudi demonstrates AWS App Runner — deploy containerized apps to the cloud in minutes." />
+        <meta itemprop="url" content="https://youtu.be/WTHnY_Bg2pI" />
+      </div>
+
+      <!-- Spotify — full width -->
+      <div class="media-card" role="listitem" style="grid-column:1/-1;"
+           itemscope itemtype="https://schema.org/PodcastEpisode" itemprop="itemListElement">
+        <div class="media-type-badge badge-spot">♫ Spotify</div>
+        <iframe
+          src="https://open.spotify.com/embed/episode/3OTnWRaYcl7FlQtArH3jel?utm_source=generator&theme=0"
+          title="Learn2Upskill Podcast — AWS Cert Journey with Vishnu Rachapudi"
+          loading="lazy"
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          style="width:100%;height:152px;border:none;border-radius:8px;margin:0.5rem 0;display:block;"
+          itemprop="embedUrl"
+        ></iframe>
+        <div class="media-title" itemprop="name">Learn2Upskill Podcast — AWS Cert Journey</div>
+        <div class="media-meta"><time datetime="2025-06-01" itemprop="datePublished">Jun 2025</time> · Spotify · Learn2Upskill</div>
+        <meta itemprop="description" content="Vishnu Rachapudi shares his AWS certification journey — from Cloud Practitioner to 14 certs — on the Learn2Upskill Podcast." />
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- ══════════════════════════════ BLOG ══════════════════════════════ -->
 <section id="blog" aria-labelledby="blog-heading">
   <div class="wrap">
@@ -989,12 +1166,13 @@
     <h2 id="connect-heading">Find me <em>everywhere</em></h2>
     <div class="social-row" role="list" aria-label="Social media and professional profiles">
       <a class="soc-link" role="listitem" href="https://www.linkedin.com/in/vishnu-rachapudi-28956920b/" rel="noopener noreferrer" target="_blank" aria-label="LinkedIn profile">LinkedIn</a>
+      <a class="soc-link" role="listitem" href="https://www.youtube.com/@VishTalks" rel="noopener noreferrer" target="_blank" aria-label="YouTube channel — VishTalks" style="border-color:rgba(248,113,113,0.3);color:#f87171;">▶ YouTube</a>
+      <a class="soc-link" role="listitem" href="https://open.spotify.com/show/3Yd5JEx6Cl4LS4waAQznho" rel="noopener noreferrer" target="_blank" aria-label="Spotify podcast" style="border-color:rgba(74,222,128,0.3);color:#4ade80;">♫ Spotify</a>
       <a class="soc-link" role="listitem" href="https://dev.to/vishnu_rachapudi_75e73248" rel="noopener noreferrer" target="_blank" aria-label="Dev.to blog">Dev.to</a>
       <a class="soc-link" role="listitem" href="https://github.com/aquavis12" rel="noopener noreferrer" target="_blank" aria-label="GitHub profile">GitHub</a>
       <a class="soc-link" role="listitem" href="https://www.credly.com/users/venkata-pavan-vishnu-rachapudi" rel="noopener noreferrer" target="_blank" aria-label="Credly certifications">Credly</a>
       <a class="soc-link" role="listitem" href="https://builder.aws.com/community/@vishnu1999" rel="noopener noreferrer" target="_blank" aria-label="AWS Community Builder profile">AWS Builder</a>
       <a class="soc-link" role="listitem" href="https://technodiaryvishnu.hashnode.dev" rel="noopener noreferrer" target="_blank" aria-label="Hashnode blog">Hashnode</a>
-      <a class="soc-link" role="listitem" href="/cdn-cgi/l/email-protection#057764666d647570616c736c766d6b703c456268646c692b666a68" aria-label="Email Vishnu">Email</a>
     </div>
   </div>
 </section>
