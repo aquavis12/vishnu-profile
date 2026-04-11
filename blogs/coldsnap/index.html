@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -253,10 +252,20 @@ sudo yum install cloud-utils-growpart -y
 sudo growpart /dev/nvme0n1 1 && sudo xfs_growfs -d /
 mkdir /data
 
-<span class="cm"># Install Rust + build ColdSnap</span>
-sudo yum install git curl gcc make screen openssl-devel cmake -y
+<span class="cm"># Install dependencies</span>
+sudo yum install git curl gcc make screen -y
+sudo yum groupinstall <span class="str">"Development Tools"</span> -y
+sudo yum install gcc openssl-devel cmake -y
+
+<span class="cm"># Install Rust toolchain</span>
 curl https://sh.rustup.rs -sSf | sh -s -- -y
 source $HOME/.cargo/env
+
+<span class="cm"># Add cargo to PATH permanently</span>
+echo <span class="str">'export PATH=$PATH:$HOME/.cargo/bin'</span> >> ~/.bashrc
+source ~/.bashrc
+
+<span class="cm"># Build and install ColdSnap from source</span>
 cargo install --git https://github.com/awslabs/coldsnap --branch develop --locked
 
 <span class="cm"># Set source region</span>
