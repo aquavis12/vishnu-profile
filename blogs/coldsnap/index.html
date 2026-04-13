@@ -161,13 +161,6 @@ tr:last-child td{border-bottom:none}
 
 <div class="wrap">
 
-  <div class="stats">
-    <div class="stat"><div class="sn">21</div><div class="sl">Snapshots Recovered</div></div>
-    <div class="stat"><div class="sn">~5TB</div><div class="sl">Total Data</div></div>
-    <div class="stat"><div class="sn">0</div><div class="sl">Volumes Created</div></div>
-    <div class="stat"><div class="sn">2h</div><div class="sl">Avg per 100GB</div></div>
-  </div>
-
   <p>During a regional outage we tried snapshot copy — failed. Cross-region AMI copy — failed. VM Export — failed. Then we tried ColdSnap. It worked. This post covers both scenarios it solved: emergency snapshot recovery during an active outage, and exporting encrypted AMIs to on-premises when the conventional VM Export path was blocked.</p>
 
   <div class="toc">
@@ -417,7 +410,7 @@ coldsnap upload /data/app-data-vol3.img
 
 <pre><code><span class="cm"># Re-encrypt with CMK on upload</span>
 coldsnap upload disk.img \
-  --kms-key-id arn:aws:kms:ap-south-1:380459294095:key/1a2b3c4d-5e6f-1a2b-3c4d-5e6f1a2b3c4d
+  --kms-key-id arn:aws:kms:ap-south-1:11111111111:key/1a2b3c4d-5e6f-1a2b-3c4d-5e6f1a2b3c4d
 
 <span class="cm"># Tag at upload time — no separate API call needed</span>
 coldsnap upload disk.img \
