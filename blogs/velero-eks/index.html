@@ -370,16 +370,12 @@ velero restore create --from-backup dr-backup</code></pre>
       <tr><td>Disable credential Secret</td><td><span class="ic">credentials.useSecret=false</span> when using IRSA</td></tr>
       <tr><td>CRR is forward-only</td><td>Only new objects replicate &mdash; always take fresh backup after enabling</td></tr>
       <tr><td>Context discipline</td><td>Always check <span class="ic">kubectl config current-context</span></td></tr>
-      <tr><td>Helm repo URL</td><td><span class="ic">helm-charts</span> (plural) not <span class="ic">helm-chart</span></td></tr>
     </tbody>
   </table>
 
   <div class="nc">
     <div class="nct">Coming Next</div>
-    <div class="nci"><span class="nco">&#8594;</span> Argo CD for GitOps app deployment across both clusters</div>
-    <div class="nci"><span class="nco">&#8594;</span> Route 53 health checks + automated failover</div>
-    <div class="nci"><span class="nco">&#8594;</span> Terraform automation for the full stack</div>
-    <div class="nci"><span class="nco">&#8594;</span> Velero RPO-based backup policies</div>
+    <div class="nci"><span class="nco">&#8594;</span> Argo CD for GitOps DR Set-up</div>
   </div>
 
   <div class="hbox"><div class="hbox-title">Source Code</div><p style="margin:0;font-size:14px;">All Helm values and configs: <a href="https://github.com/aquavis12/velero-config">github.com/aquavis12/velero-config</a></p></div>
