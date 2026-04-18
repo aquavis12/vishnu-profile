@@ -73,7 +73,7 @@
     "@type": "WebSite",
     "name": "Vishnu Rachapudi",
     "url": "https://www.vishnurachapudi.com/",
-    "description": "Personal website of Vishnu Rachapudi — 14x AWS Certified Cloud & AI Engineer, AWS Community Builder, and international speaker.",
+    "description": "Personal website of Vishnu Rachapudi — 14x AWS Certified Cloud & AI Engineer, AWS Community Builder, and speaker.",
     "potentialAction": {
       "@type": "SearchAction",
       "target": "https://www.vishnurachapudi.com/?s={search_term_string}",
@@ -576,6 +576,62 @@
       .gallery-preview-grid { grid-template-columns: 1fr 1fr; }
       .gp-item.featured { grid-row: auto; }
     }
+
+
+    /* ── LIGHT THEME OVERRIDES ── */
+body.light {
+  --bg: #f5f4f0;
+  --bg2: #eeecea;
+  --bg3: #e5e3de;
+  --surface: #dddbd6;
+  --border: rgba(0,0,0,0.09);
+  --border2: rgba(0,0,0,0.18);
+  --text: #1a1917;
+  --muted: #6b6863;
+  --link: #1d6fb8;
+  --accent: #e8650a;
+  --accent2: #f97316;
+}
+
+body.light nav {
+  background: rgba(245,244,240,0.88);
+}
+
+body.light .stat,
+body.light .cert-chip,
+body.light .blog-card,
+body.light .award-card,
+body.light .talk-row,
+body.light .media-card {
+  background: #eeecea;
+}
+
+body.light .hero-avatar {
+  box-shadow: 0 0 0 8px rgba(232,101,10,0.1);
+}
+
+/* ── TOGGLE BUTTON ── */
+.theme-toggle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 0.5px solid var(--border2);
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  transition: background 0.2s, border-color 0.2s, transform 0.15s;
+  flex-shrink: 0;
+}
+
+.theme-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: rotate(20deg);
+}
   </style>
 </head>
 
@@ -585,6 +641,10 @@
 <nav role="navigation" aria-label="Main navigation">
   <a class="nav-logo" href="#hero">vishnu<span>.</span></a>
   <ul class="nav-links">
+    <!-- THEME TOGGLE BUTTON — paste inside <nav>, after <ul class="nav-links"> -->
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode">
+  <span class="toggle-icon" id="toggleIcon">☀</span>
+</button>
     <li><a href="#about">about</a></li>
     <li><a href="#certifications">certs</a></li>
     <li><a href="#talks">talks</a></li>
@@ -1302,7 +1362,29 @@
 </style>
 
 <script>
-  (function() {
+  (function () {
+
+    /* ── THEME TOGGLE ── */
+    const btn = document.getElementById('themeToggle');
+    const icon = document.getElementById('toggleIcon');
+    const STORAGE_KEY = 'portfolio-theme';
+    const ICONS = { dark: '☀', light: '☾' };
+
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved === 'light') {
+      document.body.classList.add('light');
+      if (icon) icon.textContent = ICONS.light;
+    }
+
+    if (btn) {
+      btn.addEventListener('click', () => {
+        const isLight = document.body.classList.toggle('light');
+        if (icon) icon.textContent = isLight ? ICONS.light : ICONS.dark;
+        localStorage.setItem(STORAGE_KEY, isLight ? 'light' : 'dark');
+      });
+    }
+
+    /* ── GALLERY LIGHTBOX ── */
     var items = Array.from(document.querySelectorAll('.gp-item'));
     var lb = document.getElementById('lightbox');
     var lbImg = document.getElementById('lb-img');
@@ -1314,31 +1396,45 @@
       current = idx;
       var el = items[idx];
       lbImg.src = el.dataset.src;
-      lbImg.alt = el.querySelector('img').alt;
-      lbTitle.textContent = el.dataset.title;
-      lbMeta.textContent = el.dataset.meta;
+      lbImg.alt = el.querySelector('img') ? el.querySelector('img').alt : '';
+      lbTitle.textContent = el.dataset.title || '';
+      lbMeta.textContent = el.dataset.meta || '';
       lb.classList.add('open');
       document.body.style.overflow = 'hidden';
     }
-    function closeLb() { lb.classList.remove('open'); document.body.style.overflow = ''; }
 
-    items.forEach(function(el, i) {
-      el.addEventListener('click', function() { openLb(i); });
-      el.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLb(i); } });
+    function closeLb() {
+      lb.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    items.forEach(function (el, i) {
+      el.addEventListener('click', function () { openLb(i); });
+      el.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLb(i); }
+      });
     });
 
-    document.getElementById('lb-close').addEventListener('click', closeLb);
-    document.getElementById('lb-prev').addEventListener('click', function() { openLb((current - 1 + items.length) % items.length); });
-    document.getElementById('lb-next').addEventListener('click', function() { openLb((current + 1) % items.length); });
-    lb.addEventListener('click', function(e) { if (e.target === lb) closeLb(); });
-    document.addEventListener('keydown', function(e) {
-      if (!lb.classList.contains('open')) return;
-      if (e.key === 'Escape') closeLb();
-      if (e.key === 'ArrowLeft') document.getElementById('lb-prev').click();
-      if (e.key === 'ArrowRight') document.getElementById('lb-next').click();
+    var lbClose = document.getElementById('lb-close');
+    var lbPrev  = document.getElementById('lb-prev');
+    var lbNext  = document.getElementById('lb-next');
+
+    if (lbClose) lbClose.addEventListener('click', closeLb);
+    if (lbPrev)  lbPrev.addEventListener('click', function () { openLb((current - 1 + items.length) % items.length); });
+    if (lbNext)  lbNext.addEventListener('click', function () { openLb((current + 1) % items.length); });
+
+    if (lb) {
+      lb.addEventListener('click', function (e) { if (e.target === lb) closeLb(); });
+    }
+
+    document.addEventListener('keydown', function (e) {
+      if (!lb || !lb.classList.contains('open')) return;
+      if (e.key === 'Escape')     closeLb();
+      if (e.key === 'ArrowLeft')  openLb((current - 1 + items.length) % items.length);
+      if (e.key === 'ArrowRight') openLb((current + 1) % items.length);
     });
+
   })();
 </script>
-
 </body>
 </html>
