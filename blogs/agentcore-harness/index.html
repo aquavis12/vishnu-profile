@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deploy an AI Agent in Minutes with AgentCore Managed Harness | Vishnu Rachapudi</title>
+  <meta name="description" content="No orchestration code. No infrastructure yak-shaving. Just a config file, the agentcore CLI, and a working agent on AWS in minutes. Here's exactly how I built it — screenshots, harness.json, deploy output, and all.">
+  <meta name="author" content="Vishnu Rachapudi">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #0d0d10;
+      --bg2: #14141a;
+      --bg3: #1c1c24;
+      --border: #2a2a38;
+      --accent: #7c6af7;
+      --accent2: #5ce5c8;
+      --text: #e8e8f0;
+      --muted: #888898;
+      --tag-bg: #1e1e2c;
+      --code-bg: #111118;
+      --nav-height: 60px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: var(--nav-height);
+      background: rgba(13,13,16,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+    }
+    .nav-logo {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 1.1rem;
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 1.5rem; font-size: .875rem; }
+    .nav-links a { color: var(--muted); text-decoration: none; transition: color .2s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-back {
+      font-size: .875rem;
+      color: var(--muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      transition: color .2s;
+    }
+    .nav-back:hover { color: var(--accent); }
+
+    /* ── LAYOUT ── */
+    .container { max-width: 780px; margin: 0 auto; padding: 0 1.5rem; }
+
+    /* ── HEADER ── */
+    .post-header { padding: 4rem 0 2.5rem; }
+
+    .tags { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.25rem; }
+    .tag {
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: .25rem .65rem;
+      border-radius: 4px;
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+    .tag.accent { color: var(--accent); border-color: var(--accent); background: rgba(124,106,247,.08); }
+    .tag.green  { color: var(--accent2); border-color: var(--accent2); background: rgba(92,229,200,.07); }
+
+    h1.post-title {
+      font-size: clamp(1.75rem, 4vw, 2.6rem);
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -.02em;
+      color: #fff;
+      margin-bottom: 1rem;
+    }
+    .post-subtitle {
+      font-size: 1.05rem;
+      color: var(--muted);
+      line-height: 1.65;
+      margin-bottom: 2rem;
+      max-width: 680px;
+    }
+
+    .author-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.25rem 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .author-avatar {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: .9rem; color: #fff;
+      flex-shrink: 0;
+    }
+    .author-info { flex: 1; }
+    .author-name { font-weight: 600; font-size: .9rem; color: var(--text); }
+    .author-meta { font-size: .8rem; color: var(--muted); }
+    .post-meta { font-size: .82rem; color: var(--muted); text-align: right; }
+    .post-meta span { display: block; }
+
+    /* ── STAT PILLS ── */
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1rem;
+      margin: 2.5rem 0;
+    }
+    .stat-pill {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.2rem;
+      text-align: center;
+    }
+    .stat-num {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--accent);
+      display: block;
+    }
+    .stat-label { font-size: .75rem; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; }
+
+    /* ── TOC ── */
+    .toc {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+    }
+    .toc-title { font-size: .8rem; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-bottom: .75rem; }
+    .toc ol { padding-left: 1.2rem; }
+    .toc li { margin: .35rem 0; font-size: .9rem; }
+    .toc a { color: var(--muted); text-decoration: none; transition: color .2s; }
+    .toc a:hover { color: var(--accent); }
+
+    /* ── BODY ── */
+    .post-body { padding-bottom: 5rem; }
+
+    .section-label {
+      font-size: .72rem;
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      color: var(--accent);
+      font-weight: 600;
+      font-family: 'IBM Plex Mono', monospace;
+      margin-bottom: .5rem;
+      margin-top: 3.5rem;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -.015em;
+      color: #fff;
+      margin-bottom: 1rem;
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--text);
+      margin: 1.75rem 0 .6rem;
+    }
+
+    p { margin-bottom: 1.1rem; color: var(--text); }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    strong { color: #fff; font-weight: 600; }
+
+    /* ── CODE ── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem 1.4rem;
+      overflow-x: auto;
+      margin: 1.5rem 0;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: .82rem;
+      line-height: 1.65;
+      color: #c9d1d9;
+    }
+    code {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: .85em;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: .15em .4em;
+      color: var(--accent2);
+    }
+    pre code { background: none; border: none; padding: 0; font-size: inherit; color: inherit; }
+
+    /* syntax highlights */
+    .cm { color: #6a9153; }   /* comment */
+    .ck { color: #569cd6; }   /* keyword */
+    .cs { color: #ce9178; }   /* string */
+    .cn { color: #b5cea8; }   /* number */
+    .cf { color: #dcdcaa; }   /* function */
+    .ct { color: var(--accent2); } /* type/key */
+
+    /* ── SCREENSHOT ── */
+    .screenshot {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 1.5rem 0;
+      background: var(--bg2);
+    }
+    .screenshot-header {
+      padding: .6rem 1rem;
+      background: var(--bg3);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot.r { background: #ff5f57; }
+    .dot.y { background: #febc2e; }
+    .dot.g { background: #28c840; }
+    .screenshot-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: .72rem;
+      color: var(--muted);
+      margin-left: .5rem;
+    }
+    .screenshot-body {
+      padding: 1.4rem;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: .8rem;
+      line-height: 1.7;
+      background: #100e1a;
+    }
+    .prompt { color: var(--accent2); }
+    .cmd { color: #e5e5e5; }
+    .done { color: #28c840; }
+    .info { color: var(--accent); }
+    .dim  { color: #666; }
+    .ul { text-decoration: underline; text-decoration-color: #5ce5c840; }
+
+    /* ── COMPARE TABLE ── */
+    .compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    .compare-col {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.2rem;
+    }
+    .compare-col.bad .col-title  { color: #f07178; }
+    .compare-col.good .col-title { color: var(--accent2); }
+    .col-title { font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; margin-bottom: .75rem; }
+    .compare-col ul { list-style: none; }
+    .compare-col li { font-size: .87rem; color: var(--muted); padding: .3rem 0; border-bottom: 1px solid var(--border); }
+    .compare-col li:last-child { border: none; }
+    .compare-col.bad  li::before { content: "✗ "; color: #f07178; }
+    .compare-col.good li::before { content: "✓ "; color: var(--accent2); }
+
+    /* ── CALLOUT ── */
+    .callout {
+      background: rgba(124,106,247,.08);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      padding: 1rem 1.3rem;
+      margin: 1.5rem 0;
+      font-size: .92rem;
+      color: var(--text);
+    }
+    .callout.green {
+      background: rgba(92,229,200,.07);
+      border-color: var(--accent2);
+    }
+
+    /* ── HARNESS ANATOMY ── */
+    .anatomy {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+    }
+    .anatomy-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: .75rem;
+      margin-top: 1rem;
+    }
+    .anatomy-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+    }
+    .anatomy-icon { font-size: 1.3rem; margin-bottom: .4rem; }
+    .anatomy-title { font-size: .82rem; font-weight: 700; color: var(--text); margin-bottom: .3rem; }
+    .anatomy-desc { font-size: .75rem; color: var(--muted); line-height: 1.5; }
+
+    /* ── FLOW ── */
+    .flow {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin: 1.5rem 0;
+    }
+    .flow-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    .flow-step-left {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .flow-num {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      background: rgba(124,106,247,.15);
+      border: 1px solid var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .75rem; font-weight: 700; color: var(--accent);
+      flex-shrink: 0;
+    }
+    .flow-line {
+      width: 1px;
+      flex: 1;
+      background: var(--border);
+      margin: 4px 0;
+      min-height: 24px;
+    }
+    .flow-content {
+      padding: 0 0 1.5rem;
+      flex: 1;
+    }
+    .flow-title { font-weight: 600; font-size: .95rem; color: var(--text); margin-bottom: .25rem; }
+    .flow-desc { font-size: .85rem; color: var(--muted); }
+
+    /* ── AGENT TOOLKIT BOX ── */
+    .toolkit-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    .toolkit-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.2rem;
+    }
+    .toolkit-card .tk-icon { font-size: 1.6rem; margin-bottom: .6rem; }
+    .toolkit-card .tk-title { font-weight: 700; font-size: .92rem; color: var(--text); margin-bottom: .35rem; }
+    .toolkit-card .tk-desc { font-size: .8rem; color: var(--muted); line-height: 1.55; }
+
+    /* ── FOOTER DIVIDER ── */
+    .post-footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 0;
+      margin-top: 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: gap;
+    }
+    .footer-author { font-size: .85rem; color: var(--muted); }
+    .footer-author strong { color: var(--text); }
+    .footer-links { display: flex; gap: 1rem; font-size: .82rem; }
+    .footer-links a { color: var(--muted); text-decoration: none; }
+    .footer-links a:hover { color: var(--accent); }
+
+    @media (max-width: 600px) {
+      .compare { grid-template-columns: 1fr; }
+      h1.post-title { font-size: 1.65rem; }
+      .author-row { flex-wrap: wrap; }
+      .post-meta { text-align: left; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="https://www.vishnurachapudi.com">vishnu.</a>
+  <div style="display:flex; align-items:center; gap:2rem;">
+    <a class="nav-back" href="https://www.vishnurachapudi.com/#blog">← blog</a>
+    <div class="nav-links">
+      <a href="https://dev.to/vishnu_rachapudi_75e73248">dev.to</a>
+      <a href="https://www.linkedin.com/in/vishnu-rachapudi-28956920b/">linkedin</a>
+    </div>
+  </div>
+</nav>
+
+<!-- POST -->
+<article>
+  <div class="container">
+
+    <!-- HEADER -->
+    <header class="post-header">
+      <div class="tags">
+        <span class="tag accent">AWS</span>
+        <span class="tag accent">AgentCore</span>
+        <span class="tag green">Agentic AI</span>
+        <span class="tag">Bedrock</span>
+        <span class="tag">CLI</span>
+      </div>
+
+      <h1 class="post-title">Deploy an AI Agent in Minutes with AgentCore Managed Harness</h1>
+      <p class="post-subtitle">No orchestration code. No infrastructure yak-shaving. Just a config file, the <code>agentcore</code> CLI, and a working agent on AWS in minutes. Here's exactly how I built it — screenshots, <code>harness.json</code>, deploy output, and all. Plus: what the new Agent Toolkit for AWS means for builders.</p>
+
+      <div class="author-row">
+        <div class="author-avatar">VR</div>
+        <div class="author-info">
+          <div class="author-name">Vishnu Rachapudi</div>
+          <div class="author-meta">Cloud &amp; AI Engineer · AWS Community Builder (Security)</div>
+        </div>
+        <div class="post-meta">
+          <span>May 2026</span>
+          <span>12 min read</span>
+        </div>
+      </div>
+
+      <!-- STAT PILLS -->
+      <div class="stat-row">
+        <div class="stat-pill">
+          <span class="stat-num">3</span>
+          <span class="stat-label">API calls to live</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-num">0</span>
+          <span class="stat-label">Lines of orch. code</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-num">~5 min</span>
+          <span class="stat-label">Prototype to deploy</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-num">1</span>
+          <span class="stat-label">Terminal to rule them all</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- BODY -->
+    <div class="post-body">
+
+      <p>I've been tracking the AgentCore story since re:Invent 2025. When AWS dropped the <strong>Managed Harness (preview)</strong> on April 22, 2026, I dropped what I was doing and spent an evening building with it. What follows is that evening, documented.</p>
+      <p>If you've ever tried to stand up an agent from scratch — orchestration loop, compute, sandboxing, auth, persistent storage, tool wiring — you know it easily burns a day before your agent does anything useful. The managed harness eliminates that entirely.</p>
+
+      <!-- TOC -->
+      <div class="toc">
+        <div class="toc-title">In this post</div>
+        <ol>
+          <li><a href="#s1">What is AgentCore Managed Harness — and why it matters</a></li>
+          <li><a href="#s2">The AgentCore CLI — one terminal to build, deploy, operate</a></li>
+          <li><a href="#s3">Hands-on: creating a project and harness from scratch</a></li>
+          <li><a href="#s4">Adding tools — AgentCore Browser + more</a></li>
+          <li><a href="#s5">Deploy to AWS — what happens under the hood</a></li>
+          <li><a href="#s6">Bonus: Agent Toolkit for AWS — what it is and why you care</a></li>
+          <li><a href="#s7">My takeaways</a></li>
+        </ol>
+      </div>
+
+      <!-- SECTION 1 -->
+      <div class="section-label" id="s1">Section 01</div>
+      <h2>What is AgentCore Managed Harness?</h2>
+
+      <p>In AgentCore, a <strong>harness</strong> is the orchestration foundation that turns a model into a running agent. It bundles: the agent loop (reason → select tool → act → respond), compute isolation, tool connections, memory, identity, networking, and observability.</p>
+      <p>Before the managed harness, you had to write all of this yourself — even with the AgentCore SDK. The managed harness is AWS providing that plumbing as a <em>managed offering</em>. You declare the model, system prompt, and tools as config. A working agent is the result.</p>
+
+      <div class="anatomy">
+        <strong>What the managed harness owns</strong>
+        <div class="anatomy-grid">
+          <div class="anatomy-card">
+            <div class="anatomy-icon">🔁</div>
+            <div class="anatomy-title">Full agent loop</div>
+            <div class="anatomy-desc">Reasoning, tool selection, action execution, and streaming — managed end-to-end.</div>
+          </div>
+          <div class="anatomy-card">
+            <div class="anatomy-icon">🖥️</div>
+            <div class="anatomy-title">Isolated microVM</div>
+            <div class="anatomy-desc">Each session gets its own microVM with filesystem and shell access.</div>
+          </div>
+          <div class="anatomy-card">
+            <div class="anatomy-icon">🔌</div>
+            <div class="anatomy-title">Tool wiring</div>
+            <div class="anatomy-desc">Browser, code interpreter, MCP, gateway — plug in via config, not code.</div>
+          </div>
+          <div class="anatomy-card">
+            <div class="anatomy-icon">🧠</div>
+            <div class="anatomy-title">Memory</div>
+            <div class="anatomy-desc">Persistent context across sessions when enabled. Named memory resource.</div>
+          </div>
+          <div class="anatomy-card">
+            <div class="anatomy-icon">🌐</div>
+            <div class="anatomy-title">VPC &amp; auth</div>
+            <div class="anatomy-desc">IAM, custom JWT, VPC placement — all optional config in the harness.</div>
+          </div>
+          <div class="anatomy-card">
+            <div class="anatomy-icon">📦</div>
+            <div class="anatomy-title">Session storage</div>
+            <div class="anatomy-desc">Mount a persistent path (e.g. <code>/mnt/data</code>) for session-level filesystem.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <strong>Availability:</strong> Managed harness (preview) is live in US West (Oregon), US East (N. Virginia), Asia Pacific (Sydney), and Europe (Frankfurt). The CLI and persistent filesystem are available in all commercial AgentCore regions. No additional charge for CLI, harness, or skills — you pay only for compute consumed.
+      </div>
+
+      <!-- SECTION 2 -->
+      <div class="section-label" id="s2">Section 02</div>
+      <h2>The AgentCore CLI — one terminal to build, deploy, operate</h2>
+
+      <p>Before the CLI, deploying an agent meant stepping outside your dev environment entirely. Now everything lives in one terminal. The help output shows the full picture:</p>
+
+      <div class="screenshot">
+        <div class="screenshot-header">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          <span class="screenshot-label">terminal — agentcore --help</span>
+        </div>
+        <div class="screenshot-body">
+<span class="prompt">vishnu@user:~$</span> <span class="cmd">agentcore version</span>
+<br><br>
+<span class="dim">Build and deploy Agentic AI applications on AgentCore</span>
+<br><br>
+<span class="dim">Commands:</span>
+<br>
+<span class="info">  add</span>           Add resources to project config
+<br>
+<span class="info">  dev|d</span>         Launch local dev server, or invoke locally
+<br>
+<span class="info">  deploy|dp</span>     Deploy project infrastructure to AWS via CDK
+<br>
+<span class="info">  create</span>        Create a new AgentCore project
+<br>
+<span class="info">  invoke|i</span>      Invoke a deployed agent endpoint
+<br>
+<span class="info">  logs|l</span>        Stream or search agent runtime logs
+<br>
+<span class="info">  traces|t</span>      View and download agent traces
+<br>
+<span class="info">  run</span>           Run evaluations, batch evals, or optimization recommendations
+<br>
+<span class="info">  status|s</span>      Show deployed resource details and status
+<br>
+<span class="info">  fetch</span>         Fetch access info for deployed resources
+<br>
+<span class="info">  evals</span>         View saved eval results from past runs
+<br>
+<span class="info">  update</span>        Check for and install CLI updates
+        </div>
+      </div>
+
+      <p>The <code>add</code> command supports a rich menu of resources — harnesses, agents, memory, credentials, evaluators, gateways, A/B tests (preview), and config bundles.</p>
+
+      <!-- SECTION 3 -->
+      <div class="section-label" id="s3">Section 03</div>
+      <h2>Hands-on: creating a project from scratch</h2>
+
+      <h3>Step 1 — Create the project</h3>
+      <p>I started with <code>agentcore create</code>. The flag <code>--session-storage-mount-path</code> mounts a persistent volume at <code>/mnt/data</code> inside the agent's microVM — useful when your agent needs to read/write files across turns.</p>
+
+      <div class="screenshot">
+        <div class="screenshot-header">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          <span class="screenshot-label">terminal — agentcore create</span>
+        </div>
+        <div class="screenshot-body">
+<span class="prompt">vishnu@user:~$</span> <span class="cmd">agentcore create --name myawssol --model-provider bedrock --session-storage-mount-path /mnt/data</span>
+<br>
+<span class="done">[done]</span>  Create myawssol/ project directory
+<br>
+<span class="done">[done]</span>  Prepare agentcore/ directory
+<br>
+<span class="done">[done]</span>  Initialize git repository
+<br>
+<span class="done">[done]</span>  Add harness to project
+<br><br>
+<span class="info">Created:</span>
+<br>
+  myawssol/
+<br>
+    <span class="dim">agentcore/</span>        <span class="dim">Config and CDK project</span>
+<br>
+    <span class="dim">app/myawssol/</span>    <span class="dim">Harness config</span>
+<br><br>
+<span class="info">Harness project created successfully!</span>
+<br><br>
+<span class="dim">To continue:</span>
+<br>
+  <span class="info">cd myawssol</span>
+<br>
+  <span class="info">agentcore deploy</span>
+        </div>
+      </div>
+
+      <h3>Step 2 — Inspect the generated harness.json</h3>
+      <p>The project scaffold drops a <code>harness.json</code> and a <code>system-prompt.md</code> in <code>app/myawssol/</code>. Everything about your agent is declared here.</p>
+
+      <div class="screenshot">
+        <div class="screenshot-header">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          <span class="screenshot-label">app/myawssol/harness.json</span>
+        </div>
+        <div class="screenshot-body">
+<span class="prompt">vishnu@user:~/myawssol/app/myawssol$</span> <span class="cmd">cat harness.json</span>
+<br>
+{
+<br>
+  <span class="ct">"name"</span>: <span class="cs">"myawssol"</span>,
+<br>
+  <span class="ct">"model"</span>: {
+<br>
+    <span class="ct">"provider"</span>: <span class="cs">"bedrock"</span>,
+<br>
+    <span class="ct">"modelId"</span>: <span class="cs">"global.anthropic.claude-sonnet-4-6"</span>
+<br>
+  },
+<br>
+  <span class="ct">"tools"</span>: [],
+<br>
+  <span class="ct">"skills"</span>: [],
+<br>
+  <span class="ct">"memory"</span>: {
+<br>
+    <span class="ct">"name"</span>: <span class="cs">"myawssolMemory"</span>
+<br>
+  },
+<br>
+  <span class="ct">"sessionStoragePath"</span>: <span class="cs">"/mnt/data"</span>
+<br>
+}
+        </div>
+      </div>
+
+      <p>Clean. The model is <strong>Claude Sonnet 4.6 on Bedrock</strong> (global inference profile). Memory is enabled by default — the harness will create a named memory resource to carry context across sessions. Session storage is mounted at <code>/mnt/data</code>.</p>
+
+      <h3>Configuring the harness interactively with <code>agentcore add</code></h3>
+      <p>You can also build the harness interactively. The <code>agentcore add</code> wizard walks you through name → model provider → custom environment → memory → advanced settings → confirm.</p>
+
+      <div class="screenshot">
+        <div class="screenshot-header">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          <span class="screenshot-label">terminal — agentcore add → Add Resource</span>
+        </div>
+        <div class="screenshot-body">
+<span class="prompt">vishnu@user:~/myawssol$</span> <span class="cmd">agentcore add</span>
+<br><br>
+<span class="info">  Add Resource</span>
+<br><br>
+<span class="info">❯ Harness</span>          <span class="dim">Managed config-based agent loop, no code required</span>
+<br>
+<span class="dim">  Agent</span>            <span class="dim">Deploy an HTTP, MCP, A2A, or AG-UI agent</span>
+<br>
+<span class="dim">  Memory</span>           <span class="dim">Persistent context storage</span>
+<br>
+<span class="dim">  Credential</span>       <span class="dim">API key credential providers</span>
+<br>
+<span class="dim">  Evaluator</span>        <span class="dim">Custom LLM-as-a-Judge evaluator</span>
+<br>
+<span class="dim">  Online Eval Config</span> <span class="dim">Continuous evaluation pipeline</span>
+<br>
+<span class="dim">  Gateway</span>          <span class="dim">Route and manage gateway targets</span>
+<br>
+<span class="dim">  AB Test [preview]</span> <span class="dim">Compare agent configurations with traffic splitting</span>
+        </div>
+      </div>
+
+      <p>The wizard walks through each option. The <strong>Advanced settings</strong> step is where things get interesting:</p>
+
+      <div class="screenshot">
+        <div class="screenshot-header">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          <span class="screenshot-label">terminal — Advanced settings (optional)</span>
+        </div>
+        <div class="screenshot-body">
+<span class="info">Advanced settings (optional)</span>
+<br>
+<span class="dim">Configure tools, network, lifecycle, execution limits, truncation, or session storage</span>
+<br><br>
+<span class="info">❯ [ ] Tools</span>              <span class="dim">Add browser, code interpreter, MCP, or gateway tools</span>
+<br>
+<span class="dim">  [ ] Authentication</span>   <span class="dim">Inbound auth: AWS_IAM or Custom JWT</span>
+<br>
+<span class="dim">  [ ] Network</span>          <span class="dim">Deploy inside a VPC with custom subnets and security groups</span>
+<br>
+<span class="dim">  [ ] Lifecycle</span>        <span class="dim">Set idle timeout and max session lifetime</span>
+<br>
+<span class="dim">  [ ] Execution limits</span> <span class="dim">Cap iterations, tokens, and per-turn timeout</span>
+<br>
+<span class="dim">  [ ] Truncation</span>       <span class="dim">Choose how context is managed when it exceeds limits</span>
+<br>
+<span class="dim">  [ ] Session Storage</span>  <span class="dim">Mount persistent storage for session data</span>
+        </div>
+      </div>
+
+      <!-- SECTION 4 -->
+      <div class="section-label" id="s4">Section 04</div>
+      <h2>Adding tools to the harness</h2>
+
+      <p>I added the <strong>AgentCore Browser</strong> tool — this gives the agent the ability to navigate web pages, extract content, and interact with UIs. One command:</p>
+
+      <div class="screenshot">
+        <div class="screenshot-header">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          <span class="screenshot-label">terminal — agentcore add tool</span>
+        </div>
+        <div class="screenshot-body">
+<span class="prompt">vishnu@user:~/myawssol$</span> <span class="cmd">agentcore add tool --harness myawssol --type agentcore_browser --name browser</span>
+<br>
+Added tool <span class="cs">'browser'</span> to harness <span class="cs">'myawssol'</span>.
+<br>
+Run <span class="info">'agentcore deploy'</span> to apply changes.
+        </div>
+      </div>
+
+      <p>This appended the tool entry to <code>harness.json</code>:</p>
+      <pre><code><span class="ct">"tools"</span>: [
+  {
+    <span class="ct">"type"</span>: <span class="cs">"agentcore_browser"</span>,
+    <span class="ct">"name"</span>: <span class="cs">"browser"</span>
+  }
+]</code></pre>
+
+      <p>No SDK import. No handler registration. No Lambda function. Just config.</p>
+      <p>Other available tool types you can wire in the same way:</p>
+      <ul style="padding-left:1.4rem; color:var(--muted); font-size:.9rem; margin-bottom:1rem;">
+        <li style="padding:.25rem 0;"><strong style="color:var(--text);">agentcore_code_interpreter</strong> — sandboxed code execution inside the microVM</li>
+        <li style="padding:.25rem 0;"><strong style="color:var(--text);">agentcore_gateway</strong> — route calls through an AgentCore gateway</li>
+        <li style="padding:.25rem 0;"><strong style="color:var(--text);">remote_mcp_server</strong> — attach any MCP server endpoint as a tool</li>
+      </ul>
+
+      <!-- SECTION 5 -->
+      <div class="section-label" id="s5">Section 05</div>
+      <h2>Deploy — what happens under the hood</h2>
+
+      <p>From the project root, <code>agentcore deploy</code> handles everything. It calls CDK behind the scenes but you never see CloudFormation directly unless you want to.</p>
+
+      <div class="screenshot">
+        <div class="screenshot-header">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          <span class="screenshot-label">terminal — agentcore deploy</span>
+        </div>
+        <div class="screenshot-body">
+<span class="prompt">vishnu@user:~/myawssol$</span> <span class="cmd">agentcore deploy</span>
+<br><br>
+<span class="info">AgentCore Deploy</span>
+<br><br>
+        Validate project
+<br>
+        <span class="dim">Check dependencies</span>
+<br>
+        <span class="dim">Build CDK project</span>
+<br>
+        <span class="dim">Synthesize CloudFormation</span>
+<br>
+        <span class="dim">Check stack status</span>
+<br>
+        <span class="dim">Computing diff changes...</span>
+<br>
+        <span class="dim">Publish assets</span>
+<br>
+        <span class="dim">Deploy to AWS</span>
+<br><br>
+Log: <span class="ul info">agentcore/.cli/logs/deploy/deploy-20260526-201234.log</span>
+<br><br>
+<span class="dim">Esc back · Ctrl+C quit</span>
+        </div>
+      </div>
+
+      <p>The deploy pipeline: validate → CDK synth → CloudFormation diff → publish assets → deploy to AWS. The agent endpoint URL, IAM role ARN, and session storage path are all available after deploy via <code>agentcore fetch</code> or <code>agentcore status</code>.</p>
+
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-step-left">
+            <div class="flow-num">1</div>
+            <div class="flow-line"></div>
+          </div>
+          <div class="flow-content">
+            <div class="flow-title">agentcore create</div>
+            <div class="flow-desc">Scaffolds project directory, CDK config, and a starter harness.json with model + memory + session storage.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-left">
+            <div class="flow-num">2</div>
+            <div class="flow-line"></div>
+          </div>
+          <div class="flow-content">
+            <div class="flow-title">Edit harness.json + system-prompt.md</div>
+            <div class="flow-desc">Declare your model, tools, memory, and system instructions. No orchestration code.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-left">
+            <div class="flow-num">3</div>
+            <div class="flow-line"></div>
+          </div>
+          <div class="flow-content">
+            <div class="flow-title">agentcore add tool (optional)</div>
+            <div class="flow-desc">Browser, code interpreter, MCP, or gateway tools added via CLI. Config updated automatically.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-left">
+            <div class="flow-num">4</div>
+            <div class="flow-line"></div>
+          </div>
+          <div class="flow-content">
+            <div class="flow-title">agentcore deploy</div>
+            <div class="flow-desc">CDK synthesize → CloudFormation diff → deploy. Agent endpoint live in minutes.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-left">
+            <div class="flow-num">5</div>
+          </div>
+          <div class="flow-content">
+            <div class="flow-title">agentcore invoke / logs / traces</div>
+            <div class="flow-desc">Test from the same terminal. Stream logs. View traces. No context-switching.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 6 -->
+      <div class="section-label" id="s6">Section 06</div>
+      <h2>Bonus: Agent Toolkit for AWS</h2>
+
+      <p>A week after the managed harness dropped, AWS announced another piece: the <strong>Agent Toolkit for AWS</strong> (May 2026). This is the successor to the MCP servers, plugins, and skills that lived on AWS Labs.</p>
+
+      <div class="callout green">
+        <strong>One-line summary:</strong> Agent Toolkit for AWS is a production-ready suite of tools and guidance that helps AI coding agents build on AWS with fewer errors, lower token costs, and enterprise-grade security controls. It is free — you pay only for the resources consumed.
+      </div>
+
+      <p>It's composed of three things:</p>
+
+      <div class="toolkit-grid">
+        <div class="toolkit-card">
+          <div class="tk-icon">🌐</div>
+          <div class="tk-title">AWS MCP Server (GA)</div>
+          <div class="tk-desc">A fully-managed, remote MCP server that gives any coding agent (Kiro, Claude Code, Cursor, Codex) secure, IAM-governed access to all AWS services — plus documentation search so agents always have current knowledge even for services launched after their training cutoff.</div>
+        </div>
+        <div class="toolkit-card">
+          <div class="tk-icon">🔌</div>
+          <div class="tk-title">Agent Plugins</div>
+          <div class="tk-desc">Bundles of the MCP server + curated skills in a single install. Three plugins at launch: <strong>AWS Core</strong> (full-stack apps), <strong>AWS Data Analytics</strong> (pipelines + BI), and <strong>AWS Agents</strong> (building with AgentCore).</div>
+        </div>
+        <div class="toolkit-card">
+          <div class="tk-icon">📚</div>
+          <div class="tk-title">Curated Skills</div>
+          <div class="tk-desc">Encoding of AgentCore best practices directly into your coding agent. Fewer wrong turns on a platform that evolves fast. Agents get recommendations aligned with how the platform is actually meant to be used — not just which API endpoints exist.</div>
+        </div>
+      </div>
+
+      <h3>Why this matters for AgentCore builders</h3>
+      <p>The <strong>AWS Agents plugin</strong> is the key one for anyone using the managed harness. Point Kiro, Claude Code, or Cursor at it and your coding agent now understands AgentCore structure, best practices, harness config patterns, and CDK/CloudFormation implications — in context, at generation time.</p>
+      <p>Combined with the managed harness: you describe what you want in plain language to your coding agent, it generates a valid <code>harness.json</code> + system prompt aligned with AWS conventions, and <code>agentcore deploy</code> ships it. The time from idea to running agent continues to compress.</p>
+
+      <div class="callout">
+        <strong>Quick start:</strong> Browse available skills and plugins on GitHub at <a href="https://github.com/aws/agent-toolkit-for-aws" target="_blank">github.com/aws/agent-toolkit-for-aws</a> or visit the quick start guide linked from the AWS announcement.
+      </div>
+
+      <!-- SECTION 7 -->
+      <div class="section-label" id="s7">Section 07</div>
+      <h2>My takeaways</h2>
+
+      <p>I've been building with Bedrock agents, Strands, and AgentCore for a while now. Here's where the managed harness sits in that progression from my perspective:</p>
+
+      <ul style="padding-left:1.4rem; margin-bottom:1.5rem;">
+        <li style="padding:.4rem 0; color:var(--muted);"><strong style="color:var(--text);">The infrastructure tax is real</strong> — Every team building agents I've spoken to loses days to the same setup: compute, auth, tool wiring, session state. The harness eliminates that first hill entirely.</li>
+        <li style="padding:.4rem 0; color:var(--muted);"><strong style="color:var(--text);">Config as the contract</strong> — harness.json is your entire agent definition. Model, tools, memory, storage, networking. Versioned in git. Reviewable. Diffable. This is the right abstraction.</li>
+        <li style="padding:.4rem 0; color:var(--muted);"><strong style="color:var(--text);">The escape hatch is critical</strong> — When you need full control, you can export the harness orchestration as Strands-based Python code. You're never locked into the managed abstraction.</li>
+        <li style="padding:.4rem 0; color:var(--muted);"><strong style="color:var(--text);">One terminal is underrated</strong> — Before this, switching between my editor, AWS Console, CDK, and a separate deploy pipeline was constant friction. <code>agentcore dev</code>, <code>agentcore deploy</code>, <code>agentcore invoke</code>, <code>agentcore logs</code> — same terminal, same context.</li>
+        <li style="padding:.4rem 0; color:var(--muted);"><strong style="color:var(--text);">Agent Toolkit closes the loop</strong> — The coding agent that helps you write the harness config can now be equipped with current, curated knowledge of the harness itself. That's a flywheel.</li>
+      </ul>
+
+      <p>We're in an era where the time from "I have an agent idea" to "I have a working agent in production" is measured in minutes, not days. This release is a meaningful part of that shift.</p>
+
+      <p>If you're building on AWS with Bedrock and haven't touched AgentCore's managed harness yet — spin up the CLI, run <code>agentcore create</code>, and see how far you get before dinner.</p>
+
+      <div class="callout green">
+        <strong>Links:</strong>
+        <a href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/harness.html" target="_blank">AgentCore Harness Docs</a> ·
+        <a href="https://aws.amazon.com/products/developer-tools/agent-toolkit-for-aws/" target="_blank">Agent Toolkit for AWS</a> ·
+        <a href="https://dev.to/vishnu_rachapudi_75e73248" target="_blank">More posts on Dev.to</a>
+      </div>
+
+    </div><!-- /post-body -->
+
+    <!-- FOOTER -->
+    <div class="post-footer">
+      <div class="footer-author">
+        Written by <strong>Vishnu Rachapudi</strong><br>
+        <span style="font-size:.8rem; color:var(--muted);">14x AWS Certified · Cloud &amp; AI Engineer at SUDO Consultants · AWS Community Builder (Security)</span>
+      </div>
+      <div class="footer-links">
+        <a href="https://dev.to/vishnu_rachapudi_75e73248">Dev.to</a>
+        <a href="https://www.linkedin.com/in/vishnu-rachapudi-28956920b/">LinkedIn</a>
+        <a href="https://www.vishnurachapudi.com/#blog">All posts</a>
+      </div>
+    </div>
+
+  </div><!-- /container -->
+</article>
+
+</body>
+</html>
