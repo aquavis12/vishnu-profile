@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AWS Transform — From Legacy Java 8 + JBoss to Modern Spring Boot | Vishnu Rachapudi</title>
+  <meta name="description" content="I ran AWS/comprehensive-codebase-analysis on a real Spring Boot 2.5.14 + Java 8 + JBoss WAR. 33 files, 2,216 lines of analysis, 8 debt items found, and two clear next-step transformations — here's the full story.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#0b0b0f; --bg2:#13131a; --bg3:#1a1a24; --bg4:#202030;
+      --border:#252535; --border2:#2e2e45;
+      --accent:#7c6af7; --accent2:#5ce5c8; --accent3:#f0a868;
+      --danger:#f07178; --success:#4ade80;
+      --text:#eaeaf4; --muted:#7a7a90; --muted2:#5a5a70;
+      --code-bg:#0e0e16;
+      --glow-accent: rgba(124,106,247,0.15);
+      --glow-green: rgba(92,229,200,0.12);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:16px;line-height:1.75;-webkit-font-smoothing:antialiased}
+
+    /* ── NAV ── */
+    nav{position:sticky;top:0;z-index:100;height:62px;background:rgba(11,11,15,.95);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 2rem}
+    .nav-logo{font-family:'IBM Plex Mono',monospace;font-size:1.05rem;color:var(--accent);text-decoration:none;letter-spacing:-.01em}
+    .nav-right{display:flex;align-items:center;gap:1.8rem}
+    .nav-back{font-size:.82rem;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:.35rem;transition:color .2s}
+    .nav-back:hover{color:var(--accent)}
+    .nav-links{display:flex;gap:1.4rem}
+    .nav-links a{font-size:.82rem;color:var(--muted);text-decoration:none;transition:color .2s}
+    .nav-links a:hover{color:var(--text)}
+
+    /* ── HERO BANNER ── */
+    .hero-banner{background:linear-gradient(135deg,rgba(124,106,247,.08) 0%,rgba(92,229,200,.05) 50%,rgba(240,168,104,.05) 100%);border-bottom:1px solid var(--border);padding:4.5rem 0 3rem;position:relative;overflow:hidden}
+    .hero-banner::before{content:'';position:absolute;top:-40%;left:-10%;width:60%;height:200%;background:radial-gradient(ellipse,rgba(124,106,247,.06) 0%,transparent 70%);pointer-events:none}
+    .hero-banner::after{content:'';position:absolute;top:0;right:0;width:40%;height:100%;background:radial-gradient(ellipse at right,rgba(92,229,200,.05) 0%,transparent 70%);pointer-events:none}
+
+    /* ── LAYOUT ── */
+    .container{max-width:800px;margin:0 auto;padding:0 1.5rem}
+
+    /* ── TAGS ── */
+    .tags{display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:1.3rem}
+    .tag{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.22rem .6rem;border-radius:4px;border:1px solid var(--border);color:var(--muted);background:var(--bg3)}
+    .tag.v{color:var(--accent);border-color:rgba(124,106,247,.4);background:rgba(124,106,247,.08)}
+    .tag.g{color:var(--accent2);border-color:rgba(92,229,200,.35);background:rgba(92,229,200,.07)}
+    .tag.o{color:var(--accent3);border-color:rgba(240,168,104,.35);background:rgba(240,168,104,.07)}
+    .tag.r{color:var(--danger);border-color:rgba(240,113,120,.35);background:rgba(240,113,120,.07)}
+
+    h1.post-title{font-size:clamp(1.9rem,4.5vw,2.8rem);font-weight:800;line-height:1.15;letter-spacing:-.03em;color:#fff;margin-bottom:1.1rem}
+    h1.post-title span{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .post-subtitle{font-size:1.05rem;color:var(--muted);line-height:1.7;margin-bottom:2.2rem;max-width:680px}
+
+    .author-row{display:flex;align-items:center;gap:1rem;padding:1.2rem 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+    .author-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.88rem;color:#fff;flex-shrink:0;box-shadow:0 0 0 3px rgba(124,106,247,.2)}
+    .author-name{font-weight:700;font-size:.9rem;color:var(--text)}
+    .author-meta{font-size:.78rem;color:var(--muted)}
+    .post-meta{font-size:.8rem;color:var(--muted);text-align:right;margin-left:auto}
+    .post-meta span{display:block}
+
+    /* ── STATS ── */
+    .stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:.85rem;margin:2.5rem 0}
+    .stat-pill{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;padding:1.1rem 1rem;text-align:center;position:relative;overflow:hidden;transition:border-color .2s,transform .2s}
+    .stat-pill:hover{border-color:var(--accent);transform:translateY(-2px)}
+    .stat-pill::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));opacity:0;transition:opacity .2s}
+    .stat-pill:hover::before{opacity:1}
+    .stat-num{font-family:'IBM Plex Mono',monospace;font-size:1.7rem;font-weight:700;color:var(--accent);display:block;line-height:1}
+    .stat-label{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.09em;margin-top:.4rem;display:block}
+
+    /* ── TOC ── */
+    .toc{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;padding:1.6rem;margin:2.2rem 0}
+    .toc-eyebrow{font-size:.68rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:.8rem;font-family:'IBM Plex Mono',monospace}
+    .toc ol{padding-left:1.3rem}
+    .toc li{margin:.4rem 0;font-size:.88rem}
+    .toc a{color:var(--muted);text-decoration:none;transition:color .2s}
+    .toc a:hover{color:var(--accent)}
+
+    /* ── BODY ── */
+    .post-body{padding:3.5rem 0 5rem}
+    .section-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.16em;color:var(--accent);font-weight:700;font-family:'IBM Plex Mono',monospace;margin-bottom:.5rem;margin-top:4rem;display:flex;align-items:center;gap:.6rem}
+    .section-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border2),transparent)}
+    h2{font-size:1.55rem;font-weight:800;letter-spacing:-.02em;color:#fff;margin-bottom:1rem;line-height:1.25}
+    h3{font-size:1.1rem;font-weight:700;color:var(--text);margin:2rem 0 .6rem}
+    p{margin-bottom:1.15rem;color:var(--text)}
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    strong{color:#fff;font-weight:600}
+    ul,ol{padding-left:1.4rem;margin-bottom:1.2rem}
+    li{color:var(--muted);padding:.3rem 0}
+    li strong{color:var(--text)}
+
+    code{font-family:'IBM Plex Mono',monospace;font-size:.83em;background:var(--code-bg);border:1px solid var(--border2);border-radius:5px;padding:.15em .42em;color:var(--accent2)}
+    pre{background:var(--code-bg);border:1px solid var(--border2);border-radius:10px;padding:1.3rem 1.5rem;overflow-x:auto;margin:1.6rem 0;font-family:'IBM Plex Mono',monospace;font-size:.79rem;line-height:1.75;color:#c9d1d9}
+    pre code{background:none;border:none;padding:0;font-size:inherit;color:inherit}
+    .g{color:#4ade80}.p{color:#c084fc}.c{color:var(--accent2)}.d{color:var(--muted)}.r{color:var(--danger)}.w{color:var(--accent3)}.b{color:#60a5fa}
+
+    /* ── TERMINAL BLOCK ── */
+    .term{border:1px solid var(--border2);border-radius:12px;overflow:hidden;margin:1.8rem 0;box-shadow:0 4px 24px rgba(0,0,0,.4)}
+    .term-header{padding:.6rem 1rem;background:var(--bg3);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.5rem}
+    .dot{width:11px;height:11px;border-radius:50%}
+    .dot.r{background:#ff5f57}.dot.y{background:#febc2e}.dot.g{background:#28c840}
+    .term-label{font-family:'IBM Plex Mono',monospace;font-size:.7rem;color:var(--muted);margin-left:.5rem;flex:1}
+    .term-badge{font-family:'IBM Plex Mono',monospace;font-size:.65rem;background:rgba(124,106,247,.15);color:var(--accent);border:1px solid rgba(124,106,247,.3);border-radius:3px;padding:.1rem .4rem}
+    .term-body{padding:1.3rem 1.5rem;font-family:'IBM Plex Mono',monospace;font-size:.79rem;line-height:1.8;background:#090912;color:#c9d1d9}
+
+    /* ── CALLOUT ── */
+    .callout{border-radius:0 10px 10px 0;padding:1.1rem 1.4rem;margin:1.8rem 0;font-size:.91rem;display:flex;gap:.9rem;align-items:flex-start}
+    .callout.v{background:rgba(124,106,247,.07);border-left:3px solid var(--accent)}
+    .callout.g{background:rgba(92,229,200,.06);border-left:3px solid var(--accent2)}
+    .callout.o{background:rgba(240,168,104,.06);border-left:3px solid var(--accent3)}
+    .callout.r{background:rgba(240,113,120,.06);border-left:3px solid var(--danger)}
+    .callout-icon{font-size:1.1rem;flex-shrink:0;margin-top:.05rem}
+    .callout-body{flex:1}
+
+    /* ── TRANSFORM CATALOG ── */
+    .t-list{display:flex;flex-direction:column;gap:.65rem;margin:1.6rem 0}
+    .t-item{background:var(--bg2);border:1px solid var(--border2);border-radius:10px;padding:1rem 1.2rem;display:flex;gap:.9rem;align-items:flex-start;transition:border-color .2s,background .2s}
+    .t-item:hover{border-color:var(--border)}
+    .t-item.active{border-color:var(--accent);background:rgba(124,106,247,.06)}
+    .t-item.next{border-color:var(--accent2);background:rgba(92,229,200,.05)}
+    .t-item.next2{border-color:var(--accent3);background:rgba(240,168,104,.05)}
+    .t-badge{font-family:'IBM Plex Mono',monospace;font-size:.65rem;font-weight:700;padding:.2rem .5rem;border-radius:4px;white-space:nowrap;flex-shrink:0;margin-top:.2rem}
+    .t-badge.used{background:rgba(124,106,247,.2);color:var(--accent);border:1px solid rgba(124,106,247,.4)}
+    .t-badge.avail{background:var(--bg3);color:var(--muted2);border:1px solid var(--border)}
+    .t-badge.next{background:rgba(92,229,200,.15);color:var(--accent2);border:1px solid rgba(92,229,200,.35)}
+    .t-badge.next2{background:rgba(240,168,104,.15);color:var(--accent3);border:1px solid rgba(240,168,104,.35)}
+    .t-name{font-weight:700;font-size:.88rem;color:var(--text);margin-bottom:.25rem;font-family:'IBM Plex Mono',monospace;font-size:.82rem}
+    .t-desc{font-size:.8rem;color:var(--muted);line-height:1.55}
+
+    /* ── DEBT TABLE ── */
+    .dt{width:100%;border-collapse:collapse;margin:1.6rem 0;font-size:.82rem}
+    .dt th{background:var(--bg3);color:var(--muted);font-size:.68rem;text-transform:uppercase;letter-spacing:.09em;padding:.7rem 1rem;text-align:left;border-bottom:1px solid var(--border2);font-weight:600}
+    .dt td{padding:.75rem 1rem;border-bottom:1px solid var(--border);vertical-align:top}
+    .dt tr:last-child td{border:none}
+    .dt tr:hover td{background:var(--bg2)}
+    .sev{font-size:.68rem;font-weight:700;padding:.18rem .5rem;border-radius:4px;white-space:nowrap;font-family:'IBM Plex Mono',monospace}
+    .sev.h{background:rgba(240,113,120,.15);color:var(--danger);border:1px solid rgba(240,113,120,.3)}
+    .sev.m{background:rgba(240,168,104,.12);color:var(--accent3);border:1px solid rgba(240,168,104,.3)}
+    .sev.l{background:rgba(136,136,152,.1);color:var(--muted);border:1px solid var(--border)}
+
+    /* ── WORKLOG ── */
+    .worklog{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;overflow:hidden;margin:1.8rem 0}
+    .wl-head{padding:.9rem 1.3rem;background:var(--bg3);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+    .wl-head-title{font-weight:700;font-size:.9rem;display:flex;align-items:center;gap:.5rem}
+    .wl-head-title::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--success);box-shadow:0 0 6px var(--success);display:inline-block}
+    .wl-sub{font-size:.72rem;color:var(--muted);font-family:'IBM Plex Mono',monospace}
+    .wl-item{display:flex;gap:.9rem;padding:.8rem 1.3rem;border-bottom:1px solid var(--border);align-items:flex-start}
+    .wl-item:last-child{border:none}
+    .wl-item.highlight{background:rgba(92,229,200,.04)}
+    .wl-ts{font-family:'IBM Plex Mono',monospace;font-size:.7rem;color:var(--muted2);white-space:nowrap;padding-top:.15rem;min-width:120px}
+    .wl-dot{width:7px;height:7px;border-radius:50%;background:var(--border2);flex-shrink:0;margin-top:.45rem}
+    .wl-dot.done{background:var(--accent2);box-shadow:0 0 4px var(--accent2)}
+    .wl-text{font-size:.82rem;color:var(--text);line-height:1.5}
+    .wl-text em{color:var(--accent);font-style:normal;font-family:'IBM Plex Mono',monospace;font-size:.78rem}
+    .wl-text strong{color:var(--accent2)}
+
+    /* ── GITHUB PANEL ── */
+    .gh-panel{background:#0d1117;border:1px solid #30363d;border-radius:10px;overflow:hidden;margin:1.8rem 0}
+    .gh-head{padding:.7rem 1rem;background:#161b22;border-bottom:1px solid #30363d;display:flex;align-items:center;gap:.5rem;font-size:.8rem;color:#8b949e}
+    .gh-head a{color:#58a6ff;text-decoration:none}
+    .gh-row{display:flex;gap:1.2rem;padding:.6rem 1rem;border-bottom:1px solid #21262d;font-size:.8rem;align-items:center}
+    .gh-row:last-child{border:none}
+    .gh-row:hover{background:#161b22}
+    .gh-icon{color:#8b949e;font-size:.9rem;flex-shrink:0}
+    .gh-name{color:#58a6ff;flex:0 0 160px}
+    .gh-msg{color:#8b949e;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .gh-date{color:#6e7681;font-size:.75rem;white-space:nowrap}
+
+    /* ── PHASE STEPS ── */
+    .phases{margin:1.8rem 0}
+    .phase{display:flex;gap:1rem;position:relative}
+    .phase-left{display:flex;flex-direction:column;align-items:center;flex-shrink:0}
+    .phase-num{width:34px;height:34px;border-radius:50%;background:rgba(124,106,247,.15);border:1.5px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;color:var(--accent);font-family:'IBM Plex Mono',monospace;z-index:1}
+    .phase-line{width:1px;flex:1;background:linear-gradient(to bottom,var(--accent),var(--border));margin:3px 0;opacity:.4;min-height:24px}
+    .phase-content{padding:.2rem 0 1.8rem;flex:1}
+    .phase-title{font-weight:700;font-size:.95rem;color:var(--text);margin-bottom:.2rem}
+    .phase-files{font-family:'IBM Plex Mono',monospace;font-size:.73rem;color:var(--accent2);margin-bottom:.35rem;background:rgba(92,229,200,.06);border:1px solid rgba(92,229,200,.15);border-radius:4px;padding:.2rem .5rem;display:inline-block}
+    .phase-desc{font-size:.84rem;color:var(--muted);line-height:1.6}
+
+    /* ── DOC TREE ── */
+    .tree{background:var(--code-bg);border:1px solid var(--border2);border-radius:10px;padding:1.3rem 1.5rem;font-family:'IBM Plex Mono',monospace;font-size:.78rem;line-height:2;overflow-x:auto}
+    .td{color:var(--accent2)}.tf{color:#c9d1d9}.tc{color:var(--muted2)}
+
+    /* ── NEXT TRANSFORMATION BOXES ── */
+    .next-transforms{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.8rem 0}
+    .nt-card{border-radius:12px;padding:1.4rem;border:1.5px solid;position:relative;overflow:hidden}
+    .nt-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+    .nt-card.java{border-color:rgba(240,168,104,.4);background:rgba(240,168,104,.05)}
+    .nt-card.java::before{background:linear-gradient(90deg,var(--accent3),transparent)}
+    .nt-card.jboss{border-color:rgba(92,229,200,.4);background:rgba(92,229,200,.05)}
+    .nt-card.jboss::before{background:linear-gradient(90deg,var(--accent2),transparent)}
+    .nt-num{font-family:'IBM Plex Mono',monospace;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.6rem}
+    .nt-card.java .nt-num{color:var(--accent3)}
+    .nt-card.jboss .nt-num{color:var(--accent2)}
+    .nt-name{font-family:'IBM Plex Mono',monospace;font-size:.82rem;font-weight:700;color:#fff;margin-bottom:.5rem;word-break:break-all}
+    .nt-desc{font-size:.8rem;color:var(--muted);line-height:1.6}
+    .nt-what{margin-top:.8rem;font-size:.78rem;color:var(--muted);border-top:1px solid var(--border2);padding-top:.7rem}
+    .nt-what strong{color:var(--text);display:block;margin-bottom:.25rem}
+
+    /* ── FOOTER ── */
+    .post-footer{border-top:1px solid var(--border);padding:2.2rem 0;margin-top:2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+    .footer-author{font-size:.85rem;color:var(--muted)}
+    .footer-author strong{color:var(--text)}
+    .footer-links{display:flex;gap:1rem;font-size:.82rem}
+    .footer-links a{color:var(--muted);text-decoration:none}
+    .footer-links a:hover{color:var(--accent)}
+
+    /* ── DIVIDER ── */
+    .divider{border:none;border-top:1px solid var(--border);margin:1rem 0}
+
+    @media(max-width:640px){
+      .stat-row{grid-template-columns:repeat(2,1fr)}
+      .next-transforms{grid-template-columns:1fr}
+      h1.post-title{font-size:1.8rem}
+      .author-row{flex-wrap:wrap}
+      .post-meta{text-align:left;width:100%}
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="https://www.vishnurachapudi.com">vishnu.</a>
+  <div class="nav-right">
+    <a class="nav-back" href="https://www.vishnurachapudi.com/#blog">← blog</a>
+    <div class="nav-links">
+      <a href="https://dev.to/vishnu_rachapudi_75e73248">dev.to</a>
+      <a href="https://www.linkedin.com/in/vishnu-rachapudi-28956920b/">linkedin</a>
+    </div>
+  </div>
+</nav>
+
+<article>
+
+  <!-- HERO -->
+  <div class="hero-banner">
+    <div class="container">
+      <div class="tags">
+        <span class="tag v">AWS Transform</span>
+        <span class="tag v">Modernization</span>
+        <span class="tag g">Spring Boot</span>
+        <span class="tag o">Java 8 → 17</span>
+        <span class="tag r">Technical Debt</span>
+        <span class="tag">JBoss / WildFly</span>
+        <span class="tag">Agentic AI</span>
+      </div>
+
+      <h1 class="post-title">I let AWS Transform<br><span>analyse a legacy Java codebase.</span><br>Here's what it found.</h1>
+      <p class="post-subtitle">Spring Boot 2.5.14. Java 8. JBoss WAR packaging. Three end-of-life strike against one app. I ran <code>AWS/comprehensive-codebase-analysis</code> — an agentic transformation that reads your repo, reasons through the dependency graph, and writes 33 files of documentation, diagrams, and a phased remediation plan. This is the full walkthrough.</p>
+
+      <div class="author-row">
+        <div class="author-avatar">VR</div>
+        <div class="author-info">
+          <div class="author-name">Vishnu Rachapudi</div>
+          <div class="author-meta">Cloud &amp; AI Engineer · AWS Community Builder (Security) · 14× AWS Certified</div>
+        </div>
+        <div class="post-meta">
+          <span>June 2026</span>
+          <span>14 min read</span>
+        </div>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-pill"><span class="stat-num">33</span><span class="stat-label">Files generated</span></div>
+        <div class="stat-pill"><span class="stat-num">2,216</span><span class="stat-label">Lines of output</span></div>
+        <div class="stat-pill"><span class="stat-num">8</span><span class="stat-label">Debt items found</span></div>
+        <div class="stat-pill"><span class="stat-num">61.8</span><span class="stat-label">Agent minutes</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="container">
+    <div class="post-body">
+
+      <div class="toc">
+        <div class="toc-eyebrow">// table of contents</div>
+        <ol>
+          <li><a href="#s1">What AWS Transform is and how custom transformations work</a></li>
+          <li><a href="#s2">The patient: a Spring CRUD app with 3 high-severity EOL issues</a></li>
+          <li><a href="#s3">Creating the transformation in the console</a></li>
+          <li><a href="#s4">The worklog — 61 agent minutes, end to end</a></li>
+          <li><a href="#s5">Output: 33 files, 9 directories, one atomic commit</a></li>
+          <li><a href="#s6">All 8 technical debt findings, prioritised</a></li>
+          <li><a href="#s7">Architecture and sequence diagrams written from source code</a></li>
+          <li><a href="#s8">6-phase migration sequence — leaf dependencies first</a></li>
+          <li><a href="#s9">What AWS recommends running next: two named transformations</a></li>
+          <li><a href="#s10">Takeaways</a></li>
+        </ol>
+      </div>
+
+      <p>Most "assessment tools" scan for known CVEs, produce a PDF with a heat-map, and call it done. AWS Transform does something different. It deploys an agentic loop — reading every source file, navigating the dependency graph, generating diagrams, and writing structured documentation — then tells you exactly which named transformation to run next. Assessment feeds pipeline.</p>
+      <p>I ran it against a real app. This is what happened.</p>
+
+      <!-- ── S1 ── -->
+      <div class="section-label" id="s1">Section 01</div>
+      <h2>What AWS Transform is — and what custom transformations do</h2>
+
+      <p>AWS Transform is a managed modernisation service built on Amazon Bedrock. You connect a repository, choose a transformation, and an agent handles the rest: reading code, reasoning about structure, writing artefacts, and surfacing a clear next step. No YAML configs. No custom scripts. One CLI command.</p>
+
+      <p>The service ships with built-in transformations for the most common modernisation patterns, and an expanding set of <strong>custom transformations</strong> you configure through the console chat interface:</p>
+
+      <div class="t-list">
+        <div class="t-item"><span class="t-badge avail">built-in</span><div><div class="t-name">.NET Framework → .NET 8/10</div><div class="t-desc">Modernize legacy .NET apps to cross-platform .NET</div></div></div>
+        <div class="t-item"><span class="t-badge avail">built-in</span><div><div class="t-name">Mainframe COBOL → Java</div><div class="t-desc">Convert mainframe programs to Java</div></div></div>
+        <div class="t-item"><span class="t-badge avail">built-in</span><div><div class="t-name">VMware VMs → EC2</div><div class="t-desc">Rehost / replatform VMware workloads to AWS</div></div></div>
+        <div class="t-item"><span class="t-badge avail">built-in</span><div><div class="t-name">Database migrations</div><div class="t-desc">SQL Server / Oracle / MySQL → Aurora PostgreSQL</div></div></div>
+        <div class="t-item"><span class="t-badge avail">built-in</span><div><div class="t-name">Runtime upgrades · API/SDK migrations · Infrastructure assessment · Experience-Based Acceleration</div><div class="t-desc">Java, Python, Node.js version upgrades · AWS SDK migration · Tech debt assessment · Comprehensive modernisation</div></div></div>
+      </div>
+
+      <p>Beyond built-ins, here are the available <strong>custom</strong> transformations — each addressing a specific modernisation scenario:</p>
+
+      <div class="t-list">
+        <div class="t-item active"><span class="t-badge used">✓ used</span><div><div class="t-name">AWS/comprehensive-codebase-analysis</div><div class="t-desc">Deep static analysis with technical debt identification for pre-migration assessment. Reads the full repo, generates architecture + sequence diagrams, identifies EOL components, maps anti-patterns, and produces a phased remediation plan with recommended next-step transformation names.</div></div></div>
+        <div class="t-item"><span class="t-badge avail">custom</span><div><div class="t-name">AWS/modernization-readiness-analysis</div><div class="t-desc">Scans portfolios for cloud-native maturity gaps and maps findings to AWS modernisation pathways.</div></div></div>
+        <div class="t-item"><span class="t-badge avail">custom</span><div><div class="t-name">AWS/portfolio-modernization-readiness-analysis</div><div class="t-desc">Aggregates analysis reports across a portfolio — consolidated modernisation roadmap with prioritised migration waves.</div></div></div>
+        <div class="t-item"><span class="t-badge avail">custom</span><div><div class="t-name">AWS/agentic-readiness-analysis</div><div class="t-desc">Evaluates whether systems are ready to be called by AI agents — covering APIs, identity, state management, and observability.</div></div></div>
+        <div class="t-item"><span class="t-badge avail">custom</span><div><div class="t-name">AWS/portfolio-agentic-readiness-analysis</div><div class="t-desc">Aggregates agentic readiness reports across a portfolio with prioritised recommendations.</div></div></div>
+        <div class="t-item"><span class="t-badge avail">custom</span><div><div class="t-name">AWS/GenAI-to-Bedrock-Migration-Assessment</div><div class="t-desc">Assesses generative AI workloads for migration to AWS Bedrock from third-party providers.</div></div></div>
+      </div>
+
+      <!-- ── S2 ── -->
+      <div class="section-label" id="s2">Section 02</div>
+      <h2>The patient: a Spring CRUD app with 3 high-severity EOL issues</h2>
+
+      <p>The application is a textbook layered monolith — RESTful CRUD for user records, 8 endpoints, 7 Java source files, ~559 lines of code. Small surface area, but carrying the exact debt pattern seen across thousands of enterprise Java apps that haven't been meaningfully touched since 2020.</p>
+
+      <div class="term">
+        <div class="term-header"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="term-label">project-overview.md — Technology Stack</span></div>
+        <div class="term-body">
+<span class="d">Layer         Technology                   Version</span><br>
+<span class="d">──────────────────────────────────────────────────────</span><br>
+Language      Java                         <span class="r">8 (1.8)        ← EOL Jan 2019</span><br>
+Framework     Spring Boot                  <span class="r">2.5.14         ← EOL Aug 2023</span><br>
+ORM           Spring Data JPA / Hibernate  Managed<br>
+Database      MySQL                        8.0<br>
+Build         Maven                        3.6+<br>
+App Server    JBoss / WildFly              <span class="r">12+            ← legacy deploy model</span><br>
+Packaging     <span class="r">WAR</span>                          <span class="r">               ← blocks containerisation</span><br>
+API Namespace <span class="r">javax.*</span>                      <span class="r">               ← blocks Spring Boot 3.x</span><br>
+Utility       Lombok                       Managed
+        </div>
+      </div>
+
+      <div class="callout r"><span class="callout-icon">🔗</span><div class="callout-body"><strong>The dependency chain that matters:</strong> Java 8 EOL blocks the upgrade to Java 17+, which is required by Spring Boot 3.x, which requires the <code>javax.*</code> → <code>jakarta.*</code> namespace migration. All three high-severity items are one linked chain — fix them in order or the migration fails midway.</div></div>
+
+      <!-- ── S3 ── -->
+      <div class="section-label" id="s3">Section 03</div>
+      <h2>Creating the transformation in the console</h2>
+
+      <p>From the AWS Transform console, I described the intent in natural language. The agent surfaced the available custom transformations, I selected <code>AWS/comprehensive-codebase-analysis</code>, and it confirmed the setup instantly:</p>
+
+      <div class="term">
+        <div class="term-header"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="term-label">AWS Transform console</span><span class="term-badge">Open · ready to execute</span></div>
+        <div class="term-body">
+<span class="p">⟳ AWS Transform</span><br>
+Excellent! Your transformation is now ready.<br><br>
+<span class="c">Transformation Created</span><br>
+  Name    <span class="b">AWS/comprehensive-codebase-analysis</span><br>
+  Status  <span class="g">Open and ready to execute</span><br>
+  Purpose Deep static analysis with technical debt<br>
+          identification for pre-migration assessment<br><br>
+<span class="d">Dashboard active in the Dashboard tab.</span><br>
+<span class="d">Use the AWS Transform CLI to execute the transformation.</span>
+        </div>
+      </div>
+
+      <p>The CLI command to trigger the run against the repo:</p>
+      <pre><code>atx run \
+  --transformation AWS/comprehensive-codebase-analysis \
+  --repo mycontainers \
+  --path /root/aws-transform-containers</code></pre>
+
+      <!-- ── S4 ── -->
+      <div class="section-label" id="s4">Section 04</div>
+      <h2>The worklog — 61 agent minutes, end to end</h2>
+
+      <p>AWS Transform maintains a full timestamped worklog for every job. Under the hood the agent fired hundreds of <code>shell</code>, <code>file_read</code>, and <code>file_write</code> tool calls — navigating directories, reading source files and the SQL schema, parsing <code>pom.xml</code>, and writing the entire documentation tree from scratch. Here's the high-level log:</p>
+
+      <div class="worklog">
+        <div class="wl-head">
+          <div class="wl-head-title">Worklog</div>
+          <div class="wl-sub">GMT+5:30 (IST)</div>
+        </div>
+        <div class="wl-item"><span class="wl-ts">Jun 09 · 06:43:43</span><span class="wl-dot"></span><div class="wl-text">AWS Transform is starting the job</div></div>
+        <div class="wl-item"><span class="wl-ts">Jun 09 · 06:43:44</span><span class="wl-dot"></span><div class="wl-text">AWS Transform has started the job</div></div>
+        <div class="wl-item"><span class="wl-ts">Jun 09 · 06:45:54</span><span class="wl-dot done"></span><div class="wl-text"><em>AWS/comprehensive-codebase-analysis</em> transformation created for static code analysis and assessment</div></div>
+        <div class="wl-item"><span class="wl-ts">Jun 09 · 06:45:57</span><span class="wl-dot done"></span><div class="wl-text">Monitoring dashboard created for transformation progress tracking</div></div>
+        <div class="wl-item"><span class="wl-ts">Jun 09 · 06:46:02</span><span class="wl-dot done"></span><div class="wl-text">AWS Transform created the recommended request <em>Monitor transformation progress</em></div></div>
+        <div class="wl-item highlight"><span class="wl-ts">Jun 09 · 11:46:28</span><span class="wl-dot done"></span><div class="wl-text">Comprehensive codebase analysis completed — <strong>33 files, 2,216 lines of code</strong> written to ATXDocumentation/</div></div>
+        <div class="wl-item highlight"><span class="wl-ts">Jun 09 · 11:46:28</span><span class="wl-dot done"></span><div class="wl-text">Campaign repository <strong>'mycontainers'</strong> status marked <strong>VALIDATED</strong> · Agent minutes used: <strong>61.82</strong></div></div>
+      </div>
+
+      <!-- ── S5 ── -->
+      <div class="section-label" id="s5">Section 05</div>
+      <h2>Output: 33 files, 9 directories, one atomic commit</h2>
+
+      <p>Everything landed in a single git commit — <em>"Step 1: Create comprehensive ATXDocumentation with full codebase anal…"</em> — 22 minutes after the job started. Browse it live at <a href="https://github.com/aquavis12/aws-transform-containers/tree/main/src/ATXDocumentation" target="_blank">github.com/aquavis12/aws-transform-containers → src/ATXDocumentation</a>.</p>
+
+      <div class="gh-panel">
+        <div class="gh-head">📁 <a href="https://github.com/aquavis12/aws-transform-containers/tree/main/src/ATXDocumentation" target="_blank">aquavis12 / aws-transform-containers</a> · src/ATXDocumentation</div>
+        <div class="gh-row"><span class="gh-icon">📁</span><span class="gh-name">analysis</span><span class="gh-msg">Step 1: Create comprehensive ATXDocumentation with full codebase anal…</span><span class="gh-date">22 min ago</span></div>
+        <div class="gh-row"><span class="gh-icon">📁</span><span class="gh-name">architecture</span><span class="gh-msg">Step 1: Create comprehensive ATXDocumentation with full codebase anal…</span><span class="gh-date">22 min ago</span></div>
+        <div class="gh-row"><span class="gh-icon">📁</span><span class="gh-name">behavior</span><span class="gh-msg">Step 1: Create comprehensive ATXDocumentation with full codebase anal…</span><span class="gh-date">22 min ago</span></div>
+        <div class="gh-row"><span class="gh-icon">📁</span><span class="gh-name">diagrams</span><span class="gh-msg">Step 1: Create comprehensive ATXDocumentation with full codebase anal…</span><span class="gh-date">22 min ago</span></div>
+        <div class="gh-row"><span class="gh-icon">📁</span><span class="gh-name">migration</span><span class="gh-msg">Step 1: Create comprehensive ATXDocumentation with full codebase anal…</span><span class="gh-date">22 min ago</span></div>
+        <div class="gh-row"><span class="gh-icon">📁</span><span class="gh-name">reference</span><span class="gh-msg">Step 1: Create comprehensive ATXDocumentation with full codebase anal…</span><span class="gh-date">22 min ago</span></div>
+        <div class="gh-row"><span class="gh-icon">📁</span><span class="gh-name">specialized</span><span class="gh-msg">Step 1: Create comprehensive ATXDocumentation with full codebase anal…</span><span class="gh-date">22 min ago</span></div>
+        <div class="gh-row"><span class="gh-icon">📁</span><span class="gh-name">technical-debt</span><span class="gh-msg">Step 1: Create comprehensive ATXDocumentation with full codebase anal…</span><span class="gh-date">22 min ago</span></div>
+        <div class="gh-row"><span class="gh-icon">📄</span><span class="gh-name">README.md</span><span class="gh-msg">Step 1: Create comprehensive ATXDocumentation with full codebase anal…</span><span class="gh-date">22 min ago</span></div>
+        <div class="gh-row"><span class="gh-icon">📄</span><span class="gh-name">project-overview.md</span><span class="gh-msg">Step 1: Create comprehensive ATXDocumentation with full codebase anal…</span><span class="gh-date">22 min ago</span></div>
+        <div class="gh-row"><span class="gh-icon">📄</span><span class="gh-name">technical-debt-report.md</span><span class="gh-msg">Step 1: Create comprehensive ATXDocumentation with full codebase anal…</span><span class="gh-date">22 min ago</span></div>
+      </div>
+
+      <div class="tree">
+<span class="td">ATXDocumentation/</span><br>
+├── README.md<br>
+├── project-overview.md        <span class="tc">← app identity, tech stack, source metrics</span><br>
+├── technical-debt-report.md   <span class="tc">← executive summary + recommended transforms</span><br>
+├── <span class="td">analysis/</span><br>
+│   ├── complexity-analysis.md <span class="tc">← per-file cyclomatic complexity</span><br>
+│   └── tech-debt.md<br>
+├── <span class="td">architecture/</span><br>
+│   ├── system-overview.md     <span class="tc">← layered arch, deployment model diagram</span><br>
+│   ├── dependencies.md        <span class="tc">← external + internal dep graphs</span><br>
+│   ├── components.md<br>
+│   └── patterns.md<br>
+├── <span class="td">behavior/</span><br>
+│   └── business-logic.md<br>
+├── <span class="td">diagrams/</span><br>
+│   ├── <span class="td">structural/</span>          <span class="tc">← class diagrams, component maps</span><br>
+│   ├── <span class="td">behavioral/</span>          <span class="tc">← sequence diagrams, activity diagrams</span><br>
+│   └── <span class="td">architecture/</span>        <span class="tc">← system context, deployment diagrams</span><br>
+├── <span class="td">migration/</span><br>
+│   ├── component-order.md     <span class="tc">← 6-phase migration sequence</span><br>
+│   └── validation-criteria.md <span class="tc">← build + functional + behavioral checklist</span><br>
+├── <span class="td">reference/</span><br>
+│   └── program-structure.md<br>
+└── <span class="td">technical-debt/</span><br>
+    ├── summary.md<br>
+    ├── outdated-components.md<br>
+    ├── maintenance-burden.md<br>
+    └── remediation-plan.md    <span class="tc">← action-by-action upgrade path</span>
+      </div>
+
+      <!-- ── S6 ── -->
+      <div class="section-label" id="s6">Section 06</div>
+      <h2>All 8 technical debt findings, prioritised</h2>
+
+      <p>The agent produced a debt matrix covering 3 high-severity EOL items, 1 medium, and 4 low-severity code quality issues — ranked correctly by upgrade impact, not just by surface severity.</p>
+
+      <table class="dt">
+        <thead><tr><th>#</th><th>Issue</th><th>Component</th><th>Sev</th><th>Impact</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td><strong>Java 8 End of Life</strong></td><td>Runtime</td><td><span class="sev h">High</span></td><td>No free security patches since Jan 2019. Missing records, sealed classes, virtual threads.</td></tr>
+          <tr><td>2</td><td><strong>Spring Boot 2.5.14 EOL</strong></td><td>Framework</td><td><span class="sev h">High</span></td><td>EOL August 2023. No security fixes. Blocks upgrade to Spring Boot 3.x.</td></tr>
+          <tr><td>3</td><td><strong>javax.* namespace</strong></td><td>API</td><td><span class="sev h">High</span></td><td>Must migrate to <code>jakarta.*</code> before Spring Boot 3.x is possible. Affects User, UserDTO, UserController.</td></tr>
+          <tr><td>4</td><td><strong>mysql-connector-java 8.0.33</strong></td><td>Dependency</td><td><span class="sev m">Medium</span></td><td>Artifact renamed to <code>mysql-connector-j</code> in v8.0.31+. Works but deprecated naming.</td></tr>
+          <tr><td>5</td><td><strong>Field injection (@Autowired)</strong></td><td>Code quality</td><td><span class="sev l">Low</span></td><td>Harder to unit test. Hides dependencies. Prevents immutability.</td></tr>
+          <tr><td>6</td><td><strong>Generic RuntimeException</strong></td><td>Code quality</td><td><span class="sev l">Low</span></td><td>"Not found" returns 400 instead of 404. No custom exception hierarchy.</td></tr>
+          <tr><td>7</td><td><strong>No pagination on getAllUsers</strong></td><td>Code quality</td><td><span class="sev l">Low</span></td><td>Returns all records unbounded. Performance risk at scale.</td></tr>
+          <tr><td>8</td><td><strong>No uniqueness check on update</strong></td><td>Code quality</td><td><span class="sev l">Low</span></td><td>updateUser doesn't check for duplicate username/email — can violate DB constraints.</td></tr>
+        </tbody>
+      </table>
+
+      <!-- ── S7 ── -->
+      <div class="section-label" id="s7">Section 07</div>
+      <h2>Architecture and sequence diagrams written from source code</h2>
+
+      <p>The agent didn't rely on existing documentation — there was none. It read the Java source files and generated ASCII-art architecture and sequence diagrams by reasoning about the class structure and method call chains.</p>
+
+      <h3>System context diagram</h3>
+      <pre>
+┌────────────────────┐          ┌────────────────────────────────────┐
+│  Client            │  HTTP    │  JBoss / WildFly                   │
+│  (Browser / curl)  │──REST──▶ │  ┌──────────────────────────────┐  │
+│                    │◀──JSON── │  │  Spring Boot 2.5.14 (WAR)    │  │
+└────────────────────┘          │  │  UserController               │  │
+                                │  │    └── UserService            │  │
+                                │  │          └── UserRepository   │  │
+                                │  └──────────────┬───────────────┘  │
+                                └─────────────────┼──────────────────┘
+                                                  │ JDBC
+                                                  ▼
+                                ┌─────────────────────────────────────┐
+                                │  MySQL 8.0  ·  crud_db  ·  users    │
+                                │  idx_username · idx_email            │
+                                │  idx_created_at                      │
+                                └─────────────────────────────────────┘</pre>
+
+      <h3>Sequence diagram — GET /users/{id}</h3>
+      <pre>
+Client        Controller        Service          Repository       Database
+  │                │                │                 │               │
+  │ GET /users/1   │                │                 │               │
+  │───────────────▶│                │                 │               │
+  │                │ getUserById(1) │                 │               │
+  │                │───────────────▶│                 │               │
+  │                │                │  findById(1)    │               │
+  │                │                │────────────────▶│               │
+  │                │                │                 │  SELECT       │
+  │                │                │                 │──────────────▶│
+  │                │                │                 │◀──────────────│
+  │                │                │◀────────────────│ Optional&lt;User&gt;│
+  │                │◀───────────────│  UserDTO        │               │
+  │◀───────────────│  200 OK        │                 │               │</pre>
+
+      <div class="callout v"><span class="callout-icon">💡</span><div class="callout-body">The agent also produced the full external dependency graph (pom.xml-derived) and internal class dependency graph — all five Spring Boot starters flagged as <strong>EOL</strong> directly in the table. No separate scanner needed.</div></div>
+
+      <!-- ── S8 ── -->
+      <div class="section-label" id="s8">Section 08</div>
+      <h2>6-phase migration sequence — leaf dependencies first</h2>
+
+      <p>The <code>migration/component-order.md</code> file gives an ordered migration plan where each phase only touches files whose own dependencies are already migrated — avoiding mid-migration build failures.</p>
+
+      <div class="phases">
+        <div class="phase">
+          <div class="phase-left"><div class="phase-num">01</div><div class="phase-line"></div></div>
+          <div class="phase-content">
+            <div class="phase-title">Foundation</div>
+            <div class="phase-files">pom.xml · User.java</div>
+            <div class="phase-desc">Update Java version target and Spring Boot parent. Migrate <code>javax.persistence.*</code> → <code>jakarta.persistence.*</code> and <code>javax.validation.*</code> → <code>jakarta.validation.*</code> in the model layer — it has zero dependencies on other app classes, so it's the safe starting point.</div>
+          </div>
+        </div>
+        <div class="phase">
+          <div class="phase-left"><div class="phase-num">02</div><div class="phase-line"></div></div>
+          <div class="phase-content">
+            <div class="phase-title">Data Layer</div>
+            <div class="phase-files">UserRepository.java · init-database.sql</div>
+            <div class="phase-desc">Verify Spring Data JPA compatibility with the updated stack. The SQL schema itself requires no changes — the database side is clean, which is the best possible finding at this layer.</div>
+          </div>
+        </div>
+        <div class="phase">
+          <div class="phase-left"><div class="phase-num">03</div><div class="phase-line"></div></div>
+          <div class="phase-content">
+            <div class="phase-title">Transfer Objects</div>
+            <div class="phase-files">UserDTO.java</div>
+            <div class="phase-desc">Migrate <code>javax.validation.*</code> → <code>jakarta.validation.*</code> in the DTO. Isolated from persistence concerns — safe to migrate independently after Phase 1.</div>
+          </div>
+        </div>
+        <div class="phase">
+          <div class="phase-left"><div class="phase-num">04</div><div class="phase-line"></div></div>
+          <div class="phase-content">
+            <div class="phase-title">Business Logic</div>
+            <div class="phase-files">UserService.java</div>
+            <div class="phase-desc">No import changes required — the service uses only internal types. This phase is the opportunity to address code debt items 5–8: constructor injection, custom exception hierarchy, pagination, and update uniqueness checks.</div>
+          </div>
+        </div>
+        <div class="phase">
+          <div class="phase-left"><div class="phase-num">05</div><div class="phase-line"></div></div>
+          <div class="phase-content">
+            <div class="phase-title">Web Layer</div>
+            <div class="phase-files">UserController.java · GlobalExceptionHandler.java</div>
+            <div class="phase-desc">Migrate <code>javax.validation.*</code> → <code>jakarta.validation.*</code> in the controller. Verify Spring MVC compatibility in the exception handler. Update error response codes (404 for not-found, proper 4xx mapping).</div>
+          </div>
+        </div>
+        <div class="phase">
+          <div class="phase-left"><div class="phase-num">06</div></div>
+          <div class="phase-content">
+            <div class="phase-title">Deployment Modernisation</div>
+            <div class="phase-files">application.properties · Dockerfile (new)</div>
+            <div class="phase-desc">Update Hibernate dialect, remove deprecated properties. <strong>Switch from WAR + JBoss to standalone Spring Boot JAR.</strong> This is the JBoss decoupling step — the change that moves the app to a containerisable, cloud-native deployment model. The <code>AWS/JBoss-to-Spring-Boot</code> transformation handles this end-to-end.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout g"><span class="callout-icon">✅</span><div class="callout-body">The validation criteria file generated alongside the migration sequence gives a concrete checklist: <strong>build validation</strong> (compiles, dependencies resolve, artefact packaging clean), <strong>functional validation</strong> (all 8 endpoints respond, CRUD works end-to-end with MySQL, bean validation rejects invalid input), <strong>behavioural equivalence</strong> (username uniqueness, email uniqueness, case-insensitive search, soft delete), and <strong>non-functional checks</strong> (HikariCP pool initialises, SLF4J logging at configured levels).</div></div>
+
+      <!-- ── S9 ── -->
+      <div class="section-label" id="s9">Section 09</div>
+      <h2>What AWS recommends running next — two named transformations</h2>
+
+      <p>The last section of <code>technical-debt-report.md</code> doesn't just list issues. It names the exact AWS Transform transformations to run next — strings you can drop directly into the CLI:</p>
+
+      <div class="term">
+        <div class="term-header"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="term-label">technical-debt-report.md — AWS Transformation Recommendation</span></div>
+        <div class="term-body">
+<span class="c">## 🎯 AWS Transformation Recommendation</span><br><br>
+<span class="g">RECOMMENDED TRANSFORMATIONS:</span><br>
+  <span class="w">AWS/java-version-upgrade</span><br>
+  <span class="c">AWS/JBoss-to-Spring-Boot</span><br><br>
+<span class="d">This codebase uses Java 8 which reached end of public updates</span><br>
+<span class="d">and Spring Boot 2.5.x which is EOL. These two transformations</span><br>
+<span class="d">address the full high-severity debt chain.</span>
+        </div>
+      </div>
+
+      <p>Here's exactly what each one does:</p>
+
+      <div class="next-transforms">
+        <div class="nt-card java">
+          <div class="nt-num">Next step 01</div>
+          <div class="nt-name">AWS/java-version-upgrade</div>
+          <div class="nt-desc">Upgrades the Java runtime version in the project — source, compiler targets, and dependencies — from Java 8 to a modern LTS version (Java 17 or Java 21).</div>
+          <div class="nt-what">
+            <strong>What it handles</strong>
+            Updates <code>pom.xml</code> java.version, maven.compiler.source/target, verifies all dependencies are compatible with the target JDK, and flags any APIs removed between Java 8 and the target version.
+          </div>
+        </div>
+        <div class="nt-card jboss">
+          <div class="nt-num">Next step 02</div>
+          <div class="nt-name">AWS/JBoss-to-Spring-Boot</div>
+          <div class="nt-desc">Migrates Java EE / Jakarta EE enterprise applications from JBoss EAP or WildFly to standalone Spring Boot — eliminating the external application server entirely.</div>
+          <div class="nt-what">
+            <strong>What it handles</strong>
+            Removes JBoss/WildFly WAR dependencies, converts deployment descriptors (<code>jboss-web.xml</code>), switches packaging from WAR to JAR, updates <code>server.servlet.context-path</code> config, and migrates <code>javax.*</code> → <code>jakarta.*</code> where needed for Spring Boot 3.x compatibility.
+          </div>
+        </div>
+      </div>
+
+      <div class="callout g"><span class="callout-icon">⚡</span><div class="callout-body"><strong>This is the pipeline payoff:</strong> The analysis isn't the end — it's the prerequisite. After running comprehensive-codebase-analysis you know the exact state of the repo. When you hand it to <code>AWS/java-version-upgrade</code> or <code>AWS/JBoss-to-Spring-Boot</code> next, those transformations are working with a fully understood codebase. The 6-phase migration plan from the analysis directly informs the order the automated transforms run in.</div></div>
+
+      <!-- ── S10 ── -->
+      <div class="section-label" id="s10">Section 10</div>
+      <h2>Takeaways</h2>
+
+      <p>AWS Transform's comprehensive codebase analysis is the most thorough automated pre-migration assessment I've run. A few things stood out:</p>
+
+      <ul>
+        <li><strong>The output is genuinely actionable, not just comprehensive.</strong> The 6-phase migration sequence respects leaf-first dependency order. The validation criteria is a real test checklist, not documentation filler. The debt table prioritises the linked chain correctly — it doesn't list Java 8 and Spring Boot 2.5 as independent issues; it surfaces the dependency between them.</li>
+        <li><strong>Named next-step transformations are the real value.</strong> Assessment tools typically end with "you should upgrade Java." This one ends with <code>AWS/java-version-upgrade</code> and <code>AWS/JBoss-to-Spring-Boot</code> — exact strings you paste into the CLI to start the automated migration.</li>
+        <li><strong>61 agent minutes is fast for this output volume.</strong> 33 files, 2,216 lines, sequence diagrams, dependency graphs, full remediation plan — generated by reading source code, not config. For a one-time pre-migration assessment on a legacy system this is genuinely faster than any manual approach.</li>
+        <li><strong>Run this before any automated transformation.</strong> Knowing that the <code>javax.*</code> namespace is the upgrade blocker before you start is the difference between a clean transformation run and debugging a half-migrated build at 2am.</li>
+        <li><strong>The portfolio-level variants are the next frontier.</strong> For teams managing 20+ Java services at different maturity stages, <code>AWS/portfolio-modernization-readiness-analysis</code> should consolidate findings and prioritise which services move first — with migration waves, not just individual reports.</li>
+      </ul>
+
+      <div class="callout v"><span class="callout-icon">🔗</span><div class="callout-body"><strong>Repo:</strong> <a href="https://github.com/aquavis12/aws-transform-containers/tree/main/src/ATXDocumentation" target="_blank">github.com/aquavis12/aws-transform-containers</a> · <strong>Docs:</strong> <a href="https://docs.aws.amazon.com/transform/latest/userguide/what-is-transform.html" target="_blank">docs.aws.amazon.com/transform</a></div></div>
+
+    </div><!-- /post-body -->
+
+    <div class="post-footer">
+      <div class="footer-author">
+        Written by <strong>Vishnu Rachapudi</strong><br>
+        <span style="font-size:.78rem;">14× AWS Certified · Cloud &amp; AI Engineer at SUDO Consultants · AWS Community Builder (Security)</span>
+      </div>
+      <div class="footer-links">
+        <a href="https://dev.to/vishnu_rachapudi_75e73248">Dev.to</a>
+        <a href="https://www.linkedin.com/in/vishnu-rachapudi-28956920b/">LinkedIn</a>
+        <a href="https://www.vishnurachapudi.com/#blog">All posts</a>
+      </div>
+    </div>
+
+  </div><!-- /container -->
+</article>
+</body>
+</html>
