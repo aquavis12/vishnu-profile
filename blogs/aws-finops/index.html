@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AWS Compute Optimizer — Stop Guessing, Start Rightsizing | Vishnu Rachapudi</title>
+  <meta name="description" content="P90 vs P99.5. Max savings vs Max performance. 14, 32, or 93-day lookback. Locking recommendations to your dedicated host family. Everything you need to tune Compute Optimizer for your actual workloads — with screenshots.">
+  <meta name="author" content="Vishnu Rachapudi">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #0d0d10;
+      --bg2: #14141a;
+      --bg3: #1c1c24;
+      --border: #2a2a38;
+      --accent: #7c6af7;
+      --accent2: #5ce5c8;
+      --warn: #f0a868;
+      --danger: #f07178;
+      --text: #e8e8f0;
+      --muted: #888898;
+      --tag-bg: #1e1e2c;
+      --code-bg: #111118;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      height: 60px;
+      background: rgba(13,13,16,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2rem;
+    }
+    .nav-logo { font-family: 'IBM Plex Mono', monospace; font-size: 1.1rem; color: var(--accent); text-decoration: none; }
+    .nav-links { display: flex; gap: 1.5rem; font-size: .875rem; }
+    .nav-links a { color: var(--muted); text-decoration: none; transition: color .2s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-back { font-size: .875rem; color: var(--muted); text-decoration: none; display: flex; align-items: center; gap: .4rem; transition: color .2s; }
+    .nav-back:hover { color: var(--accent); }
+
+    /* LAYOUT */
+    .container { max-width: 780px; margin: 0 auto; padding: 0 1.5rem; }
+
+    /* HEADER */
+    .post-header { padding: 4rem 0 2.5rem; }
+    .tags { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.25rem; }
+    .tag { font-size: .72rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; padding: .25rem .65rem; border-radius: 4px; background: var(--tag-bg); border: 1px solid var(--border); color: var(--muted); }
+    .tag.accent { color: var(--accent); border-color: var(--accent); background: rgba(124,106,247,.08); }
+    .tag.green  { color: var(--accent2); border-color: var(--accent2); background: rgba(92,229,200,.07); }
+    .tag.orange { color: var(--warn); border-color: var(--warn); background: rgba(240,168,104,.07); }
+
+    h1.post-title { font-size: clamp(1.75rem, 4vw, 2.6rem); font-weight: 700; line-height: 1.2; letter-spacing: -.02em; color: #fff; margin-bottom: 1rem; }
+    .post-subtitle { font-size: 1.05rem; color: var(--muted); line-height: 1.65; margin-bottom: 2rem; max-width: 680px; }
+
+    .author-row { display: flex; align-items: center; gap: 1rem; padding: 1.25rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .author-avatar { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: .9rem; color: #fff; flex-shrink: 0; }
+    .author-name { font-weight: 600; font-size: .9rem; color: var(--text); }
+    .author-meta { font-size: .8rem; color: var(--muted); }
+    .post-meta { font-size: .82rem; color: var(--muted); text-align: right; margin-left: auto; }
+    .post-meta span { display: block; }
+
+    /* STAT PILLS */
+    .stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin: 2.5rem 0; }
+    .stat-pill { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.2rem; text-align: center; }
+    .stat-num { font-family: 'IBM Plex Mono', monospace; font-size: 1.5rem; font-weight: 600; color: var(--accent); display: block; }
+    .stat-label { font-size: .75rem; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; }
+
+    /* TOC */
+    .toc { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; margin: 2rem 0; }
+    .toc-title { font-size: .8rem; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-bottom: .75rem; }
+    .toc ol { padding-left: 1.2rem; }
+    .toc li { margin: .35rem 0; font-size: .9rem; }
+    .toc a { color: var(--muted); text-decoration: none; transition: color .2s; }
+    .toc a:hover { color: var(--accent); }
+
+    /* BODY */
+    .post-body { padding-bottom: 5rem; }
+    .section-label { font-size: .72rem; text-transform: uppercase; letter-spacing: .14em; color: var(--accent); font-weight: 600; font-family: 'IBM Plex Mono', monospace; margin-bottom: .5rem; margin-top: 3.5rem; }
+    h2 { font-size: 1.5rem; font-weight: 700; letter-spacing: -.015em; color: #fff; margin-bottom: 1rem; }
+    h3 { font-size: 1.15rem; font-weight: 600; color: var(--text); margin: 1.75rem 0 .6rem; }
+    p { margin-bottom: 1.1rem; color: var(--text); }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    strong { color: #fff; font-weight: 600; }
+
+    code { font-family: 'IBM Plex Mono', monospace; font-size: .85em; background: var(--code-bg); border: 1px solid var(--border); border-radius: 4px; padding: .15em .4em; color: var(--accent2); }
+    pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem 1.4rem; overflow-x: auto; margin: 1.5rem 0; font-family: 'IBM Plex Mono', monospace; font-size: .82rem; line-height: 1.65; color: #c9d1d9; }
+    pre code { background: none; border: none; padding: 0; font-size: inherit; color: inherit; }
+    .ct { color: var(--accent2); } .cs { color: #ce9178; } .ck { color: #569cd6; }
+
+    /* CALLOUT */
+    .callout { background: rgba(124,106,247,.08); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; padding: 1rem 1.3rem; margin: 1.5rem 0; font-size: .92rem; color: var(--text); }
+    .callout.green { background: rgba(92,229,200,.07); border-color: var(--accent2); }
+    .callout.orange { background: rgba(240,168,104,.07); border-color: var(--warn); }
+
+    /* CONSOLE SCREENSHOT */
+    .screenshot { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin: 1.5rem 0; background: var(--bg2); }
+    .screenshot-header { padding: .6rem 1rem; background: var(--bg3); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: .5rem; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot.r { background: #ff5f57; } .dot.y { background: #febc2e; } .dot.g { background: #28c840; }
+    .screenshot-label { font-family: 'IBM Plex Mono', monospace; font-size: .72rem; color: var(--muted); margin-left: .5rem; }
+    /* AWS Console mockup */
+    .aws-panel { border: 1px solid #dde1e6; border-radius: 10px; overflow: hidden; margin: 1.5rem 0; background: #fff; color: #0f1111; font-family: 'Inter', sans-serif; font-size: .88rem; }
+    .aws-panel-header { background: #f2f3f3; border-bottom: 1px solid #dde1e6; padding: .7rem 1.2rem; font-weight: 700; font-size: .9rem; display: flex; align-items: center; gap: .5rem; }
+    .aws-panel-header .badge { font-size: .7rem; font-weight: 600; background: #e7f3ff; color: #0972d3; border: 1px solid #0972d3; border-radius: 3px; padding: .1rem .4rem; }
+    .aws-body { padding: 1.2rem 1.4rem; }
+    .aws-desc { font-size: .8rem; color: #5c6670; margin-bottom: .9rem; line-height: 1.5; }
+    .aws-presets { display: grid; grid-template-columns: repeat(4,1fr); gap: .5rem; margin-bottom: 1.2rem; }
+    .preset-btn { border: 1.5px solid #aab7b8; border-radius: 8px; padding: .55rem .7rem; font-size: .8rem; font-weight: 600; text-align: center; cursor: pointer; background: #fff; color: #0f1111; transition: all .15s; }
+    .preset-btn.active { border-color: #0972d3; background: #f0f8ff; color: #0972d3; }
+    .aws-section-title { font-weight: 700; font-size: .9rem; margin-bottom: .3rem; }
+    .aws-label-row { display: flex; align-items: center; gap: .5rem; margin-bottom: .2rem; }
+    .aws-info-link { font-size: .78rem; color: #0972d3; cursor: pointer; }
+    .aws-subtext { font-size: .77rem; color: #5c6670; margin-bottom: .7rem; line-height: 1.5; }
+    .radio-row { display: flex; align-items: center; gap: 1.2rem; margin-bottom: .8rem; flex-wrap: wrap; }
+    .radio-opt { display: flex; align-items: center; gap: .4rem; font-size: .83rem; color: #0f1111; }
+    .radio-opt input[type="radio"] { accent-color: #0972d3; }
+    .aws-chart { background: #fafafa; border: 1px solid #eee; border-radius: 6px; padding: 1rem 1rem .5rem; margin-top: .8rem; }
+    .chart-title { font-size: .82rem; font-weight: 700; margin-bottom: .5rem; }
+    .chart-area { position: relative; height: 100px; }
+    svg.chart-svg { width: 100%; height: 100%; }
+    .chart-legend { display: flex; gap: 1.2rem; margin-top: .5rem; font-size: .74rem; color: #5c6670; align-items: center; }
+    .legend-line { width: 24px; height: 2px; display: inline-block; border-radius: 2px; }
+    .legend-dash { width: 24px; border-top: 2px dashed; display: inline-block; }
+
+    /* PRESET TABLE */
+    .preset-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: .85rem; }
+    .preset-table th { background: var(--bg3); color: var(--muted); font-size: .75rem; text-transform: uppercase; letter-spacing: .07em; padding: .65rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+    .preset-table td { padding: .7rem 1rem; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: top; }
+    .preset-table tr:last-child td { border: none; }
+    .preset-table tr:hover td { background: var(--bg2); }
+    .badge-savings { background: rgba(92,229,200,.12); color: var(--accent2); border: 1px solid var(--accent2); border-radius: 4px; padding: .15rem .45rem; font-size: .72rem; font-weight: 700; }
+    .badge-perf { background: rgba(124,106,247,.12); color: var(--accent); border: 1px solid var(--accent); border-radius: 4px; padding: .15rem .45rem; font-size: .72rem; font-weight: 700; }
+    .badge-default { background: rgba(136,136,152,.12); color: var(--muted); border: 1px solid var(--border); border-radius: 4px; padding: .15rem .45rem; font-size: .72rem; font-weight: 700; }
+
+    /* LOOKBACK TABLE */
+    .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+    .info-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 1.2rem; }
+    .info-card .ic-num { font-family: 'IBM Plex Mono', monospace; font-size: 1.6rem; font-weight: 700; color: var(--accent); }
+    .info-card .ic-label { font-size: .78rem; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); margin-bottom: .4rem; }
+    .info-card .ic-desc { font-size: .82rem; color: var(--muted); line-height: 1.55; }
+    .info-card.green .ic-num { color: var(--accent2); }
+    .info-card.orange .ic-num { color: var(--warn); }
+
+    /* INSTANCE LOCK */
+    .lock-steps { display: flex; flex-direction: column; gap: 0; margin: 1.5rem 0; }
+    .lock-step { display: flex; gap: 1rem; }
+    .lock-step-left { display: flex; flex-direction: column; align-items: center; }
+    .lock-num { width: 30px; height: 30px; border-radius: 50%; background: rgba(124,106,247,.15); border: 1px solid var(--accent); display: flex; align-items: center; justify-content: center; font-size: .75rem; font-weight: 700; color: var(--accent); flex-shrink: 0; }
+    .lock-line { width: 1px; flex: 1; background: var(--border); margin: 4px 0; min-height: 20px; }
+    .lock-content { padding: 0 0 1.5rem; flex: 1; }
+    .lock-title { font-weight: 600; font-size: .95rem; color: var(--text); margin-bottom: .25rem; }
+    .lock-desc { font-size: .85rem; color: var(--muted); }
+
+    /* FOOTER */
+    .post-footer { border-top: 1px solid var(--border); padding: 2rem 0; margin-top: 3rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .footer-author { font-size: .85rem; color: var(--muted); }
+    .footer-author strong { color: var(--text); }
+    .footer-links { display: flex; gap: 1rem; font-size: .82rem; }
+    .footer-links a { color: var(--muted); text-decoration: none; }
+    .footer-links a:hover { color: var(--accent); }
+
+    @media (max-width: 600px) {
+      h1.post-title { font-size: 1.65rem; }
+      .aws-presets { grid-template-columns: repeat(2,1fr); }
+      .author-row { flex-wrap: wrap; }
+      .post-meta { text-align: left; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="https://www.vishnurachapudi.com">vishnu.</a>
+  <div style="display:flex; align-items:center; gap:2rem;">
+    <a class="nav-back" href="https://www.vishnurachapudi.com/#blog">← blog</a>
+    <div class="nav-links">
+      <a href="https://dev.to/vishnu_rachapudi_75e73248">dev.to</a>
+      <a href="https://www.linkedin.com/in/vishnu-rachapudi-28956920b/">linkedin</a>
+    </div>
+  </div>
+</nav>
+
+<article>
+<div class="container">
+
+  <!-- HEADER -->
+  <header class="post-header">
+    <div class="tags">
+      <span class="tag accent">AWS</span>
+      <span class="tag accent">Compute Optimizer</span>
+      <span class="tag green">Cost Optimization</span>
+      <span class="tag orange">EC2</span>
+      <span class="tag">EBS</span>
+      <span class="tag">FinOps</span>
+    </div>
+
+    <h1 class="post-title">AWS Compute Optimizer — Stop Guessing, Start Rightsizing</h1>
+    <p class="post-subtitle">P90 vs P99.5. Max savings vs Max performance. 14, 32, or 93-day lookback. Locking recommendations to your dedicated host family. Everything you need to actually tune Compute Optimizer for your workloads — not just accept the defaults.</p>
+
+    <div class="author-row">
+      <div class="author-avatar">VR</div>
+      <div class="author-info">
+        <div class="author-name">Vishnu Rachapudi</div>
+        <div class="author-meta">Cloud &amp; AI Engineer · AWS Community Builder (Security)</div>
+      </div>
+      <div class="post-meta">
+        <span>June 2026</span>
+        <span>12 min read</span>
+      </div>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-pill">
+        <span class="stat-num">4</span>
+        <span class="stat-label">Utilization presets</span>
+      </div>
+      <div class="stat-pill">
+        <span class="stat-num">3</span>
+        <span class="stat-label">Lookback windows</span>
+      </div>
+      <div class="stat-pill">
+        <span class="stat-num">1093</span>
+        <span class="stat-label">Instance types to pin</span>
+      </div>
+      <div class="stat-pill">
+        <span class="stat-num">$0</span>
+        <span class="stat-label">Cost for 32-day lookback</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="post-body">
+
+    <p>AWS Compute Optimizer has been recommending right-sized EC2, EBS, Lambda, RDS, Aurora, and ECS resources since 2019. Most teams enable it, glance at the dashboard, and leave everything on defaults. That's a missed opportunity — because the defaults are conservative by design, and your workload almost certainly isn't a one-size-fits-all pattern.</p>
+
+    <p>In this post I'll walk through every tunable knob in Compute Optimizer's <strong>Rightsizing Preferences</strong>: what each setting actually means, when to change it, and how to lock recommendations to the exact instance families running in your environment.</p>
+
+    <!-- TOC -->
+    <div class="toc">
+      <div class="toc-title">In this post</div>
+      <ol>
+        <li><a href="#s1">What Compute Optimizer does — and what it covers</a></li>
+        <li><a href="#s2">Rightsizing Preferences — the full overview</a></li>
+        <li><a href="#s3">Lookback period: 14, 32, or 93 days</a></li>
+        <li><a href="#s4">Utilization presets: Max savings → Max performance</a></li>
+        <li><a href="#s5">CPU metrics: threshold (P90/P95/P99.5) + headroom</a></li>
+        <li><a href="#s6">Memory utilization headroom</a></li>
+        <li><a href="#s7">Preferred EC2 instances — locking to your host family</a></li>
+        <li><a href="#s8">EBS volume preferences</a></li>
+        <li><a href="#s9">Regional scope + how preferences propagate</a></li>
+        <li><a href="#s10">Which preset should you actually use?</a></li>
+      </ol>
+    </div>
+
+    <!-- S1 -->
+    <div class="section-label" id="s1">Section 01</div>
+    <h2>What Compute Optimizer does — and what it covers</h2>
+
+    <p>Compute Optimizer uses machine learning on CloudWatch utilization metrics to detect over-provisioned and under-provisioned resources and recommend optimal replacements. It works across:</p>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="ic-label">EC2 Instances</div>
+        <div class="ic-desc">Instance type, size, and family recommendations. Supports CPU + memory headroom and threshold tuning.</div>
+      </div>
+      <div class="info-card">
+        <div class="ic-label">EC2 Auto Scaling Groups</div>
+        <div class="ic-desc">Same signals as EC2, applied at the ASG level with launch configuration awareness.</div>
+      </div>
+      <div class="info-card green">
+        <div class="ic-label">EBS Volumes</div>
+        <div class="ic-desc">Volume type and size recommendations. Lookback period configurable (14 or 32 days).</div>
+      </div>
+      <div class="info-card green">
+        <div class="ic-label">Lambda Functions</div>
+        <div class="ic-desc">Memory size recommendations based on duration and cost patterns.</div>
+      </div>
+      <div class="info-card orange">
+        <div class="ic-label">RDS &amp; Aurora</div>
+        <div class="ic-desc">DB instance class recommendations. Only lookback period is configurable for RDS.</div>
+      </div>
+      <div class="info-card orange">
+        <div class="ic-label">ECS on Fargate</div>
+        <div class="ic-desc">CPU and memory allocation recommendations for Fargate task definitions.</div>
+      </div>
+    </div>
+
+    <p>Rightsizing preferences — the focus of this post — apply primarily to <strong>EC2 and EC2 ASG recommendations</strong>, with lookback period options also available for EBS and RDS.</p>
+
+    <!-- S2 -->
+    <div class="section-label" id="s2">Section 02</div>
+    <h2>Rightsizing Preferences — the overview</h2>
+
+    <p>Navigate to <strong>Compute Optimizer → Preferences → Rightsizing</strong>. Select the resource type (EC2 instances including ASG is the most feature-rich) and preference level (organization, account, or regional).</p>
+
+    <p>You'll land on the current defaults summary. For EC2 + ASG, the default state shows:</p>
+
+    <div class="aws-panel">
+      <div class="aws-panel-header">
+        EC2 and EC2 Auto Scaling groups
+        <span class="badge">Default regions</span>
+      </div>
+      <div class="aws-body">
+        <div style="display:grid; grid-template-columns: repeat(4,1fr); gap:1rem; font-size:.82rem;">
+          <div>
+            <div style="font-weight:700; margin-bottom:.3rem;">Preferred EC2 instances</div>
+            <div style="color:#5c6670;">Instance types and sizes</div>
+            <div style="color:#0972d3; font-size:.78rem;">Show preferred resources</div>
+          </div>
+          <div>
+            <div style="font-weight:700; margin-bottom:.3rem;">CPU utilization</div>
+            <div style="color:#5c6670;">Headroom: 20% (default)</div>
+            <div style="color:#5c6670;">Threshold: P99.5 (default)</div>
+          </div>
+          <div>
+            <div style="font-weight:700; margin-bottom:.3rem;">Memory utilization</div>
+            <div style="color:#5c6670;">Headroom: 20% (default)</div>
+          </div>
+          <div>
+            <div style="font-weight:700; margin-bottom:.3rem;">Lookback period</div>
+            <div style="color:#5c6670;">14 days (default)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p>Hit <strong>Edit</strong> and you're walked through a four-step wizard: Regional scope → Lookback period &amp; metrics → Preferred EC2 instances → Review &amp; save.</p>
+
+    <!-- S3 -->
+    <div class="section-label" id="s3">Section 03</div>
+    <h2>Lookback period: 14, 32, or 93 days</h2>
+
+    <p>This is the first thing to tune. The lookback period determines how many days of CloudWatch utilization data Compute Optimizer uses to generate recommendations.</p>
+
+    <div class="info-grid" style="grid-template-columns: repeat(3,1fr);">
+      <div class="info-card">
+        <div class="ic-num">14</div>
+        <div class="ic-label">Days — Default</div>
+        <div class="ic-desc">Captures two weeks of data. Good for workloads with stable, daily patterns. <strong>Free.</strong></div>
+      </div>
+      <div class="info-card green">
+        <div class="ic-num">32</div>
+        <div class="ic-label">Days — Free</div>
+        <div class="ic-desc">Captures ~one month. Accounts for month-end processing, monthly patches, and maintenance reboots. <strong>Free. Strongly recommended as a baseline.</strong></div>
+      </div>
+      <div class="info-card orange">
+        <div class="ic-num">93</div>
+        <div class="ic-label">Days — Paid (Enhanced)</div>
+        <div class="ic-desc">Requires Enhanced Infrastructure Metrics (~$0.25/month per EC2 instance). Captures quarterly cycles — best for workloads with end-of-quarter spikes.</div>
+      </div>
+    </div>
+
+    <div class="callout green">
+      <strong>Practical advice:</strong> Switch to <strong>32 days for free</strong> as your baseline. You'll catch monthly patterns — patch windows, scheduled jobs, month-end batch runs — that a 14-day window can miss entirely, leading to under-provisioned recommendations.
+    </div>
+
+    <p>The 93-day option requires enabling Enhanced Infrastructure Metrics. When you click it in the console, you'll see the confirmation dialog before it activates:</p>
+
+    <div class="aws-panel">
+      <div class="aws-panel-header">Enable enhanced infrastructure metrics</div>
+      <div class="aws-body">
+        <p style="font-size:.85rem; color:#0f1111; line-height:1.6; margin-bottom:1.2rem;">An extended lookback period of 93 days is available as part of Enhanced infrastructure metrics. This is a paid feature by region.</p>
+        <div style="display:flex; gap:1rem; justify-content:flex-end;">
+          <button style="background:none; border:none; color:#0972d3; font-size:.88rem; cursor:pointer; font-weight:600;">Cancel</button>
+          <button style="background:none; border:1.5px solid #0972d3; color:#0972d3; border-radius:20px; padding:.4rem 1rem; font-size:.88rem; cursor:pointer; font-weight:600;">Enable enhanced infrastructure metrics</button>
+        </div>
+      </div>
+    </div>
+
+    <p>For EBS volumes, the console shows only 14 or 32 days (no 93-day option). Same for ECS. The 93-day window is EC2/ASG-specific.</p>
+
+    <!-- S4 -->
+    <div class="section-label" id="s4">Section 04</div>
+    <h2>Utilization presets: Max savings → Max performance</h2>
+
+    <p>This is the most impactful setting most teams never touch. Compute Optimizer gives you four named presets that bundle a CPU threshold (P90/P95/P99.5) and CPU headroom (0%/20%/30%) together into a single choice.</p>
+
+    <div class="aws-panel">
+      <div class="aws-panel-header">Utilization presets</div>
+      <div class="aws-body">
+        <div class="aws-desc">Choose a preset that reflects the performance sensitivity and cost optimization goals for your workload. The preset configures CPU threshold and headroom together.</div>
+        <div class="aws-presets">
+          <div class="preset-btn">Max savings</div>
+          <div class="preset-btn">Balanced</div>
+          <div class="preset-btn active">Default</div>
+          <div class="preset-btn">Max performance</div>
+        </div>
+      </div>
+    </div>
+
+    <p>Here's exactly what each preset configures under the hood:</p>
+
+    <table class="preset-table">
+      <thead>
+        <tr>
+          <th>Preset</th>
+          <th>CPU Threshold</th>
+          <th>CPU Headroom</th>
+          <th>Best for</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Max savings</strong> <span class="badge-savings">↓ Cost</span></td>
+          <td>P90</td>
+          <td>0%</td>
+          <td>Non-production, dev/test environments where peak spikes are acceptable and cost pressure is high</td>
+        </tr>
+        <tr>
+          <td><strong>Balanced</strong></td>
+          <td>P95</td>
+          <td>30%</td>
+          <td>General-purpose workloads with moderate sensitivity to peak utilization — a good middle ground</td>
+        </tr>
+        <tr>
+          <td><strong>Default</strong> <span class="badge-default">Default</span></td>
+          <td>P99.5</td>
+          <td>20%</td>
+          <td>The out-of-box setting. Conservative — suited for most production workloads without customization</td>
+        </tr>
+        <tr>
+          <td><strong>Max performance</strong> <span class="badge-perf">↑ Perf</span></td>
+          <td>P99.5</td>
+          <td>30%</td>
+          <td>Mission-critical production where performance headroom matters more than cost savings</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <strong>Key insight:</strong> "Max savings" doesn't mean Compute Optimizer ignores cost elsewhere — it means the <em>recommendation algorithm</em> uses P90 threshold (ignores top 10% of spikes) and 0% headroom. The resulting instance size suggestion will be smaller, so actual savings depend on whether your workload can tolerate that tighter fit.
+    </div>
+
+    <!-- S5 -->
+    <div class="section-label" id="s5">Section 05</div>
+    <h2>CPU metrics: threshold (P90 / P95 / P99.5) + headroom</h2>
+
+    <p>Understanding P-values here is important. The <strong>threshold</strong> determines which data points Compute Optimizer considers when analyzing your CPU history.</p>
+
+    <h3>Threshold — what P90, P95, P99.5 mean in practice</h3>
+
+    <p>Over a 14-day period at 5-minute CloudWatch resolution, you have roughly <strong>4,032 data points</strong> per instance.</p>
+
+    <ul style="padding-left:1.4rem; margin-bottom:1.2rem;">
+      <li style="padding:.3rem 0; color:var(--muted);"><strong style="color:var(--text);">P99.5 (default)</strong> — ignores the top 0.5% of highest CPU data points (~20 data points). Best for sensitive production workloads where occasional spikes genuinely stress the system.</li>
+      <li style="padding:.3rem 0; color:var(--muted);"><strong style="color:var(--text);">P95</strong> — ignores the top 5% (~200 data points). More tolerant of brief spikes. A reasonable middle ground for workloads that burst occasionally but not critically.</li>
+      <li style="padding:.3rem 0; color:var(--muted);"><strong style="color:var(--text);">P90 (least sensitive)</strong> — ignores the top 10% (~400 data points). Aggressive. The recommendation will be tuned to non-peak steady-state load. Use only for workloads where those spikes genuinely don't matter — dev/test, batch jobs with retry logic, etc.</li>
+    </ul>
+
+    <!-- simulated AWS chart - Max savings -->
+    <div class="aws-panel">
+      <div class="aws-panel-header">CPU usage — Max savings preset (P90 threshold, 0% headroom)</div>
+      <div class="aws-body">
+        <div class="aws-presets" style="margin-bottom:.8rem;">
+          <div class="preset-btn active">Max savings</div>
+          <div class="preset-btn">Balanced</div>
+          <div class="preset-btn">Default</div>
+          <div class="preset-btn">Max performance</div>
+        </div>
+        <div style="font-size:.8rem; color:#5c6670; margin-bottom:.5rem;"><strong style="color:#0f1111;">Threshold:</strong> P90 (least sensitive) &nbsp;|&nbsp; <strong style="color:#0f1111;">Headroom:</strong> 0% (no added capacity)</div>
+        <div class="aws-chart">
+          <div class="chart-title">CPU utilization (simulated)</div>
+          <svg class="chart-svg" viewBox="0 0 620 90" xmlns="http://www.w3.org/2000/svg">
+            <!-- grid lines -->
+            <line x1="0" y1="0"  x2="620" y2="0"  stroke="#eee" stroke-width="1"/>
+            <line x1="0" y1="22" x2="620" y2="22" stroke="#eee" stroke-width="1"/>
+            <line x1="0" y1="45" x2="620" y2="45" stroke="#eee" stroke-width="1"/>
+            <line x1="0" y1="67" x2="620" y2="67" stroke="#eee" stroke-width="1"/>
+            <line x1="0" y1="90" x2="620" y2="90" stroke="#eee" stroke-width="1"/>
+            <!-- utilization line -->
+            <polyline fill="none" stroke="#4c8fe8" stroke-width="2"
+              points="0,75 45,30 90,80 135,8 180,55 225,35 270,45 315,10 360,48 405,25 450,65 495,38 540,78 585,54 620,54"/>
+            <!-- P90 threshold = headroom line (dashed black) at ~80% = y=18 -->
+            <line x1="0" y1="18" x2="620" y2="18" stroke="#333" stroke-width="1.5" stroke-dasharray="6,4"/>
+            <!-- threshold line (dashed red) at ~80% -->
+            <line x1="0" y1="18" x2="620" y2="18" stroke="#c0392b" stroke-width="1.5" stroke-dasharray="5,5" opacity=".6"/>
+            <!-- labels -->
+            <text x="4" y="11" font-size="9" fill="#5c6670">100%</text>
+            <text x="4" y="30" font-size="9" fill="#5c6670">80%</text>
+            <text x="4" y="52" font-size="9" fill="#5c6670">60%</text>
+            <text x="4" y="74" font-size="9" fill="#5c6670">40%</text>
+          </svg>
+          <div style="font-size:.76rem; color:#5c6670; text-align:center; padding-bottom:.3rem;">14 days (Lookback Period) · t-13 → t-0</div>
+          <div class="chart-legend">
+            <span><span class="legend-line" style="background:#4c8fe8; display:inline-block;"></span> CPU utilization</span>
+            <span><span class="legend-dash" style="border-color:#333;"></span> Headroom</span>
+            <span><span class="legend-dash" style="border-color:#c0392b;"></span> Threshold</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Headroom — buffer capacity on top of observed peak</h3>
+    <p><strong>Headroom</strong> adds a percentage buffer above the observed utilization ceiling, so the recommended instance has room to absorb burst above what history recorded.</p>
+    <ul style="padding-left:1.4rem; margin-bottom:1.2rem;">
+      <li style="padding:.3rem 0; color:var(--muted);"><strong style="color:var(--text);">0% headroom</strong> — no extra capacity. Recommendation is sized exactly to the threshold utilization level. Maximises savings, minimises buffer.</li>
+      <li style="padding:.3rem 0; color:var(--muted);"><strong style="color:var(--text);">20% headroom (default)</strong> — recommended instance has 20% CPU overhead above the observed threshold peak. The AWS-tested sensible default.</li>
+      <li style="padding:.3rem 0; color:var(--muted);"><strong style="color:var(--text);">30% headroom</strong> — higher buffer. Used in Balanced and Max performance presets. Good when your workload has unpredictable growth or you want a comfortable safety margin in production.</li>
+    </ul>
+
+    <div class="callout orange">
+      <strong>Example:</strong> If your instance's P99.5 CPU peak over 14 days is 55%, Default preset (P99.5 + 20% headroom) will recommend an instance sized to handle ~66% CPU. Max performance (P99.5 + 30% headroom) targets ~71.5%. Max savings (P90 + 0%) will look at a lower percentile peak and add nothing — much smaller recommendation.
+    </div>
+
+    <!-- S6 -->
+    <div class="section-label" id="s6">Section 06</div>
+    <h2>Memory utilization headroom</h2>
+
+    <p>Memory preferences are simpler — there's no threshold setting, only headroom (10%, 20%, or 30%). The memory headroom chart shows a much smoother utilization line than CPU, which is typical — memory tends to be allocated rather than bursty.</p>
+
+    <div class="aws-panel">
+      <div class="aws-panel-header">Memory usage — 30% headroom selected</div>
+      <div class="aws-body">
+        <div style="font-size:.8rem; margin-bottom:.6rem;"><strong>Headroom</strong> <span style="color:#0972d3; font-size:.78rem;">Info</span></div>
+        <div class="aws-subtext">Utilization headroom is added memory capacity beyond historical usage.</div>
+        <div class="radio-row">
+          <label class="radio-opt"><input type="radio" name="mem"> 10% (low added capacity)</label>
+          <label class="radio-opt"><input type="radio" name="mem"> 20% (default)</label>
+          <label class="radio-opt"><input type="radio" name="mem" checked> 30% (high added capacity)</label>
+        </div>
+        <div class="aws-chart">
+          <div class="chart-title">Memory utilization (simulated)</div>
+          <svg class="chart-svg" viewBox="0 0 620 80" xmlns="http://www.w3.org/2000/svg">
+            <line x1="0" y1="0"  x2="620" y2="0"  stroke="#eee" stroke-width="1"/>
+            <line x1="0" y1="20" x2="620" y2="20" stroke="#eee" stroke-width="1"/>
+            <line x1="0" y1="40" x2="620" y2="40" stroke="#eee" stroke-width="1"/>
+            <line x1="0" y1="60" x2="620" y2="60" stroke="#eee" stroke-width="1"/>
+            <line x1="0" y1="80" x2="620" y2="80" stroke="#eee" stroke-width="1"/>
+            <!-- memory line — smooth, ~70% -->
+            <polyline fill="none" stroke="#4c8fe8" stroke-width="2"
+              points="0,24 60,28 120,24 180,20 240,22 300,18 360,24 420,22 480,16 540,12 580,22 620,20"/>
+            <!-- headroom line at ~70% = y=24, dashed -->
+            <line x1="0" y1="24" x2="620" y2="24" stroke="#333" stroke-width="1.5" stroke-dasharray="6,4"/>
+            <text x="4" y="10"  font-size="9" fill="#5c6670">100%</text>
+            <text x="4" y="28"  font-size="9" fill="#5c6670">80%</text>
+            <text x="4" y="48"  font-size="9" fill="#5c6670">60%</text>
+            <text x="4" y="68"  font-size="9" fill="#5c6670">40%</text>
+          </svg>
+          <div style="font-size:.76rem; color:#5c6670; text-align:center; padding-bottom:.3rem;">14 days (Lookback Period)</div>
+          <div class="chart-legend">
+            <span><span class="legend-line" style="background:#4c8fe8;"></span> Memory utilization</span>
+            <span><span class="legend-dash" style="border-color:#333;"></span> Headroom</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Note:</strong> Memory metrics require the CloudWatch agent to be installed and reporting memory utilization. If you don't have the CloudWatch agent configured on your EC2 instances, Compute Optimizer won't have memory data and this setting won't affect your recommendations.
+    </div>
+
+    <!-- S7 -->
+    <div class="section-label" id="s7">Section 07</div>
+    <h2>Preferred EC2 instances — locking to your host family</h2>
+
+    <p>This is the setting that directly answers the dedicated host question. If your organisation has committed to a specific instance family — say <code>r6i</code> on dedicated hosts — you don't want Compute Optimizer suggesting <code>m7g</code>, <code>c6a</code>, or anything outside your licensed footprint. Preferred instances let you constrain the recommendation output.</p>
+
+    <div class="aws-panel">
+      <div class="aws-panel-header">Preferred EC2 instances <span style="color:#0972d3; font-size:.78rem; font-weight:400; margin-left:.5rem;">Info</span></div>
+      <div class="aws-body">
+        <div class="aws-subtext">Choose the EC2 instances you want in your recommendation output. This doesn't prevent Compute Optimizer from generating recommendations for any of your workloads.</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:.8rem; margin-bottom:1rem;">
+          <div style="border:1.5px solid #aab7b8; border-radius:8px; padding:.8rem 1rem; font-size:.84rem;">
+            <div style="font-weight:600; margin-bottom:.3rem;">Any instance type</div>
+            <div style="color:#5c6670; font-size:.78rem;">Compute Optimizer considers all instance types and sizes when generating recommendations.</div>
+          </div>
+          <div style="border:1.5px solid #0972d3; border-radius:8px; padding:.8rem 1rem; background:#f0f8ff; font-size:.84rem;">
+            <div style="display:flex; align-items:center; gap:.4rem; font-weight:600; margin-bottom:.3rem;"><span style="color:#0972d3;">●</span> Limit to specific instance types and sizes</div>
+            <div style="color:#5c6670; font-size:.78rem;">Choose the EC2 instances you want in your recommendation output.</div>
+          </div>
+        </div>
+        <div style="border:1px solid #dde1e6; border-radius:8px; padding:1rem;">
+          <div style="font-weight:700; font-size:.88rem; margin-bottom:.6rem;">Preferred instance types and sizes <span style="color:#5c6670; font-weight:400;">(1093/1093)</span></div>
+          <div style="background:#f9f9f9; border:1px solid #dde1e6; border-radius:4px; padding:.5rem .8rem; font-size:.82rem; color:#5c6670; margin-bottom:.5rem;">▼ Search by instance families</div>
+          <div style="border:1px solid #dde1e6; border-radius:4px; padding:.5rem .8rem; font-size:.82rem; color:#5c6670; display:flex; align-items:center; gap:.4rem;">🔍 Find instance types <span style="margin-left:auto; color:#0972d3; font-size:.78rem;">1 2 3 ›</span></div>
+        </div>
+      </div>
+    </div>
+
+    <p>Here's how to configure this for a dedicated host running <code>r6i</code> instances:</p>
+
+    <div class="lock-steps">
+      <div class="lock-step">
+        <div class="lock-step-left"><div class="lock-num">1</div><div class="lock-line"></div></div>
+        <div class="lock-content">
+          <div class="lock-title">Select "Limit to specific instance types and sizes"</div>
+          <div class="lock-desc">This enables the instance type picker. It narrows the recommendation output but does <em>not</em> prevent Compute Optimizer from analyzing other instance types — it only affects what shows up in your recommendation results.</div>
+        </div>
+      </div>
+      <div class="lock-step">
+        <div class="lock-step-left"><div class="lock-num">2</div><div class="lock-line"></div></div>
+        <div class="lock-content">
+          <div class="lock-title">Search for your instance family (e.g. r6i)</div>
+          <div class="lock-desc">Use the "Search by instance families" dropdown or type directly in "Find instance types". With 1,093 types available across all families, filtering by family first is fastest. Select all sizes within <code>r6i</code> (r6i.large through r6i.metal) that are valid on your dedicated host capacity.</div>
+        </div>
+      </div>
+      <div class="lock-step">
+        <div class="lock-step-left"><div class="lock-num">3</div><div class="lock-line"></div></div>
+        <div class="lock-content">
+          <div class="lock-title">Save preferences at the right scope</div>
+          <div class="lock-desc">Apply at the <strong>regional level</strong> (e.g. us-east-1 only) if your dedicated hosts are region-specific, rather than account-wide. This way other regions still get broader recommendations.</div>
+        </div>
+      </div>
+      <div class="lock-step">
+        <div class="lock-step-left"><div class="lock-num">4</div></div>
+        <div class="lock-content">
+          <div class="lock-title">Wait ~24 hours for recommendations to regenerate</div>
+          <div class="lock-desc">Compute Optimizer reprocesses recommendations within 24 hours of a preference save. After that, your rightsizing suggestions will only reference sizes within your pinned family.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout green">
+      <strong>Why this matters for dedicated hosts:</strong> Dedicated hosts are licensed and billed per host, not per instance. A recommendation to move from <code>r6i.4xlarge</code> to <code>m7g.2xlarge</code> is useless — you can't run <code>m7g</code> on an <code>r6i</code> host. Pinning to the <code>r6i</code> family means every recommendation is a rightsizing move you can actually execute without touching your host allocation or licence coverage.
+    </div>
+
+    <!-- S8 -->
+    <div class="section-label" id="s8">Section 08</div>
+    <h2>EBS volume preferences</h2>
+
+    <p>EBS has its own preferences section, separate from EC2. The options are simpler — only lookback period is configurable (14 or 32 days). No threshold or headroom controls.</p>
+
+    <div class="aws-panel">
+      <div class="aws-panel-header">EBS volumes <span class="badge">Default regions</span></div>
+      <div class="aws-body">
+        <div class="aws-subtext">If you haven't set any rightsizing preferences, Compute Optimizer considers all available EBS volumes and uses the default values to generate recommendations.</div>
+        <div style="font-weight:700; margin-bottom:.3rem;">Lookback period</div>
+        <div style="font-weight:700; font-size:.9rem;">Lookback period</div>
+        <div style="font-size:.82rem; color:#5c6670; margin-top:.3rem;">14 days (default)</div>
+      </div>
+    </div>
+
+    <p>Switching EBS to 32 days is free and worth doing — monthly storage patterns (snapshot schedules, nightly ETL writes, month-end archiving) won't show up in a 14-day window and can lead to over-sized volume recommendations if your workload is genuinely spiky on a monthly cadence.</p>
+
+    <!-- S9 -->
+    <div class="section-label" id="s9">Section 09</div>
+    <h2>Regional scope + how preferences propagate</h2>
+
+    <p>Every preference set is scoped. The hierarchy is: <strong>Organization → Account → Region</strong>. A more specific scope overrides a broader one for that resource.</p>
+
+    <div class="aws-panel">
+      <div class="aws-panel-header">Regional scope</div>
+      <div class="aws-body">
+        <div class="aws-subtext">Specify the Regions where you want Compute Optimizer to apply your rightsizing recommendation preferences.</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:.8rem; margin-bottom:1rem;">
+          <div style="border:1.5px solid #aab7b8; border-radius:8px; padding:.8rem 1rem; font-size:.84rem;">
+            <div style="font-weight:600; margin-bottom:.3rem;">Any region</div>
+            <div style="color:#5c6670; font-size:.78rem;">Compute Optimizer applies preferences to all available Regions.</div>
+          </div>
+          <div style="border:1.5px solid #0972d3; border-radius:8px; padding:.8rem 1rem; background:#f0f8ff; font-size:.84rem;">
+            <div style="display:flex; align-items:center; gap:.4rem; font-weight:600; margin-bottom:.3rem;"><span style="color:#0972d3;">●</span> Custom regions</div>
+            <div style="color:#5c6670; font-size:.78rem;">Compute Optimizer only applies preferences for the Regions you specify.</div>
+          </div>
+        </div>
+        <div style="font-size:.82rem; color:#0f1111; margin-bottom:.6rem; font-weight:700;">Regions</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:.35rem; font-size:.78rem; color:#0f1111;">
+          <div>✅ US East (N. Virginia) <span style="color:#5c6670;">us-east-1</span></div>
+          <div>✅ US East (Ohio) <span style="color:#5c6670;">us-east-2</span></div>
+          <div>✅ US West (Oregon) <span style="color:#5c6670;">us-west-2</span></div>
+          <div>✅ Asia Pacific (Hyderabad) <span style="color:#5c6670;">ap-south-2</span></div>
+          <div>✅ Asia Pacific (Mumbai) <span style="color:#5c6670;">ap-south-1</span></div>
+          <div>✅ Asia Pacific (Singapore) <span style="color:#5c6670;">ap-southeast-1</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Important:</strong> "Any new changes you might make could affect existing Region rightsizing preferences" — the console warns you of this on the review page. If you've previously set region-level overrides, an org-wide or account-wide change won't automatically override them. Check your region-specific settings after any broad update.
+    </div>
+
+    <!-- S10 -->
+    <div class="section-label" id="s10">Section 10</div>
+    <h2>Which preset should you actually use?</h2>
+
+    <p>Here's a practical decision matrix based on workload type — not the marketing names:</p>
+
+    <table class="preset-table">
+      <thead>
+        <tr>
+          <th>Workload</th>
+          <th>Recommended preset</th>
+          <th>Lookback</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Dev / test environment</td>
+          <td><span class="badge-savings">Max savings</span></td>
+          <td>14 days</td>
+          <td>Cost matters more than peak headroom. Workload retries are acceptable.</td>
+        </tr>
+        <tr>
+          <td>Batch / scheduled jobs</td>
+          <td><span class="badge-savings">Max savings</span> or Balanced</td>
+          <td>32 days</td>
+          <td>32-day lookback essential to capture monthly batch patterns.</td>
+        </tr>
+        <tr>
+          <td>General web / API workloads</td>
+          <td>Default</td>
+          <td>32 days</td>
+          <td>P99.5 + 20% headroom + 32-day lookback is a solid general-purpose config.</td>
+        </tr>
+        <tr>
+          <td>Stateful production (DB, cache)</td>
+          <td><span class="badge-perf">Max performance</span></td>
+          <td>32 or 93 days</td>
+          <td>P99.5 + 30% headroom. If quarterly patterns exist, enable enhanced metrics for 93 days.</td>
+        </tr>
+        <tr>
+          <td>Dedicated hosts (r6i, etc.)</td>
+          <td>Default or Max performance</td>
+          <td>32 days</td>
+          <td><strong>Pin preferred EC2 instances to the host family.</strong> This is the critical step — without it the preset choice is secondary.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>None of this is a "set and forget" configuration. As your workloads evolve — new deployments, scaling events, architectural changes — revisit your preferences. The Rightsizing preferences page shows a summary of current settings, and every preference change regenerates recommendations within 24 hours.</p>
+
+    <div class="callout green">
+      <strong>Quick wins checklist:</strong><br>
+      ✓ Switch EC2 lookback to <strong>32 days</strong> (free, immediate improvement)<br>
+      ✓ Pin <strong>preferred instance families</strong> if you're on dedicated hosts or have licensing constraints<br>
+      ✓ Use <strong>Max savings preset on non-prod</strong> to surface more aggressive recommendations for dev/test<br>
+      ✓ Enable the <strong>CloudWatch agent</strong> if you haven't — memory metrics are off without it<br>
+      ✓ Set <strong>regional scope</strong> carefully if you have dedicated host regions with specific family constraints
+    </div>
+
+    <p>Compute Optimizer is one of the few AWS services where the recommendations improve the more you tell it about your constraints. The defaults are intentionally conservative — override them where you know better.</p>
+
+  </div><!-- /post-body -->
+
+  <div class="post-footer">
+    <div class="footer-author">
+      Written by <strong>Vishnu Rachapudi</strong><br>
+      <span style="font-size:.8rem;">14x AWS Certified · Cloud &amp; AI Engineer at SUDO Consultants · AWS Community Builder (Security)</span>
+    </div>
+    <div class="footer-links">
+      <a href="https://dev.to/vishnu_rachapudi_75e73248">Dev.to</a>
+      <a href="https://www.linkedin.com/in/vishnu-rachapudi-28956920b/">LinkedIn</a>
+      <a href="https://www.vishnurachapudi.com/#blog">All posts</a>
+    </div>
+  </div>
+
+</div><!-- /container -->
+</article>
+
+</body>
+</html>
