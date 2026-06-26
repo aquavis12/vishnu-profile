@@ -691,6 +691,15 @@
     .talks-media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1px; border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; background: var(--border); }
     .media-card { background: var(--bg2); padding: 1.35rem 1.5rem; display: flex; flex-direction: column; gap: 0.65rem; text-decoration: none; color: var(--text); transition: background 0.2s var(--ease); }
     .media-card:hover { background: var(--bg3); }
+    /* YouTube click-to-play facade — defers player + DRM/EME init until play */
+    .yt-wrap { position: relative; width: 100%; height: 0; padding-bottom: 56.25%; overflow: hidden; border-radius: 8px; margin: 0.5rem 0; background: #000; }
+    .yt-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; border-radius: 8px; }
+    .yt-facade { position: absolute; inset: 0; width: 100%; height: 100%; padding: 0; border: none; background: transparent; cursor: pointer; display: block; }
+    .yt-thumb { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.8; transition: opacity 0.2s var(--ease), transform 0.35s var(--ease); }
+    .yt-facade:hover .yt-thumb, .yt-facade:focus-visible .yt-thumb { opacity: 1; transform: scale(1.03); }
+    .yt-play { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 56px; height: 40px; border-radius: 10px; background: rgba(255,0,0,0.85); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1rem; box-shadow: 0 8px 24px rgba(0,0,0,0.5); transition: background 0.2s var(--ease), transform 0.2s var(--ease); }
+    .yt-facade:hover .yt-play, .yt-facade:focus-visible .yt-play { background: #ff0000; transform: translate(-50%, -50%) scale(1.07); }
+
     .media-type-badge { display: inline-flex; align-items: center; gap: 0.35rem; font-family: var(--ff-mono); font-size: 0.66rem; letter-spacing: 0.07em; text-transform: uppercase; padding: 0.2rem 0.65rem; border-radius: 99px; width: fit-content; }
     .badge-yt   { background: rgba(255,0,0,0.12);   color: #f87171; border: 1px solid rgba(248,113,113,0.3); }
     .badge-spot { background: rgba(30,215,96,0.1);  color: #4ade80; border: 1px solid rgba(74,222,128,0.3); }
@@ -1415,9 +1424,11 @@
 
        <div class="media-card" role="listitem">
         <div class="media-type-badge badge-yt">▶ YouTube</div>
-        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:0.5rem 0;">
-          <iframe src="https://www.youtube.com/embed/JWqe86Kj0T0?si=pq0MKAlavGGP0Cug" title="
-Roadmap to AWS Certifications From Associate to Golden Jacket" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:8px;"></iframe>
+        <div class="yt-wrap">
+          <button class="yt-facade" type="button" data-embed="https://www.youtube.com/embed/JWqe86Kj0T0?si=pq0MKAlavGGP0Cug" aria-label="Play video: Roadmap to AWS Certifications From Associate to Golden Jacket">
+            <img class="yt-thumb" src="https://i.ytimg.com/vi/JWqe86Kj0T0/hqdefault.jpg" alt="" loading="lazy" width="480" height="360" />
+            <span class="yt-play" aria-hidden="true">▶</span>
+          </button>
         </div>
         <div class="media-title">
 Roadmap to AWS Certifications From Associate to Golden Jacket</div>
@@ -1426,8 +1437,11 @@ Roadmap to AWS Certifications From Associate to Golden Jacket</div>
 
       <div class="media-card" role="listitem">
         <div class="media-type-badge badge-yt">▶ YouTube</div>
-        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:0.5rem 0;">
-          <iframe src="https://www.youtube.com/embed/hq-ecyyJH8M?si=WJeUEOzrHBBF4pPE" title="AWS Certified AI Practitioner – Roadmap Session" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:8px;"></iframe>
+        <div class="yt-wrap">
+          <button class="yt-facade" type="button" data-embed="https://www.youtube.com/embed/hq-ecyyJH8M?si=WJeUEOzrHBBF4pPE" aria-label="Play video: AWS Certified AI Practitioner – Roadmap Session">
+            <img class="yt-thumb" src="https://i.ytimg.com/vi/hq-ecyyJH8M/hqdefault.jpg" alt="" loading="lazy" width="480" height="360" />
+            <span class="yt-play" aria-hidden="true">▶</span>
+          </button>
         </div>
         <div class="media-title">AWS Certified AI Practitioner — Roadmap Session</div>
         <div class="media-meta">Mar 2026 · Punjab</div>
@@ -1435,8 +1449,11 @@ Roadmap to AWS Certifications From Associate to Golden Jacket</div>
 
       <div class="media-card" role="listitem">
         <div class="media-type-badge badge-yt">▶ YouTube</div>
-        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:0.5rem 0;">
-          <iframe src="https://www.youtube.com/embed/rQvlmRrE-Xs?si=4N5aBhLazs6O4a-t" title="ACDKOCHI25 | Transforming Enterprise Productivity" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:8px;"></iframe>
+        <div class="yt-wrap">
+          <button class="yt-facade" type="button" data-embed="https://www.youtube.com/embed/rQvlmRrE-Xs?si=4N5aBhLazs6O4a-t" aria-label="Play video: ACDKOCHI25 | Transforming Enterprise Productivity">
+            <img class="yt-thumb" src="https://i.ytimg.com/vi/rQvlmRrE-Xs/hqdefault.jpg" alt="" loading="lazy" width="480" height="360" />
+            <span class="yt-play" aria-hidden="true">▶</span>
+          </button>
         </div>
         <div class="media-title">Transforming Enterprise Productivity with Amazon QuickSuite &amp; AWS Transform</div>
         <div class="media-meta">Dec 2025 · AWS Community Day Kochi</div>
@@ -1444,8 +1461,11 @@ Roadmap to AWS Certifications From Associate to Golden Jacket</div>
 
       <div class="media-card" role="listitem">
         <div class="media-type-badge badge-yt">▶ YouTube</div>
-        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:0.5rem 0;">
-          <iframe src="https://www.youtube.com/embed/f4Uj-xkZzn4?si=j2auWarJRp9O28MC" title="The 0.1% Cloud Masterclass" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:8px;"></iframe>
+        <div class="yt-wrap">
+          <button class="yt-facade" type="button" data-embed="https://www.youtube.com/embed/f4Uj-xkZzn4?si=j2auWarJRp9O28MC" aria-label="Play video: The 0.1% Cloud Masterclass">
+            <img class="yt-thumb" src="https://i.ytimg.com/vi/f4Uj-xkZzn4/hqdefault.jpg" alt="" loading="lazy" width="480" height="360" />
+            <span class="yt-play" aria-hidden="true">▶</span>
+          </button>
         </div>
         <div class="media-title">The 0.1% Cloud Masterclass</div>
         <div class="media-meta">Jan 2026 · Hyderabad</div>
@@ -1453,8 +1473,11 @@ Roadmap to AWS Certifications From Associate to Golden Jacket</div>
 
       <div class="media-card" role="listitem">
         <div class="media-type-badge badge-yt">▶ YouTube · @CloudAndTFbyVishnu</div>
-        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:0.5rem 0;">
-          <iframe src="https://www.youtube.com/embed/iE-hfSW42RY?si=AyNR6AcpDsCSQ0A6" title="Securing Your Code with AWS Inspector" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:8px;"></iframe>
+        <div class="yt-wrap">
+          <button class="yt-facade" type="button" data-embed="https://www.youtube.com/embed/iE-hfSW42RY?si=AyNR6AcpDsCSQ0A6" aria-label="Play video: Securing Your Code with AWS Inspector">
+            <img class="yt-thumb" src="https://i.ytimg.com/vi/iE-hfSW42RY/hqdefault.jpg" alt="" loading="lazy" width="480" height="360" />
+            <span class="yt-play" aria-hidden="true">▶</span>
+          </button>
         </div>
         <div class="media-title">Securing Your Code with AWS Inspector — Code Security Scanning</div>
         <div class="media-meta">Jan 2026 · Online</div>
@@ -1462,8 +1485,11 @@ Roadmap to AWS Certifications From Associate to Golden Jacket</div>
 
       <div class="media-card" role="listitem">
         <div class="media-type-badge badge-yt">▶ YouTube · @CloudAndTFbyVishnu</div>
-        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:0.5rem 0;">
-          <iframe src="https://www.youtube.com/embed/WTHnY_Bg2pI?si=CYijE99ilHFiNcpv" title="AWS App Runner" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:8px;"></iframe>
+        <div class="yt-wrap">
+          <button class="yt-facade" type="button" data-embed="https://www.youtube.com/embed/WTHnY_Bg2pI?si=CYijE99ilHFiNcpv" aria-label="Play video: AWS App Runner">
+            <img class="yt-thumb" src="https://i.ytimg.com/vi/WTHnY_Bg2pI/hqdefault.jpg" alt="" loading="lazy" width="480" height="360" />
+            <span class="yt-play" aria-hidden="true">▶</span>
+          </button>
         </div>
         <div class="media-title">AWS App Runner — The Easiest Way to Deploy Containers to the Cloud</div>
         <div class="media-meta">Tutorial · DevOps · @CloudAndTFbyVishnu</div>
@@ -2099,6 +2125,26 @@ Here's what it found.</div>
     });
   }, { rootMargin: '0px 0px -8% 0px', threshold: 0.04 });
   riseEls.concat(fadeEls).forEach(c => cio.observe(c));
+})();
+
+/* ── YouTube facades: load the player (and its EME/DRM init) only on play ── */
+(function () {
+  document.querySelectorAll('.yt-facade').forEach(function (f) {
+    f.addEventListener('click', function () {
+      var url = f.getAttribute('data-embed');
+      if (!url) return;
+      var sep = url.indexOf('?') === -1 ? '?' : '&';
+      var iframe = document.createElement('iframe');
+      iframe.src = url + sep + 'autoplay=1';
+      iframe.title = (f.getAttribute('aria-label') || 'YouTube video').replace(/^Play video:\s*/, '');
+      iframe.setAttribute('frameborder', '0');
+      iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+      iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+      iframe.setAttribute('allowfullscreen', '');
+      var wrap = f.parentNode;
+      if (wrap) { wrap.appendChild(iframe); wrap.removeChild(f); }
+    });
+  });
 })();
 </script>
 </body>
