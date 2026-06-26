@@ -698,35 +698,38 @@
     .media-title { font-size: 0.94rem; font-weight: 700; line-height: 1.4; font-family: var(--ff-head); }
     .media-meta  { font-family: var(--ff-mono); font-size: 0.72rem; color: var(--gold); margin-top: auto; letter-spacing: 0.02em; }
 
-    /* ═══ THEME INTENSITY SWITCH ═══ */
+    /* ═══ THEME SWITCH (swatch stops) ═══ */
     .theme-switch {
       position: relative; display: inline-flex; align-items: center; padding: 3px;
       border-radius: 99px; border: 1px solid var(--border2);
-      background: linear-gradient(90deg, #e7ebf2 0%, #1a2233 50%, #000 100%);
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
+      background: var(--bg3);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
       flex-shrink: 0;
     }
     .ts-step {
-      position: relative; z-index: 2; width: 30px; height: 24px; padding: 0;
+      position: relative; z-index: 2; width: 26px; height: 24px; padding: 0;
       border: none; background: transparent; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
-      font-size: 12px; line-height: 1;
-      transition: color 0.2s var(--ease), transform 0.2s var(--ease);
     }
-    .ts-step[data-theme="light"]   { color: rgba(15,20,30,0.62); }
-    .ts-step[data-theme="dark"]    { color: rgba(255,255,255,0.6); }
-    .ts-step[data-theme="panther"] { color: rgba(255,255,255,0.6); }
-    .ts-step:hover { color: #fff; }
-    .ts-step[data-theme="light"]:hover { color: #000; }
-    .ts-step.active { transform: scale(1.08); }
-    .ts-step.active[data-theme="light"] { color: #0b0e14; }
-    .ts-step.active[data-theme="dark"], .ts-step.active[data-theme="panther"] { color: #fff; }
+    .ts-step .sw {
+      width: 13px; height: 13px; border-radius: 50%;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.3);
+      transition: transform 0.2s var(--ease);
+    }
+    .ts-step:hover .sw { transform: scale(1.18); }
+    .ts-step.active .sw { transform: scale(1.12); }
+    .sw-light   { background: #e7ebf2; }
+    .sw-dark    { background: #4ea2ff; }
+    .sw-panther { background: radial-gradient(circle at 35% 30%, #8b7bff, #000 75%); }
+    .sw-ironman { background: linear-gradient(135deg, #ff3b3b 0%, #ffb02e 100%); }
+    .sw-spider  { background: linear-gradient(135deg, #ff4655 0%, #4d7cff 100%); }
     .ts-thumb {
-      position: absolute; top: 3px; left: 3px; width: 30px; height: 24px;
-      border-radius: 99px; background: rgba(255,255,255,0.2);
-      border: 1px solid rgba(255,255,255,0.55);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.45);
-      transition: transform 0.3s var(--ease); z-index: 1; pointer-events: none;
+      position: absolute; top: 3px; left: 3px; width: 26px; height: 24px;
+      border-radius: 99px; background: transparent;
+      border: 2px solid var(--azure);
+      box-shadow: 0 0 9px -1px var(--azure);
+      transition: transform 0.3s var(--ease), border-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
+      z-index: 1; pointer-events: none;
     }
 
     /* ═══ SCROLL UX ═══ */
@@ -859,6 +862,76 @@
     body.panther .gallery-tab.active { color: #0a0612; }
     body.panther .lightbox-nav:hover { color: #0a0612; }
     body.panther .cb-cell { color: #3a2702; }
+
+    /* ════════════ IRON MAN — hot-rod red + gold, arc-reactor cyan status ════════════ */
+    body.ironman {
+      --bg: #0c0908;
+      --bg2: #130d0c;
+      --bg3: #1a1210;
+      --surface: #241813;
+      --raised: #2c1d17;
+      --border: rgba(255,176,120,0.12);
+      --border2: rgba(255,176,120,0.22);
+      --text: #f8ece6;
+      --muted: #b29289;
+      --faint: #7c5e54;
+      --azure: #ff4d4d;   /* hot-rod red drives interaction */
+      --azure2: #ff7a6b;
+      --gold: #ffb02e;    /* Iron Man gold */
+      --gold2: #ffd06a;
+      --green: #4fd2ff;   /* arc-reactor cyan as status */
+      --accent: #ff4d4d;
+      --accent2: #ff7a6b;
+      --link: #ff8a6b;
+      background:
+        radial-gradient(1100px 600px at 92% -10%, rgba(255,176,46,0.08), transparent 60%),
+        radial-gradient(900px 560px at -8% 8%, rgba(255,77,77,0.10), transparent 58%),
+        #0c0908;
+    }
+    body.ironman::before {
+      background-image:
+        linear-gradient(rgba(255,180,120,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,180,120,0.04) 1px, transparent 1px);
+    }
+    body.ironman .btn-primary { color: #1a0606; }
+    body.ironman .gallery-tab.active { color: #1a0606; }
+    body.ironman .lightbox-nav:hover { color: #1a0606; }
+    body.ironman .cb-cell { color: #3a2702; }
+
+    /* ════════════ SPIDER-MAN — blue interactive + red accent ════════════ */
+    body.spider {
+      --bg: #080a12;
+      --bg2: #0d1019;
+      --bg3: #121627;
+      --surface: #1a2036;
+      --raised: #202842;
+      --border: rgba(140,160,220,0.12);
+      --border2: rgba(140,160,220,0.22);
+      --text: #eef1fb;
+      --muted: #8d95b2;
+      --faint: #5a6080;
+      --azure: #4d7cff;   /* spidey blue drives interaction */
+      --azure2: #7a9eff;
+      --gold: #ff4655;    /* spidey red as the credential/accent color */
+      --gold2: #ff7a86;
+      --green: #3ad07e;
+      --accent: #4d7cff;
+      --accent2: #7a9eff;
+      --link: #7a9eff;
+      background:
+        radial-gradient(1000px 560px at 90% -10%, rgba(255,70,85,0.09), transparent 58%),
+        radial-gradient(950px 580px at -6% 6%, rgba(77,124,255,0.10), transparent 58%),
+        #080a12;
+    }
+    body.spider::before {
+      background-image:
+        linear-gradient(rgba(150,170,230,0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(150,170,230,0.045) 1px, transparent 1px);
+    }
+    body.spider .btn-primary { color: #ffffff; }
+    body.spider .gallery-tab.active { color: #ffffff; }
+    body.spider .lightbox-nav:hover { color: #ffffff; }
+    body.spider .cb-cell { color: #ffffff; }
   </style>
 </head>
 
@@ -868,11 +941,13 @@
 <nav role="navigation" aria-label="Main navigation">
   <a class="nav-logo" href="#hero">vishnu<span>.</span></a>
   <ul class="nav-links">
-    <div class="theme-switch" id="themeSwitch" role="group" aria-label="Theme intensity">
+    <div class="theme-switch" id="themeSwitch" role="group" aria-label="Theme">
       <span class="ts-thumb" id="tsThumb" aria-hidden="true"></span>
-      <button class="ts-step" type="button" data-theme="light" aria-label="Light theme" title="Light">☀</button>
-      <button class="ts-step" type="button" data-theme="dark" aria-label="Dark theme" title="Dark">☾</button>
-      <button class="ts-step" type="button" data-theme="panther" aria-label="Black Panther theme" title="Black Panther">●</button>
+      <button class="ts-step" type="button" data-theme="light" aria-label="Light theme" title="Light"><span class="sw sw-light"></span></button>
+      <button class="ts-step" type="button" data-theme="dark" aria-label="Dark theme" title="Dark"><span class="sw sw-dark"></span></button>
+      <button class="ts-step" type="button" data-theme="panther" aria-label="Black Panther theme" title="Black Panther"><span class="sw sw-panther"></span></button>
+      <button class="ts-step" type="button" data-theme="ironman" aria-label="Iron Man theme" title="Iron Man"><span class="sw sw-ironman"></span></button>
+      <button class="ts-step" type="button" data-theme="spider" aria-label="Spider-Man theme" title="Spider-Man"><span class="sw sw-spider"></span></button>
     </div>
     <li><a href="#about">about</a></li>
     <li><a href="#certifications">certs</a></li>
@@ -1547,9 +1622,10 @@ Here's what it found.</div>
 <script>
 (function () {
 
-  /* ── THEME INTENSITY SWITCH (light · dark · black panther) ── */
-  const THEMES = ['light', 'dark', 'panther'];
-  const STEP_W = 30; // must match .ts-step width
+  /* ── THEME SWITCH (light · dark · black panther · iron man · spider-man) ── */
+  const THEMES = ['light', 'dark', 'panther', 'ironman', 'spider'];
+  const THEME_CLASSES = ['light', 'panther', 'ironman', 'spider']; // 'dark' = no class
+  const STEP_W = 26; // must match .ts-step width
   const STORAGE_KEY = 'portfolio-theme';
   const tsSwitch = document.getElementById('themeSwitch');
   const tsThumb  = document.getElementById('tsThumb');
@@ -1557,10 +1633,8 @@ Here's what it found.</div>
 
   function applyTheme(theme) {
     if (THEMES.indexOf(theme) === -1) theme = (theme === 'light') ? 'light' : 'dark';
-    document.body.classList.remove('light', 'panther');
-    if (theme === 'light')   document.body.classList.add('light');
-    if (theme === 'panther') document.body.classList.add('panther');
-    // 'dark' = no class (default)
+    document.body.classList.remove.apply(document.body.classList, THEME_CLASSES);
+    if (theme !== 'dark') document.body.classList.add(theme);
     tsSteps.forEach(s => {
       const on = s.dataset.theme === theme;
       s.classList.toggle('active', on);
