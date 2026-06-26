@@ -698,9 +698,36 @@
     .media-title { font-size: 0.94rem; font-weight: 700; line-height: 1.4; font-family: var(--ff-head); }
     .media-meta  { font-family: var(--ff-mono); font-size: 0.72rem; color: var(--gold); margin-top: auto; letter-spacing: 0.02em; }
 
-    /* ═══ THEME TOGGLE ═══ */
-    .theme-toggle { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border2); background: var(--surface); color: var(--muted); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 15px; transition: background 0.2s var(--ease), border-color 0.2s var(--ease), transform 0.2s var(--ease), color 0.2s var(--ease); flex-shrink: 0; }
-    .theme-toggle:hover { border-color: var(--azure); color: var(--azure); transform: rotate(18deg); }
+    /* ═══ THEME INTENSITY SWITCH ═══ */
+    .theme-switch {
+      position: relative; display: inline-flex; align-items: center; padding: 3px;
+      border-radius: 99px; border: 1px solid var(--border2);
+      background: linear-gradient(90deg, #e7ebf2 0%, #1a2233 50%, #000 100%);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
+      flex-shrink: 0;
+    }
+    .ts-step {
+      position: relative; z-index: 2; width: 30px; height: 24px; padding: 0;
+      border: none; background: transparent; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; line-height: 1;
+      transition: color 0.2s var(--ease), transform 0.2s var(--ease);
+    }
+    .ts-step[data-theme="light"]   { color: rgba(15,20,30,0.62); }
+    .ts-step[data-theme="dark"]    { color: rgba(255,255,255,0.6); }
+    .ts-step[data-theme="panther"] { color: rgba(255,255,255,0.6); }
+    .ts-step:hover { color: #fff; }
+    .ts-step[data-theme="light"]:hover { color: #000; }
+    .ts-step.active { transform: scale(1.08); }
+    .ts-step.active[data-theme="light"] { color: #0b0e14; }
+    .ts-step.active[data-theme="dark"], .ts-step.active[data-theme="panther"] { color: #fff; }
+    .ts-thumb {
+      position: absolute; top: 3px; left: 3px; width: 30px; height: 24px;
+      border-radius: 99px; background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.55);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.45);
+      transition: transform 0.3s var(--ease); z-index: 1; pointer-events: none;
+    }
 
     /* ═══ SCROLL UX ═══ */
     /* panels fade in as a frame; their content cascades */
@@ -746,7 +773,7 @@
       .tl-item { grid-template-columns: 1fr; gap: 0.3rem; padding-left: 1.5rem; }
       .timeline::before { left: 4px; }
       .tl-item::before { left: 1px; top: 1.65rem; }
-      .nav-links { display: none; }
+      .nav-links li { display: none; }
       .carousel-stage { aspect-ratio: 4/5; }
       .carousel-thumb { width: 58px; height: 44px; }
       .about-grid { grid-template-columns: 1fr !important; }
@@ -797,6 +824,41 @@
     body.light .cb-cell { color: #5a3d02; }
     body.light .id-meta .id-verified::before { color: #fff; }
     body.light .carousel-stage img { filter: brightness(0.99); }
+
+    /* ════════════ BLACK PANTHER — OLED black + vibranium violet ════════════ */
+    body.panther {
+      --bg: #000000;
+      --bg2: #060709;
+      --bg3: #0b0d12;
+      --surface: #13161f;
+      --raised: #191d28;
+      --border: rgba(176,162,255,0.10);
+      --border2: rgba(176,162,255,0.20);
+      --text: #f3f1fb;
+      --muted: #948fae;
+      --faint: #5d5874;
+      --azure: #8b7bff;   /* vibranium violet drives interaction here */
+      --azure2: #ab9eff;
+      --gold: #f0b429;
+      --gold2: #ffd470;
+      --green: #3ad07e;
+      --accent: #8b7bff;
+      --accent2: #ab9eff;
+      --link: #ab9eff;
+      background:
+        radial-gradient(1100px 600px at 92% -10%, rgba(240,180,41,0.05), transparent 60%),
+        radial-gradient(900px 560px at -8% 8%, rgba(139,123,255,0.11), transparent 58%),
+        #000000;
+    }
+    body.panther::before {
+      background-image:
+        linear-gradient(rgba(150,140,210,0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(150,140,210,0.045) 1px, transparent 1px);
+    }
+    body.panther .btn-primary { color: #0a0612; }
+    body.panther .gallery-tab.active { color: #0a0612; }
+    body.panther .lightbox-nav:hover { color: #0a0612; }
+    body.panther .cb-cell { color: #3a2702; }
   </style>
 </head>
 
@@ -806,9 +868,12 @@
 <nav role="navigation" aria-label="Main navigation">
   <a class="nav-logo" href="#hero">vishnu<span>.</span></a>
   <ul class="nav-links">
-    <button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode">
-      <span class="toggle-icon" id="toggleIcon">☀</span>
-    </button>
+    <div class="theme-switch" id="themeSwitch" role="group" aria-label="Theme intensity">
+      <span class="ts-thumb" id="tsThumb" aria-hidden="true"></span>
+      <button class="ts-step" type="button" data-theme="light" aria-label="Light theme" title="Light">☀</button>
+      <button class="ts-step" type="button" data-theme="dark" aria-label="Dark theme" title="Dark">☾</button>
+      <button class="ts-step" type="button" data-theme="panther" aria-label="Black Panther theme" title="Black Panther">●</button>
+    </div>
     <li><a href="#about">about</a></li>
     <li><a href="#certifications">certs</a></li>
     <li><a href="#talks">talks</a></li>
@@ -1482,19 +1547,32 @@ Here's what it found.</div>
 <script>
 (function () {
 
-  /* ── THEME TOGGLE ── */
-  const btn = document.getElementById('themeToggle');
-  const icon = document.getElementById('toggleIcon');
+  /* ── THEME INTENSITY SWITCH (light · dark · black panther) ── */
+  const THEMES = ['light', 'dark', 'panther'];
+  const STEP_W = 30; // must match .ts-step width
   const STORAGE_KEY = 'portfolio-theme';
-  const saved = localStorage.getItem(STORAGE_KEY);
-  if (saved === 'light') { document.body.classList.add('light'); if (icon) icon.textContent = '☾'; }
-  if (btn) {
-    btn.addEventListener('click', () => {
-      const isLight = document.body.classList.toggle('light');
-      if (icon) icon.textContent = isLight ? '☾' : '☀';
-      localStorage.setItem(STORAGE_KEY, isLight ? 'light' : 'dark');
+  const tsSwitch = document.getElementById('themeSwitch');
+  const tsThumb  = document.getElementById('tsThumb');
+  const tsSteps  = tsSwitch ? Array.from(tsSwitch.querySelectorAll('.ts-step')) : [];
+
+  function applyTheme(theme) {
+    if (THEMES.indexOf(theme) === -1) theme = (theme === 'light') ? 'light' : 'dark';
+    document.body.classList.remove('light', 'panther');
+    if (theme === 'light')   document.body.classList.add('light');
+    if (theme === 'panther') document.body.classList.add('panther');
+    // 'dark' = no class (default)
+    tsSteps.forEach(s => {
+      const on = s.dataset.theme === theme;
+      s.classList.toggle('active', on);
+      s.setAttribute('aria-pressed', on ? 'true' : 'false');
     });
+    const i = THEMES.indexOf(theme);
+    if (tsThumb && i >= 0) tsThumb.style.transform = 'translateX(' + (i * STEP_W) + 'px)';
+    try { localStorage.setItem(STORAGE_KEY, theme); } catch (e) {}
   }
+
+  applyTheme(localStorage.getItem(STORAGE_KEY) || 'dark');
+  tsSteps.forEach(s => s.addEventListener('click', () => applyTheme(s.dataset.theme)));
 
   /* ══════════════════════════════
      GALLERY DATA
