@@ -1916,28 +1916,45 @@ Here's what it found.</div>
     if (countEl) countEl.textContent = `${filteredItems.length} photos · AWS Summit · GITEX · Community Days · Panels`;
   }
 
-  function goTo(idx) {
-    const imgs   = stage.querySelectorAll('img');
+function goTo(idx) {
+    const imgs = stage.querySelectorAll('img');
     const thumbs = thumbsEl.querySelectorAll('.carousel-thumb');
-    const dots   = dotsEl.querySelectorAll('.carousel-dot');
+    const dots = dotsEl.querySelectorAll('.carousel-dot');
 
+    // Remove active classes
     imgs[currentIdx]?.classList.remove('active');
     thumbs[currentIdx]?.classList.remove('active');
     dots[currentIdx]?.classList.remove('active');
 
+    // Update current index
     currentIdx = (idx + filteredItems.length) % filteredItems.length;
 
+    // Add active classes
     imgs[currentIdx]?.classList.add('active');
     thumbs[currentIdx]?.classList.add('active');
     dots[currentIdx]?.classList.add('active');
 
-    // Scroll thumb into view
+    // Center the active thumbnail WITHOUT scrolling the whole page
     const activeThumb = thumbs[currentIdx];
-    if (activeThumb) activeThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
 
+    if (activeThumb) {
+        const left =
+            activeThumb.offsetLeft -
+            (thumbsEl.clientWidth / 2) +
+            (activeThumb.clientWidth / 2);
+
+        thumbsEl.scrollTo({
+            left: Math.max(0, left),
+            behavior: 'smooth'
+        });
+    }
+
+    // Update caption
     updateCaption();
+
+    // Restart autoplay
     resetAutoplay();
-  }
+}
 
   /* Autoplay */
   function startAutoplay() {
