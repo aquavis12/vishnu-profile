@@ -723,6 +723,7 @@
     .sw-panther { background: radial-gradient(circle at 35% 30%, #8b7bff, #000 75%); }
     .sw-ironman { background: linear-gradient(135deg, #ff3b3b 0%, #ffb02e 100%); }
     .sw-spider  { background: linear-gradient(135deg, #ff4655 0%, #4d7cff 100%); }
+    .sw-thor    { background: linear-gradient(135deg, #57c7ff 0%, #f5c542 100%); }
     .ts-thumb {
       position: absolute; top: 3px; left: 3px; width: 26px; height: 24px;
       border-radius: 99px; background: transparent;
@@ -731,6 +732,20 @@
       transition: transform 0.3s var(--ease), border-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
       z-index: 1; pointer-events: none;
     }
+    /* Avengers-verse caption */
+    .ts-caption {
+      position: absolute; top: calc(100% + 8px); right: 0; white-space: nowrap;
+      font-family: var(--ff-mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); background: var(--bg2); border: 1px solid var(--border2);
+      border-radius: 8px; padding: 0.32rem 0.6rem;
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      opacity: 0; transform: translateY(-4px); pointer-events: none; z-index: 120;
+      transition: opacity 0.2s var(--ease), transform 0.2s var(--ease);
+      box-shadow: 0 10px 28px -16px rgba(0,0,0,0.8);
+    }
+    .theme-switch:hover .ts-caption, .theme-switch:focus-within .ts-caption { opacity: 1; transform: none; }
+    .ts-caption .bolt { color: var(--gold); }
+    .ts-caption b { color: var(--text); font-weight: 500; }
 
     /* ═══ SCROLL UX ═══ */
     /* panels fade in as a frame; their content cascades */
@@ -932,6 +947,41 @@
     body.spider .gallery-tab.active { color: #ffffff; }
     body.spider .lightbox-nav:hover { color: #ffffff; }
     body.spider .cb-cell { color: #ffffff; }
+
+    /* ════════════ THOR — Asgardian storm: lightning blue + Asgard gold ════════════ */
+    body.thor {
+      --bg: #07090f;
+      --bg2: #0c1019;
+      --bg3: #11172a;
+      --surface: #1a2238;
+      --raised: #212c46;
+      --border: rgba(140,180,255,0.13);
+      --border2: rgba(140,180,255,0.24);
+      --text: #eef3fb;
+      --muted: #8b97b8;
+      --faint: #586084;
+      --azure: #57c7ff;   /* Mjölnir lightning */
+      --azure2: #93ddff;
+      --gold: #f5c542;    /* Asgardian gold */
+      --gold2: #ffe07a;
+      --green: #3ad07e;
+      --accent: #57c7ff;
+      --accent2: #93ddff;
+      --link: #93ddff;
+      background:
+        radial-gradient(1050px 600px at 90% -10%, rgba(245,197,66,0.07), transparent 58%),
+        radial-gradient(950px 560px at -6% 6%, rgba(87,199,255,0.12), transparent 58%),
+        #07090f;
+    }
+    body.thor::before {
+      background-image:
+        linear-gradient(rgba(140,180,255,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(140,180,255,0.05) 1px, transparent 1px);
+    }
+    body.thor .btn-primary { color: #04121d; }
+    body.thor .gallery-tab.active { color: #04121d; }
+    body.thor .lightbox-nav:hover { color: #04121d; }
+    body.thor .cb-cell { color: #3a2e02; }
   </style>
 </head>
 
@@ -941,13 +991,15 @@
 <nav role="navigation" aria-label="Main navigation">
   <a class="nav-logo" href="#hero">vishnu<span>.</span></a>
   <ul class="nav-links">
-    <div class="theme-switch" id="themeSwitch" role="group" aria-label="Theme">
+    <div class="theme-switch" id="themeSwitch" role="group" aria-label="Theme — Avengers-verse">
       <span class="ts-thumb" id="tsThumb" aria-hidden="true"></span>
       <button class="ts-step" type="button" data-theme="light" aria-label="Light theme" title="Light"><span class="sw sw-light"></span></button>
       <button class="ts-step" type="button" data-theme="dark" aria-label="Dark theme" title="Dark"><span class="sw sw-dark"></span></button>
       <button class="ts-step" type="button" data-theme="panther" aria-label="Black Panther theme" title="Black Panther"><span class="sw sw-panther"></span></button>
       <button class="ts-step" type="button" data-theme="ironman" aria-label="Iron Man theme" title="Iron Man"><span class="sw sw-ironman"></span></button>
       <button class="ts-step" type="button" data-theme="spider" aria-label="Spider-Man theme" title="Spider-Man"><span class="sw sw-spider"></span></button>
+      <button class="ts-step" type="button" data-theme="thor" aria-label="Thor theme" title="Thor"><span class="sw sw-thor"></span></button>
+      <span class="ts-caption" aria-hidden="true"><span class="bolt">⚡</span> Avengers-verse · <b id="tsName">Dark</b></span>
     </div>
     <li><a href="#about">about</a></li>
     <li><a href="#certifications">certs</a></li>
@@ -1622,13 +1674,15 @@ Here's what it found.</div>
 <script>
 (function () {
 
-  /* ── THEME SWITCH (light · dark · black panther · iron man · spider-man) ── */
-  const THEMES = ['light', 'dark', 'panther', 'ironman', 'spider'];
-  const THEME_CLASSES = ['light', 'panther', 'ironman', 'spider']; // 'dark' = no class
+  /* ── THEME SWITCH · Avengers-verse (light · dark · panther · iron man · spider · thor) ── */
+  const THEMES = ['light', 'dark', 'panther', 'ironman', 'spider', 'thor'];
+  const THEME_CLASSES = ['light', 'panther', 'ironman', 'spider', 'thor']; // 'dark' = no class
+  const THEME_NAMES = { light: 'Light', dark: 'Dark', panther: 'Black Panther', ironman: 'Iron Man', spider: 'Spider-Man', thor: 'Thor' };
   const STEP_W = 26; // must match .ts-step width
   const STORAGE_KEY = 'portfolio-theme';
   const tsSwitch = document.getElementById('themeSwitch');
   const tsThumb  = document.getElementById('tsThumb');
+  const tsName   = document.getElementById('tsName');
   const tsSteps  = tsSwitch ? Array.from(tsSwitch.querySelectorAll('.ts-step')) : [];
 
   function applyTheme(theme) {
@@ -1642,6 +1696,7 @@ Here's what it found.</div>
     });
     const i = THEMES.indexOf(theme);
     if (tsThumb && i >= 0) tsThumb.style.transform = 'translateX(' + (i * STEP_W) + 'px)';
+    if (tsName) tsName.textContent = THEME_NAMES[theme] || 'Dark';
     try { localStorage.setItem(STORAGE_KEY, theme); } catch (e) {}
   }
 
