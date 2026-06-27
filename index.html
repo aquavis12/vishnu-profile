@@ -756,6 +756,35 @@
     .ts-caption .bolt { color: var(--gold); }
     .ts-caption b { color: var(--text); font-weight: 500; }
 
+
+    .featured {
+    background: linear-gradient(135deg, #fff8e1, #fff3cd);
+    border: 2px solid #ff9800;
+    border-left: 6px solid #ff6f00;
+    border-radius: 12px;
+    padding: 18px;
+    box-shadow: 0 8px 20px rgba(255, 152, 0, 0.15);
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+.featured:hover {
+    transform: translateY(-3px);
+}
+
+.featured::before {
+    content: "⭐ Upcoming";
+    position: absolute;
+    top: -12px;
+    right: 18px;
+    background: #ff9800;
+    color: #fff;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
     /* ═══ SCROLL UX ═══ */
     /* panels fade in as a frame; their content cascades */
     .reveal { opacity: 0; transition: opacity 0.55s var(--ease); }
@@ -1277,7 +1306,7 @@
       <article class="talk-row" role="listitem">
         <div class="talk-date">Dec 2025</div>
         <div>
-          <div class="talk-title">AWS Student Community Day MLRIT</div>
+          <div class="talk-title">AWS Student Community Day MLRIT 2025</div>
           <div class="talk-event">Develop &amp; Deploy using Kiro &amp; App Runner</div>
         </div>
         <div class="talk-loc">Hyderabad, India</div>
@@ -1339,14 +1368,25 @@
       </article>
 
 
-    <article class="talk-row" role="listitem">
-         <div class="talk-date">27 June 2026</div>
+         <article class="talk-row" role="listitem">
+             <div class="talk-date">27 June 2026</div>
         <div>
           <div class="talk-title">AWS Student Builder Groups at REC </div>
           <div class="talk-event">Introduction to Cloud Computing & AI: Fundamentals of the Modern Tech Era </div>
         </div>
         <div class="talk-loc">Online</div>
       </article>
+
+      
+    <article class="talk-row featured" role="listitem">
+      <div class="talk-date">1st August 2026</div>
+        <div>
+          <div class="talk-title">AWS Student Community Day - Nagpur 2026</div>
+          <div class="talk-event">I Let AWS AI Modernize & Pen-Test A Legacy App – Here's What Actually Happened </div>
+        </div>
+        <div class="talk-loc">InFED, Indian Institute of Management (IIM) Nagpur , India </div>
+      </article>
+
       
     </div>
   </div>
@@ -1396,7 +1436,7 @@
     </div>
 
     <div class="gallery-cta-row">
-      <p class="gallery-cta-text" id="galleryCount">18 photos · AWS Summit · GITEX · Community Days · Panels</p>
+      <p class="gallery-cta-text" id="galleryCount">AWS Summit · GITEX · Community Days · </p>
       <a class="btn btn-ghost" href="https://www.vishnurachapudi.com/gallery/" aria-label="View full speaker gallery">View full gallery →</a>
     </div>
   </div>
