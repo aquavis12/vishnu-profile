@@ -188,22 +188,27 @@
     <h2>Architecture</h2>
   </div>
   <p>The whole thing is serverless. A browser or CLI hits a Lambda Function URL, the orchestrator Lambda spawns a MicroVM, the scan runs inside that VM, results go to Bedrock for analysis, and the VM is torn down.</p>
-  <pre><code>┌──────────┐     ┌───────────────┐     ┌─────────────────┐
-│  Browser │───&gt;│  Lambda URL    │───&gt;│  Orchestrator     │
-│  or CLI  │     │  (HTTPS)       │     │  (Python 3.11)    │
-└──────────┘     └───────────────┘     └───────┬─────────┘
-                                              │
-                          ┌──────────────┼─────────────┐
-                          v                              v
-            ┌─────────────────┐      ┌──────────────┐
-            │  Lambda MicroVM   │      │  Bedrock        │
-            │  (Firecracker)    │      │  Kimi K2.5      │
-            │  pip / npm install│      └───────┬──────┘
-            │  bandit, pip-audit│              v
-            │  ruff, npm audit  │      ┌──────────────┐
-            │  OWASP dep-check  │      │  S3 (Reports)   │
-            │  [destroyed]      │      └──────────────┘
-            └─────────────────┘</code></pre>
+  <pre><code>```
+                         ┌────────────────────────────────────────┐
+                         │           AWS Cloud (us-east-1)        │
+                         │                                        │
+  ┌────────┐   HTTPS     │  ┌──────────┐      ┌──────────────┐    │
+  │Browser │─────────────── >│Orchestr. │─────>│ MicroVM      │   │
+  │  /CLI  │             │  │ (Lambda) │      │ (Firecracker)│    │
+  └────────┘             │  └────┬─────┘      │              │    │
+                         │       │             │ pip-audit    │   │
+                         │       │             │ bandit, ruff │   │
+                         │       v             │ npm audit    │   │
+                         │  ┌──────────┐       │ OWASP checks │   │
+                         │  │ Bedrock  │       │ [destroyed]  │   │
+                         │  │ Kimi K2.5│       └──────────────┘   │
+                         │  └────┬─────┘                          │
+                         │       v                                │
+                         │  ┌──────────┐                          │
+                         │  │S3 Reports│                          │
+                         │  └──────────┘                          │
+                         └────────────────────────────────────────┘
+```</code></pre>
   <p>The flow, step by step:</p>
   <ol>
     <li>User submits a scan target (package name or repo URL + type) via the web UI or CLI</li>
@@ -431,7 +436,6 @@ jobs:
   <span class="stack-pill blue">GitHub OIDC</span>
   <div class="footer-links">
     <a href="https://github.com/aquavis12/AI-Code-Review-Sandbox">github</a>
-    <a href="https://duk8kwmihykeb.cloudfront.net">live demo</a>
     <a href="https://www.vishnurachapudi.com/#blog">all posts</a>
   </div>
 </footer>
