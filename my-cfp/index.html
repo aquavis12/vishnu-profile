@@ -1,1 +1,1247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CFP Portfolio — Vishnu Rachapudi</title>
+<meta name="robots" content="noindex, nofollow" />
 
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0a0d14; --bg2: #0f131c; --bg3: #141a25; --surface: #1a2130; --raised: #202838;
+  --border: rgba(150,172,214,0.12); --border2: rgba(150,172,214,0.22);
+  --text: #e9edf6; --muted: #8893a8; --faint: #5c6679;
+  --azure: #4ea2ff; --azure2: #7cbcff; --gold: #f0b429; --gold2: #ffd470; --green: #3ad07e; --red: #f87171;
+  --ff-head: 'Syne', sans-serif; --ff-mono: 'DM Mono', monospace; --ff-body: 'Syne', sans-serif;
+  --r: 12px; --r-lg: 18px; --maxw: 1180px; --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  background: radial-gradient(1100px 600px at 92% -10%, rgba(240,180,41,0.06), transparent 60%),
+    radial-gradient(900px 560px at -8% 8%, rgba(78,162,255,0.07), transparent 58%), var(--bg);
+  color: var(--text); font-family: var(--ff-body); line-height: 1.7;
+  -webkit-font-smoothing: antialiased; overflow-x: hidden; position: relative; min-height: 100vh;
+}
+body::before {
+  content: ''; position: fixed; inset: 0; z-index: 0;
+  background-image: linear-gradient(rgba(140,160,200,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(140,160,200,0.035) 1px, transparent 1px);
+  background-size: 52px 52px;
+  mask-image: radial-gradient(120% 90% at 50% 0%, #000 0%, transparent 75%);
+  -webkit-mask-image: radial-gradient(120% 90% at 50% 0%, #000 0%, transparent 75%);
+  pointer-events: none;
+}
+body > * { position: relative; z-index: 1; }
+a { color: var(--link, #6fb6ff); }
+:focus-visible { outline: 2px solid var(--azure); outline-offset: 3px; border-radius: 4px; }
+
+nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between;
+  padding: 0 clamp(1.1rem, 4vw, 3rem); height: 58px; background: color-mix(in srgb, var(--bg) 80%, transparent);
+  backdrop-filter: saturate(150%) blur(16px); border-bottom: 1px solid var(--border); }
+.nav-logo { display: inline-flex; align-items: center; gap: 0.55rem; font-family: var(--ff-mono); font-weight: 500; font-size: 0.92rem; color: var(--text); text-decoration: none; }
+.nav-logo::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--green); animation: ping 2.6s var(--ease) infinite; }
+@keyframes ping { 0%{box-shadow:0 0 0 0 rgba(58,208,126,0.55);} 70%{box-shadow:0 0 0 8px rgba(58,208,126,0);} 100%{box-shadow:0 0 0 0 rgba(58,208,126,0);} }
+.nav-logo span { color: var(--azure); }
+.nav-links { display: flex; align-items: center; gap: 1.3rem; list-style: none; }
+.nav-links a { font-size: 0.74rem; font-family: var(--ff-mono); color: var(--muted); text-decoration: none; letter-spacing: 0.04em; text-transform: uppercase; transition: color 0.2s var(--ease); }
+.nav-links a:hover { color: var(--text); }
+.nav-links a.current { color: var(--gold); }
+
+.wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 clamp(1.25rem, 5vw, 3rem); }
+section { padding: clamp(1.6rem, 4vw, 2.6rem) clamp(0.9rem, 4vw, 2rem); }
+section > .wrap {
+  position: relative; background: linear-gradient(180deg, rgba(255,255,255,0.015), transparent 40%), var(--bg2);
+  border: 1px solid var(--border); border-radius: var(--r-lg);
+  padding: clamp(1.7rem, 4vw, 3.2rem) clamp(1.4rem, 4vw, 3rem);
+  box-shadow: 0 20px 60px -40px rgba(0,0,0,0.9);
+}
+section > .wrap::before, section > .wrap::after { content: ''; position: absolute; width: 14px; height: 14px; pointer-events: none; }
+section > .wrap::before { top: -1px; left: -1px; border-top: 1.5px solid var(--gold); border-left: 1.5px solid var(--gold); border-top-left-radius: var(--r-lg); }
+section > .wrap::after { bottom: -1px; right: -1px; border-bottom: 1.5px solid var(--gold); border-right: 1.5px solid var(--gold); border-bottom-right-radius: var(--r-lg); }
+
+.sec-label { display: flex; align-items: center; gap: 0.7rem; width: 100%; font-family: var(--ff-mono); font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.9rem; }
+.sec-label::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px rgba(58,208,126,0.7); flex: none; }
+.sec-label::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border2), transparent); }
+h1, h2 { font-family: var(--ff-head); font-weight: 800; letter-spacing: -0.035em; }
+h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.1; margin-bottom: 1.4rem; }
+h2 em { font-style: normal; color: var(--azure); }
+
+#login-gate { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem; }
+.login-card { max-width: 460px; width: 100%; background: var(--bg2); border: 1px solid var(--border2);
+  border-radius: var(--r-lg); padding: 2.4rem; text-align: center; box-shadow: 0 30px 80px -30px rgba(0,0,0,0.9); }
+.login-card h1 { font-size: 1.7rem; margin-bottom: 0.4rem; }
+.login-sub { font-family: var(--ff-mono); font-size: 0.78rem; color: var(--muted); margin-bottom: 1.6rem; }
+.terminal { font-family: var(--ff-mono); font-size: 0.78rem; line-height: 1.9; background: var(--bg); border: 1px solid var(--border); border-radius: var(--r); padding: 1rem 1.15rem; margin-bottom: 1.6rem; text-align: left; }
+.terminal .t-prompt { color: var(--green); } .terminal .t-cmd { color: var(--azure2); } .terminal .t-out { color: var(--muted); }
+.terminal .cursor { display: inline-block; width: 8px; height: 1.05em; vertical-align: -0.18em; background: var(--azure); margin-left: 2px; animation: blink 1.1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+
+.btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.74rem 1.55rem; border-radius: var(--r); font-family: var(--ff-mono); font-size: 0.8rem; letter-spacing: 0.03em; text-decoration: none; cursor: pointer; border: none; transition: transform 0.2s var(--ease); }
+.btn:hover { transform: translateY(-2px); }
+.btn-primary { background: linear-gradient(180deg, var(--azure2), var(--azure)); color: #04101f; font-weight: 600; box-shadow: 0 8px 26px -12px rgba(78,162,255,0.8); width: 100%; justify-content: center; font-size: 0.92rem; padding: 0.85rem; }
+.btn-ghost { border: 1px solid var(--border2); color: var(--muted); background: transparent; }
+.btn-ghost:hover { border-color: var(--azure); color: var(--text); }
+
+.app-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 1rem; }
+.app-header .who { font-family: var(--ff-mono); font-size: 0.78rem; color: var(--muted); }
+.header-actions { display: flex; gap: 0.6rem; }
+
+.cfp-board { background: var(--bg2); border: 1px solid var(--border2); border-radius: var(--r-lg); padding: 1.6rem; margin-bottom: 2rem; }
+.cb-head { display: flex; align-items: baseline; justify-content: space-between; font-family: var(--ff-mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.1rem; }
+.cb-head .cb-count { color: var(--gold); font-size: 0.85rem; }
+.cb-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(28px, 1fr)); gap: 6px; }
+.cb-cell { aspect-ratio: 1/1; border-radius: 5px; background: linear-gradient(145deg, var(--gold2), var(--gold));
+  display: flex; align-items: center; justify-content: center; color: #3a2702; font-size: 0.62rem; font-weight: 700;
+  box-shadow: 0 0 10px -4px rgba(240,180,41,0.7), inset 0 1px 0 rgba(255,255,255,0.4);
+  animation: cellIn 0.4s var(--ease) backwards; animation-delay: var(--d, 0s); cursor: default; }
+.cb-cell.proven { background: linear-gradient(145deg, var(--azure2), var(--azure)); color: #04101f; }
+@keyframes cellIn { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: none; } }
+.cb-foot { margin-top: 1rem; font-family: var(--ff-mono); font-size: 0.68rem; color: var(--faint); display: flex; align-items: center; gap: 0.5rem; }
+.cb-foot::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 8px var(--gold); }
+.cb-legend { display: flex; gap: 1.2rem; margin-top: 0.8rem; font-family: var(--ff-mono); font-size: 0.66rem; color: var(--muted); }
+.cb-legend span { display: inline-flex; align-items: center; gap: 0.4rem; }
+.cb-legend i { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+
+.form-box { border: 1px solid var(--border2); border-radius: var(--r-lg); padding: 1.6rem; background: var(--bg3); margin-bottom: 2rem; }
+.form-box h3 { font-family: var(--ff-head); font-size: 1.1rem; margin-bottom: 1rem; color: var(--azure2); }
+label { display: flex; flex-direction: column; font-family: var(--ff-mono); font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem; gap: 0.4rem; }
+input, select, textarea { padding: 0.65rem 0.85rem; border: 1px solid var(--border2); border-radius: var(--r); font-size: 0.92rem; font-family: var(--ff-body); background: var(--bg); color: var(--text); }
+textarea { min-height: 110px; resize: vertical; }
+.form-row { display: flex; gap: 1rem; }
+#form-status { font-family: var(--ff-mono); font-size: 0.78rem; margin-top: 0.6rem; color: var(--muted); }
+
+.controls { margin-bottom: 1.4rem; }
+.search { width: 100%; padding: 0.75rem 1rem; font-size: 0.95rem; border: 1px solid var(--border2); border-radius: var(--r); margin-bottom: 0.9rem; background: var(--bg); color: var(--text); }
+.chips { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.chip { border: 1px solid var(--border2); background: var(--bg3); color: var(--muted); padding: 0.35rem 0.9rem; border-radius: 20px; font-family: var(--ff-mono); font-size: 0.72rem; text-transform: capitalize; cursor: pointer; transition: all 0.2s var(--ease); }
+.chip:hover { color: var(--text); }
+.chip.active { background: var(--azure); border-color: var(--azure); color: #04101f; font-weight: 600; }
+
+.cfp-list { display: flex; flex-direction: column; gap: 1px; border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; background: var(--border); }
+.cfp-row { padding: 1.35rem 1.5rem; background: var(--bg2); transition: background 0.2s var(--ease); position: relative; }
+.cfp-row::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--azure); opacity: 0; transition: opacity 0.2s var(--ease); }
+.cfp-row:hover { background: var(--bg3); }
+.cfp-row:hover::before { opacity: 1; }
+.cfp-row-head { display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.4rem; }
+.badge { font-family: var(--ff-mono); font-size: 0.66rem; background: rgba(78,162,255,0.12); color: var(--azure2); border: 1px solid rgba(78,162,255,0.25); padding: 0.2rem 0.6rem; border-radius: 12px; text-transform: uppercase; }
+.badge-proven { font-family: var(--ff-mono); font-size: 0.66rem; background: rgba(58,208,126,0.12); color: var(--green); border: 1px solid rgba(58,208,126,0.3); padding: 0.2rem 0.6rem; border-radius: 12px; }
+.cfp-title { font-family: var(--ff-head); font-weight: 700; font-size: 1rem; color: var(--text); margin-bottom: 0.3rem; }
+.cfp-meta { font-family: var(--ff-mono); font-size: 0.72rem; color: var(--gold); margin-bottom: 0.6rem; }
+.cfp-abstract { font-size: 0.88rem; color: var(--muted); line-height: 1.6; margin-bottom: 0.6rem; }
+details { font-size: 0.82rem; }
+summary { cursor: pointer; color: var(--azure2); font-family: var(--ff-mono); font-size: 0.75rem; }
+.list-inner { margin: 0.5rem 0 0; padding-left: 1.2rem; color: var(--muted); }
+.ref-link { display: inline-block; margin-top: 0.5rem; font-family: var(--ff-mono); font-size: 0.75rem; color: var(--azure2); text-decoration: none; }
+.del-btn { margin-left: auto; border: none; background: transparent; color: var(--red); cursor: pointer; font-size: 0.9rem; }
+
+#empty-msg { text-align: center; color: var(--muted); font-family: var(--ff-mono); font-size: 0.85rem; margin-top: 2.5rem; }
+.hidden { display: none !important; }
+footer { padding: 2.5rem 0 3rem; text-align: center; font-family: var(--ff-mono); font-size: 0.72rem; color: var(--muted); }
+footer a { color: var(--muted); }
+footer a:hover { color: var(--azure); }
+</style>
+</head>
+<body>
+
+<div id="login-gate">
+  <div class="login-card">
+    <h1>CFP <em style="color:var(--azure)">Portfolio</em></h1>
+    <p class="login-sub">Private · TOTP MFA required</p>
+    <div class="terminal">
+      <div><span class="t-prompt">vishnu@cloud</span>:~$ <span class="t-cmd">auth --status</span></div>
+      <div><span class="t-out">awaiting sign-in<span class="cursor"></span></span></div>
+    </div>
+    <button class="btn btn-primary" onclick="login()">Sign In</button>
+    <p style="margin-top:1.2rem;"><a href="https://www.vishnurachapudi.com/" style="font-family:var(--ff-mono);font-size:0.75rem;color:var(--muted);text-decoration:none;">&larr; back to vishnurachapudi.com</a></p>
+  </div>
+</div>
+
+<div id="app" class="hidden">
+
+<nav role="navigation" aria-label="Main navigation">
+  <a class="nav-logo" href="https://www.vishnurachapudi.com/">vishnu<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="https://www.vishnurachapudi.com/#about">about</a></li>
+    <li><a href="https://www.vishnurachapudi.com/#certifications">certs</a></li>
+    <li><a href="https://www.vishnurachapudi.com/#talks">talks</a></li>
+    <li><a href="https://www.vishnurachapudi.com/#blog">blog</a></li>
+    <li><a href="#" class="current">cfp</a></li>
+  </ul>
+</nav>
+
+<section>
+  <div class="wrap">
+    <div class="sec-label">Private</div>
+    <div class="app-header">
+      <h2>CFP <em>Portfolio</em></h2>
+      <div class="header-actions">
+        <button class="btn btn-primary" style="width:auto;padding:0.6rem 1.2rem;" onclick="toggleForm()">+ Add CFP</button>
+        <button class="btn btn-ghost" onclick="logout()">Sign out</button>
+      </div>
+    </div>
+    <p class="app-header who" id="user-email"></p>
+
+    <div class="cfp-board">
+      <div class="cb-head"><span>Submission Board</span><span class="cb-count" id="cb-count">0 / 0</span></div>
+      <div class="cb-grid" id="cb-grid"></div>
+      <div class="cb-legend">
+        <span><i style="background:linear-gradient(145deg,var(--azure2),var(--azure));"></i> Proven / delivered</span>
+        <span><i style="background:linear-gradient(145deg,var(--gold2),var(--gold));"></i> Proposed</span>
+      </div>
+      <div class="cb-foot">FULL PORTFOLIO &middot; AWS &middot; CNCF &middot; AI AGENTS &middot; KIRO</div>
+    </div>
+
+    <div id="form-box" class="form-box hidden">
+      <h3>Add a new CFP</h3>
+      <label>CFP name <input id="f-title" placeholder="e.g. Agentic QA in Production" /></label>
+      <label>Difficulty
+        <select id="f-difficulty">
+          <option>Beginner</option><option selected>Intermediate</option><option>Advanced</option>
+        </select>
+      </label>
+      <label>Description <textarea id="f-description" placeholder="Abstract / what the talk covers..."></textarea></label>
+      <div class="form-row">
+        <label style="flex:1;">PPT or blog reference <input id="f-ref-url" type="url" placeholder="https://..." /></label>
+        <label style="width:150px;">Type
+          <select id="f-ref-type"><option>None</option><option>Slides</option><option>Blog</option><option>Both</option></select>
+        </label>
+      </div>
+      <button class="btn btn-primary" style="width:auto;" id="save-btn" onclick="saveCfp()">Save CFP</button>
+      <p id="form-status"></p>
+    </div>
+
+    <div class="controls">
+      <input class="search" id="search-box" placeholder="Search talks..." oninput="render()" />
+      <div class="chips" id="chips"></div>
+    </div>
+
+    <div class="cfp-list" id="cfp-list"></div>
+    <p id="empty-msg" class="hidden">No talks match that search.</p>
+  </div>
+</section>
+
+<footer><div class="wrap"><p>Vishnu Rachapudi &middot; <a href="https://www.vishnurachapudi.com/">vishnurachapudi.com</a> &middot; Private CFP portfolio</p></div></footer>
+
+</div>
+
+<script>
+const CONFIG = {
+  userPoolClientId: 'REPLACE_WITH_UserPoolClientId',
+  hostedUiDomain: 'REPLACE_WITH_HostedUiDomain',
+  redirectUri: window.location.origin + window.location.pathname,
+  apiEndpoint: 'REPLACE_WITH_ApiEndpoint',
+};
+
+function login() {
+  const url = `${CONFIG.hostedUiDomain}/login?client_id=${CONFIG.userPoolClientId}` +
+    `&response_type=code&scope=openid+email+profile&redirect_uri=${encodeURIComponent(CONFIG.redirectUri)}`;
+  window.location.href = url;
+}
+function logout() {
+  localStorage.removeItem('id_token'); localStorage.removeItem('access_token');
+  window.location.href = `${CONFIG.hostedUiDomain}/logout?client_id=${CONFIG.userPoolClientId}&logout_uri=${encodeURIComponent(CONFIG.redirectUri)}`;
+}
+async function exchangeCodeForTokens(code) {
+  const body = new URLSearchParams({ grant_type: 'authorization_code', client_id: CONFIG.userPoolClientId, code, redirect_uri: CONFIG.redirectUri });
+  const res = await fetch(`${CONFIG.hostedUiDomain}/oauth2/token`, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body });
+  if (!res.ok) throw new Error('Token exchange failed');
+  return res.json();
+}
+function parseJwt(token) { return JSON.parse(atob(token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))); }
+async function initAuth() {
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get('code');
+  if (code) {
+    const tokens = await exchangeCodeForTokens(code);
+    localStorage.setItem('id_token', tokens.id_token);
+    localStorage.setItem('access_token', tokens.access_token);
+    window.history.replaceState({}, '', CONFIG.redirectUri);
+  }
+  const idToken = localStorage.getItem('id_token');
+  if (!idToken) return false;
+  const claims = parseJwt(idToken);
+  if (claims.exp * 1000 < Date.now()) {
+    localStorage.removeItem('id_token'); localStorage.removeItem('access_token');
+    return false;
+  }
+  document.getElementById('user-email').textContent = `Signed in as ${claims.email || claims['cognito:username']}`;
+  return true;
+}
+function authHeader() { return { Authorization: `Bearer ${localStorage.getItem('access_token')}` }; }
+</script>
+<script>
+const CFPS = [
+  {
+    id: 1,
+    title: 'Agentic QA in Production: Nova Act on AgentCore Browser',
+    level: 'Intermediate',
+    duration: '45 min',
+    track: 'DevOps / QA / AI',
+    category: 'AI & Agents',
+    proven: true,
+    abstract:
+      "Agents are moving from chat into real work, and QA is one of the first places it shows. Amazon Bedrock AgentCore is AWS's infrastructure for running agents in production — runtime, identity, observability, and a managed Browser that gives every agent its own isolated, secure Chrome session with live view and replay. Nova Act is the SDK that drives it: you describe a step in plain language, the agent works out the clicking. This session walks through the architecture, a real automation we built, what worked and what didn't, and how a customer cut QA testing from months to days.",
+    takeaways: [
+      'How Nova Act and AgentCore Browser work together',
+      'Turning test cases into agent steps',
+      'Which tests to convert, which to keep scripted',
+      'Debugging with live view and replay',
+    ],
+  },
+  {
+    id: 2,
+    title: 'Agentic Code Analysis: Moving Beyond Checklists to Migration Plans',
+    level: 'Intermediate',
+    duration: '45 min',
+    track: 'Architecture / Modernization',
+    category: 'Modernization',
+    proven: true,
+    abstract:
+      'Legacy code assessment usually produces a PDF heat-map and a vague recommendation to "upgrade Java." AWS Transform does something different — it deploys an agentic loop that reads your entire codebase, builds a dependency graph, generates architecture diagrams, and outputs a phased migration plan with named next-step transformations. Ran against a real Spring Boot 2.5.14 + Java 8 + JBoss monolith: 33 files in 61 minutes, full technical debt report, sequence diagrams reasoned from source, and a 6-phase leaf-first migration sequence.',
+    takeaways: [
+      'How agentic codebase analysis differs from CVE scanners and static checkers',
+      'Reading the technical debt matrix — impact vs. surface severity',
+      'Why leaf-first phasing matters in multi-phase migrations',
+      'How named transformations close the assessment-to-action gap',
+    ],
+  },
+  {
+    id: 3,
+    title: 'Untrusted Code, Isolated Execution: Lambda MicroVMs in Production',
+    level: 'Intermediate-Advanced',
+    duration: '45 min',
+    track: 'Security / Serverless',
+    category: 'Security',
+    proven: true,
+    abstract:
+      "Isolation is a primitive. At runtime, not in your threat model. Lambda MicroVMs are Firecracker under the hood: a clean, ephemeral, single-use environment per invocation. We built an AI code review tool on top of it — clone a repo, run real security scans (bandit, ruff, safety) in isolation, feed the output to Bedrock, get a report back.",
+    takeaways: [
+      'When isolation matters more than containers',
+      'Cold start and per-execution costs, measured',
+      "What broke, what you'd do differently",
+      'Which workloads fit the primitive',
+    ],
+  },
+  {
+    id: 4,
+    title: '21 Snapshots, ~5TB of Data, and Everything Failed: ColdSnap as a Last Resort',
+    level: 'Intermediate',
+    duration: '45 min',
+    track: 'Disaster Recovery / Incident Response',
+    category: 'Reliability',
+    proven: true,
+    abstract:
+      'During a regional outage we tried snapshot copy — failed. Cross-region AMI copy — failed. VM Export — failed. Then we tried ColdSnap. It worked. ColdSnap uses EBS Direct APIs to download snapshot blocks and reconstruct them as raw disk images, staying up when the control plane degrades. We downloaded 21 snapshots (~5TB) in parallel, resumed from checkpoints on failures, and uploaded them to a healthy region.',
+    takeaways: [
+      'When to reach for ColdSnap and when it wastes time',
+      'Checkpoint-based downloads: how and why they matter at scale',
+      'The Windows instance quirk and other operational gotchas',
+      'Why a completed .img still needs validation',
+    ],
+  },
+  {
+    id: 5,
+    title: 'Bedrock Agents Deep Dive: From Single LLM Call to Multi-Tool Orchestration',
+    level: 'Intermediate',
+    duration: '50 min',
+    track: 'AI/ML',
+    category: 'AI & Agents',
+    proven: false,
+    abstract:
+      'You can call Bedrock models. Now learn agents. Bedrock agents decompose a natural-language request into steps, call tools, reason about results, and retry on failure. We build a real agent that manages AWS resources: read EC2 inventory, analyze utilization, recommend rightsizing, and execute changes.',
+    takeaways: [
+      'Agent loop: thinking → tool selection → execution → reflection',
+      'Defining tools in AgentCore harness',
+      'When agents beat hardcoded APIs',
+      'Token cost and retry patterns',
+    ],
+  },
+  {
+    id: 6,
+    title: 'DevOps Agents: Automating CI/CD with GitHub + NewRelic',
+    level: 'Intermediate',
+    duration: '50 min',
+    track: 'DevOps + AI',
+    category: 'AI & Agents',
+    proven: false,
+    abstract:
+      'CI/CD pipelines are linear. Agents are adaptive. A DevOps agent watches GitHub for PRs, triggers tests on NewRelic infrastructure, analyzes logs, and auto-approves deployments if metrics stay green. Built end-to-end: GitHub webhook → Bedrock agent → NewRelic API → auto-deploy.',
+    takeaways: [
+      'Agent-driven deployment approval workflows',
+      'Real-time observability integration',
+      'Handling deployment failures with agent retries',
+      'Cost vs. manual ops trade-off',
+    ],
+  },
+  {
+    id: 7,
+    title: 'FinOps Agent: Autonomous Cost Optimization with Tagging & Right-Sizing',
+    level: 'Intermediate',
+    duration: '50 min',
+    track: 'Cost/Operations',
+    category: 'Cost',
+    proven: false,
+    abstract:
+      'Cost is everyone\'s job, but nobody owns it. A FinOps agent monitors your AWS bill in real-time, identifies waste, and recommends or executes fixes. Reads Cost Explorer, calls Compute Optimizer, automatically stops instances flagged idle.',
+    takeaways: [
+      'Reading Cost Explorer and Compute Optimizer with agents',
+      'Tagging strategy that agents can understand',
+      'Autonomous vs. approval-based cost actions',
+      'Cost of the agent vs. savings it delivers',
+    ],
+  },
+  {
+    id: 8,
+    title: 'Creating Bedrock Agents on AgentCore: Console to Production',
+    level: 'Intermediate',
+    duration: '45 min',
+    track: 'AI/ML',
+    category: 'AI & Agents',
+    proven: false,
+    abstract:
+      'This session walks through actually deploying agents on Amazon Bedrock AgentCore — runtime, identity, observability, and harness. Create an agent in console, define tools via JSON, test locally, deploy on Runtime, monitor with CloudWatch.',
+    takeaways: [
+      'Agent console UI vs. API-driven definition',
+      'Tool schemas and tool execution',
+      'AgentCore Runtime endpoints and invocation',
+      'Testing agents locally before production',
+    ],
+  },
+  {
+    id: 9,
+    title: 'Agents Explained: When AI Calls APIs and Makes Decisions',
+    level: 'Beginner-Intermediate',
+    duration: '40 min',
+    track: 'AI/ML',
+    category: 'AI & Agents',
+    proven: false,
+    abstract:
+      'Chatbots answer questions. Agents take actions. An agent reads your AWS resources, analyzes patterns, and makes decisions. This session builds a simple agent that reads EC2 metadata and recommends cost savings.',
+    takeaways: [
+      'Agent loop: perception → reasoning → action',
+      'Tool definitions and execution',
+      'When agents replace dashboards and spreadsheets',
+      'Safety and guardrails',
+    ],
+  },
+  {
+    id: 10,
+    title: 'CloudWatch for GenAI: Observability When Your Agent Calls an LLM',
+    level: 'Intermediate',
+    duration: '45 min',
+    track: 'Observability',
+    category: 'Observability',
+    proven: false,
+    abstract:
+      'An agent makes 10 API calls, 3 use Bedrock, latency spiked. Where do you look? This session covers instrumenting agents: token usage per call, LLM latency vs. tool execution, agent retries, and failure patterns.',
+    takeaways: [
+      'Custom metrics for agent behavior',
+      'CloudWatch Insights queries for agent investigation',
+      'X-Ray tracing for multi-step agent workflows',
+      'Building actionable dashboards',
+    ],
+  },
+  {
+    id: 11,
+    title: 'Reading Logs with AWS MCP: A New Way to Get Things Done',
+    level: 'Intermediate',
+    duration: '40 min',
+    track: 'DevOps',
+    category: 'Observability',
+    proven: false,
+    abstract:
+      'AWS MCP tools let agents read logs directly: "find all Lambda timeout errors in the last hour." An agent connected to CloudWatch Logs answers without you writing complex queries.',
+    takeaways: [
+      'MCP log-reading tools and tool definitions',
+      'Natural-language log queries via agents',
+      'Structured logging patterns agents can understand',
+      'When agents beat dashboards',
+    ],
+  },
+  {
+    id: 12,
+    title: 'GenAI Observability: Metrics That Matter When Your Agent Fails',
+    level: 'Advanced',
+    duration: '45 min',
+    track: 'Observability',
+    category: 'Observability',
+    proven: false,
+    abstract:
+      'Your agent is failing, but failing how? CloudWatch metrics alone won\'t tell you. This session covers custom metrics for agents: token spend, tool latency, retry counts, success rate by step, cost per business outcome.',
+    takeaways: [
+      'Custom metrics for agent behavior',
+      'Cost attribution per agent step',
+      'Debugging agent failures with observability',
+      'Optimization levers: retries, temperature, tool selection',
+    ],
+  },
+  {
+    id: 13,
+    title: 'STRIDE on Autopilot: Threat Modeling Across the AWS Continuum',
+    level: 'Intermediate',
+    duration: '45 min',
+    track: 'Security',
+    category: 'Security',
+    proven: false,
+    abstract:
+      'Threat modeling is tedious: list every component, draw data flows, brainstorm threats manually. Feed an agent an architecture diagram or CloudFormation template, and it generates STRIDE threats, ranks by severity, suggests mitigations. Compared against human analysis on a real app.',
+    takeaways: [
+      'STRIDE framework across a real AWS architecture',
+      'Using agents for automated threat discovery',
+      'Comparing agent output to manual analysis',
+      'Where automation beats human brainstorming',
+    ],
+  },
+  {
+    id: 14,
+    title: 'IAM Deep Dive: Policy, Simulator, Generator, Audit, and Analyzer',
+    level: 'Advanced',
+    duration: '50 min',
+    track: 'Security',
+    category: 'Security',
+    proven: false,
+    abstract:
+      'IAM is massive. This session covers the advanced side: policy conditions, IAM policy simulator, Access Analyzer, IAM Generator, and audit tools. Used to secure a real account, find unused roles, auto-remediate.',
+    takeaways: [
+      'Advanced IAM policy conditions (IP, time, MFA, tags)',
+      'IAM policy simulator for testing before deployment',
+      'Access Analyzer and public/cross-account risks',
+      'Automated remediation for over-permissioned principals',
+    ],
+  },
+  {
+    id: 15,
+    title: 'Spec First, Code Second: A Kiro Workflow',
+    level: 'Beginner-Intermediate',
+    duration: '50 min',
+    track: 'Developer Tools',
+    category: 'Kiro',
+    proven: false,
+    abstract:
+      'Kiro is an AI-powered development environment focused on transforming ideas into maintainable production systems through specification-driven development. Hooks automate responses to file events; steering files carry persistent project knowledge. This session builds a real feature end-to-end: write the spec, generate the code, run hooks on save, deploy.',
+    takeaways: [
+      'Spec-driven development vs. prompt-driven coding',
+      'Writing specs that Kiro can understand',
+      'Hooks: automating tasks on file changes',
+      'Steering files: teaching Kiro your project patterns',
+    ],
+  },
+  {
+    id: 16,
+    title: "I Automated My Deployments with Kiro. Here's the Runbook.",
+    level: 'Intermediate',
+    duration: '50 min',
+    track: 'DevOps / Infrastructure',
+    category: 'Kiro',
+    proven: false,
+    abstract:
+      "Kiro's CLI brings agentic development to infrastructure. Define infrastructure needs in natural language; Kiro's agents handle provisioning, configuration, deployment. Using Kiro CLI to spin up a multi-region VPC, configure security groups, deploy a stack with CI/CD, validate — all from the terminal, all reproducible.",
+    takeaways: [
+      'Kiro CLI for infrastructure automation',
+      'Natural-language infrastructure definitions',
+      'Autonomous mode: multi-step execution without interruption',
+      'Team collaboration via steering files',
+    ],
+  },
+  {
+    id: 17,
+    title: 'Legacy to Modern: A Kiro-Driven Migration',
+    level: 'Intermediate-Advanced',
+    duration: '50 min',
+    track: 'Modernization / Architecture',
+    category: 'Kiro',
+    proven: false,
+    abstract:
+      'Integrating Kiro with official AWS MCP servers spans assessment, planning, and implementation phases of modernization. This session walks a real legacy modernization: start with a monolith, let Kiro+MCP assess it, generate a plan, execute migration steps automatically.',
+    takeaways: [
+      'AWS MCP servers and what they expose to agents',
+      'Modernization workflows: assess → plan → implement',
+      'Using Kiro to maintain architectural consistency during transformation',
+      'Multi-team coordination via shared steering files',
+    ],
+  },
+  {
+    id: 18,
+    title: "Handing Off Work to an Agent: Kiro's Autonomous Mode",
+    level: 'Intermediate',
+    duration: '45 min',
+    track: 'Developer Tools',
+    category: 'Kiro',
+    proven: false,
+    abstract:
+      "Kiro's web interface has a feature the IDE and CLI lack: autonomous mode, executing multi-step tasks independently in cloud sandboxes that persist and coordinate with GitHub or GitLab. This session shows teams handing off work, watching Kiro create PRs with generated code and tests.",
+    takeaways: [
+      "Kiro's three interfaces: IDE, CLI, Web (with autonomous mode)",
+      'Autonomous task execution and GitHub integration',
+      'Team workflows: delegation vs. collaboration',
+      'Safety: what to review, what to trust',
+    ],
+  },
+  {
+    id: 19,
+    title: 'Context is Everything: Why Markdown Beats Prompts',
+    level: 'Advanced',
+    duration: '45 min',
+    track: 'AI/ML',
+    category: 'AI & Agents',
+    proven: false,
+    abstract:
+      "Prompt engineering is oversold. Context engineering is underrated. An agent given a full markdown spec beats one given a vague sentence. This session shows structuring context — architecture docs, API specs, error patterns — and measuring accuracy improvement.",
+    takeaways: [
+      'Structured context: architecture markdown, API specs, logs',
+      'Context window management and chunking',
+      'Token budget for context vs. reasoning',
+      'Measuring agent improvement with better context',
+    ],
+  },
+  {
+    id: 20,
+    title: 'MCP Explained: How Your AI Agent Talks to External Services',
+    level: 'Beginner-Intermediate',
+    duration: '45 min',
+    track: 'AI/ML',
+    category: 'AI & Agents',
+    proven: false,
+    abstract:
+      'An agent needs to call APIs. MCP is the standard way agents do it. This session covers MCP basics, building a simple MCP tool that reads CloudWatch Logs, wiring it to a Bedrock agent, and invoking it.',
+    takeaways: [
+      'MCP basics: what it is and why it matters',
+      'Tool definition in JSON schema',
+      'Agent tool selection and execution',
+      'Building a custom MCP tool',
+    ],
+  },
+  {
+    id: 21,
+    title: 'All You Need in AWS: Lambda, DynamoDB, and Bedrock',
+    level: 'Intermediate',
+    duration: '50 min',
+    track: 'Serverless',
+    category: 'Serverless',
+    proven: false,
+    abstract:
+      'You don\'t need Kubernetes, microservices, or a DevOps team. Lambda, DynamoDB, and Bedrock cover 80% of modern apps. This session builds a complete customer service chatbot end-to-end, scaling to millions of requests, with no infrastructure to manage.',
+    takeaways: [
+      'Serverless architecture that actually works',
+      'Lambda + DynamoDB patterns',
+      'Using Bedrock for intelligence without ML infrastructure',
+      'Scaling from 1 to 1M requests without changes',
+    ],
+  },
+  {
+    id: 22,
+    title: 'The AgentCore Stack Explained: Tools, Memory, Gateway, Runtime',
+    level: 'Advanced',
+    duration: '50 min',
+    track: 'Architecture',
+    category: 'AI & Agents',
+    proven: false,
+    abstract:
+      'AgentCore is modular. MCP Tools expose APIs, Memory persists agent state, Gateway routes to multiple agents, Runtime hosts them serverless, Observability monitors everything. This session covers the architecture patterns for multi-agent systems.',
+    takeaways: [
+      'MCP and tool design',
+      'Agent memory: token-based vs. persistent',
+      'Gateway for agent-to-agent calls',
+      'Observability at each layer',
+    ],
+  },
+  {
+    id: 23,
+    title: "I Stopped Googling AWS Errors. Here's What Amazon Q Actually Answered.",
+    level: 'Beginner-Intermediate',
+    duration: '40 min',
+    track: 'AI/ML',
+    category: 'Getting Started',
+    proven: false,
+    abstract:
+      "Amazon Q sits in the console and answers with context on your actual resources, not a generic doc page. This session walks through real troubleshooting: a Lambda timing out, an IAM policy silently blocking access, a CloudFormation stack stuck mid-deploy. For each, we ask Q, see what it gets right, and see where you still need to think for yourself.",
+    takeaways: [
+      'Asking Q questions that get useful answers, not generic ones',
+      'Three real debugging scenarios, solved live',
+      'What Q sees and does not see in your account',
+      'When to trust it and when to double-check',
+    ],
+  },
+  {
+    id: 24,
+    title: 'AWS Builder Center: Why It Makes You Inevitable',
+    level: 'Beginner',
+    duration: '30 min',
+    track: 'Community',
+    category: 'Community',
+    proven: false,
+    abstract:
+      'AWS Builder Center is where the community publishes code, talks, blogs, and projects. Getting featured amplifies reach. This session covers how the algorithm works, what gets amplified, and how to position work so it gets picked up.',
+    takeaways: [
+      'How AWS Builder Center works and what gets featured',
+      'Cross-posting strategy (blog → Dev.to → Builder Center → social)',
+      'Tags, keywords, and discoverability',
+      'Building an audience incrementally',
+    ],
+  },
+  {
+    id: 25,
+    title: 'Cost Tagging Strategy That Actually Works',
+    level: 'Beginner-Intermediate',
+    duration: '40 min',
+    track: 'Cost',
+    category: 'Cost',
+    proven: false,
+    abstract:
+      'Every team has a story: a database provisioned for testing, forgotten, $20K later found. Tagging prevents this — but only with consistent enforcement. This session covers tag strategies, enforcement via CloudFormation, and reports that actually make sense.',
+    takeaways: [
+      'Tagging strategy: what tags to use',
+      'Tag enforcement and compliance',
+      'Cost allocation reports by tag',
+      'Tools to find untagged resources',
+    ],
+  },
+  {
+    id: 27,
+    title: "Debugging a Broken Stack with Amazon Q: A Console Walkthrough",
+    level: 'Beginner',
+    duration: '30 min',
+    track: 'Getting Started',
+    category: 'Getting Started',
+    proven: false,
+    abstract:
+      'You\'re clicking through the console with a cryptic error and docs that assume you already know the answer. Amazon Q answers with context from your account. This session walks through real scenarios live, so you leave knowing you have an expert in your pocket.',
+    takeaways: [
+      'Using Amazon Q in the AWS console',
+      'Asking Q about your specific resources',
+      'What Q knows and what it does not',
+      "Following Q's recommendations",
+    ],
+  },
+  {
+    id: 28,
+    title: 'Cost Optimization: How We Saved $50K/Month on AWS',
+    level: 'Advanced',
+    duration: '50 min',
+    track: 'Cost/Operations',
+    category: 'Cost',
+    proven: false,
+    abstract:
+      'Most teams waste AWS money without realizing it. This session covers identifying waste, Right-Sizing, Reserved Instances vs. Savings Plans, and Spot Instances. Real numbers from production.',
+    takeaways: [
+      'Reserved Instances, Savings Plans, Spot — when each is right',
+      'Right-Sizing: using less than you think you need',
+      'FinOps framework and metrics',
+      'Cost allocation tags that actually tell you where money goes',
+    ],
+  },
+  {
+    id: 30,
+    title: 'Running Untrusted Workloads: MicroVMs vs. gVisor vs. Kata Containers',
+    level: 'Advanced',
+    duration: '40 min',
+    track: 'Security / Runtime',
+    category: 'CNCF / Kubernetes',
+    proven: false,
+    abstract:
+      'Kubernetes gives you namespaces and cgroups. Sometimes that is not enough isolation for a workload you do not trust — user code, third-party plugins, multi-tenant clusters. This talk compares three sandboxing approaches at the container-runtime layer: Firecracker microVMs, gVisor\'s syscall interception, and Kata Containers\' lightweight VMs. Built the same untrusted-code-execution workload three ways and measured startup time, overhead, and what each boundary actually stops.',
+    takeaways: [
+      'The isolation spectrum: namespaces < gVisor < Kata < microVMs',
+      'Measured startup latency and overhead for each approach',
+      'Which CNCF runtime class fits which threat model',
+      'What none of these approaches protect you from',
+    ],
+  },
+  {
+    id: 31,
+    title: 'EKS is Not the Interesting Part: What We Learned Running Agents on Kubernetes',
+    level: 'Intermediate',
+    duration: '45 min',
+    track: 'AI/ML / Platform',
+    category: 'CNCF / Kubernetes',
+    proven: false,
+    abstract:
+      'Everyone wants to run LLM agents on Kubernetes, and every talk starts with a Helm chart. This one starts with what broke: agent pods that hang instead of failing, sidecar patterns for tool execution that leaked memory, and why liveness probes lie to you when the workload is "thinking" rather than crashed. Vendor-neutral patterns for running agent workloads on any CNCF-conformant cluster, not just EKS.',
+    takeaways: [
+      'Why standard liveness/readiness probes misread agent workloads',
+      'Sidecar vs. init-container patterns for tool execution',
+      'Resource requests/limits for unpredictable LLM-call latency',
+      'What actually needed EKS-specific tuning vs. what was portable',
+    ],
+  },
+  {
+    id: 32,
+    title: 'OpenTelemetry for Agentic Workloads: Tracing a Request Across Tool Calls',
+    level: 'Intermediate-Advanced',
+    duration: '45 min',
+    track: 'Observability',
+    category: 'CNCF / Kubernetes',
+    proven: false,
+    abstract:
+      'An agent makes a decision, calls three tools, one of them is slow, and the whole request times out. Standard APM shows you a single span. OpenTelemetry, instrumented correctly, shows you the LLM call, each tool invocation, and the reasoning loop as a proper trace tree. This session covers instrumenting an agent with OTel from scratch — custom spans for "thinking" steps, propagating context across async tool calls, and building a Grafana/Tempo view that actually explains a failure.',
+    takeaways: [
+      'Custom OTel spans for non-deterministic agent steps',
+      'Context propagation across async tool invocations',
+      'Building trace views that separate LLM latency from tool latency',
+      'Vendor-neutral: works with Tempo, Jaeger, or any OTLP backend',
+    ],
+  },
+  {
+    id: 33,
+    title: 'Cost Attribution in Multi-Tenant Kubernetes: Tagging Without a Cloud Bill',
+    level: 'Intermediate',
+    duration: '40 min',
+    track: 'Cost / Platform',
+    category: 'CNCF / Kubernetes',
+    proven: false,
+    abstract:
+      'Cloud cost tools tag by AWS resource. Kubernetes cost is a shared cluster split across namespaces, teams, and workloads that don\'t map cleanly to a bill. This talk covers OpenCost and Kubecost-style attribution: labels as the tagging strategy, chargeback vs. showback models, and how to answer "which team\'s pods are actually expensive" without vendor lock-in.',
+    takeaways: [
+      'Label-based cost attribution strategy for shared clusters',
+      'Chargeback vs. showback: which model fits your org',
+      'Open-source tools (OpenCost) vs. managed alternatives',
+      'Common attribution mistakes that hide the real cost driver',
+    ],
+  },
+  {
+    id: 34,
+    title: 'Threat Modeling Kubernetes: STRIDE for Multi-Tenant Clusters',
+    level: 'Intermediate',
+    duration: '45 min',
+    track: 'Security',
+    category: 'CNCF / Kubernetes',
+    proven: false,
+    abstract:
+      'STRIDE was built for applications, not clusters — but the framework still works once you map it to Kubernetes primitives: spoofing via service accounts, tampering via mutable admission webhooks, elevation via RBAC misconfig. This talk walks through applying STRIDE to a real multi-tenant cluster, using an AI agent to generate the initial threat list and a human pass to catch what it missed, mirroring the AWS-continuum version of this talk but for CNCF-native threat surfaces.',
+    takeaways: [
+      'Mapping STRIDE categories to Kubernetes-specific attack surfaces',
+      'RBAC, admission control, and service account threats',
+      'Where agentic threat modeling helped, where it missed obvious things',
+      'A reusable checklist for multi-tenant cluster reviews',
+    ],
+  },
+  {
+    id: 35,
+    title: 'From Bedrock to Any LLM: Building Cloud-Agnostic Agent Infrastructure on Kubernetes',
+    level: 'Advanced',
+    duration: '50 min',
+    track: 'AI/ML / Platform',
+    category: 'CNCF / Kubernetes',
+    proven: false,
+    abstract:
+      'Most agent infrastructure is built for one cloud\'s model API. This talk covers building an agent runtime on Kubernetes that swaps model backends — Bedrock, self-hosted vLLM, or any OpenAI-compatible endpoint — without rewriting the orchestration layer. KEDA-based autoscaling for bursty agent workloads, a model-agnostic tool-calling abstraction, and what actually stayed portable versus what needed cloud-specific glue.',
+    takeaways: [
+      'Abstracting model backends behind a common interface',
+      'KEDA autoscaling for spiky, tool-call-heavy workloads',
+      "What's genuinely portable vs. what needs per-cloud adapters",
+      'Cost and latency comparison across backends',
+    ],
+  },
+  {
+    id: 36,
+    title: 'Claude in the Loop: What Model Choice Actually Changes in Kiro',
+    level: 'Intermediate',
+    duration: '45 min',
+    track: 'Developer Tools / AI',
+    category: 'Kiro',
+    proven: false,
+    abstract:
+      'Kiro is spec-driven, but the model behind it still matters. This session compares running Kiro workflows against different underlying models — Claude via Bedrock versus alternatives — for spec generation, code implementation, and steering-file adherence. Same feature, same spec, different model: where output quality diverged, where it didn\'t, and where cost and latency actually change the decision.',
+    takeaways: [
+      'What changes in output when you swap the model behind Kiro',
+      'Spec adherence: does the model follow steering files consistently',
+      'Cost/latency trade-offs across model choices',
+      'When model choice matters and when the spec does all the work',
+    ],
+  },
+  {
+    id: 37,
+    title: 'Claude Code and Kiro, Side by Side: Two Agentic Dev Tools, One Codebase',
+    level: 'Intermediate',
+    duration: '50 min',
+    track: 'Developer Tools',
+    category: 'Kiro',
+    proven: false,
+    abstract:
+      'Claude Code and Kiro both promise agentic development, but they start from different places — Claude Code from a conversational prompt in your terminal, Kiro from a formal spec. This talk runs the same real feature through both: same requirements, same codebase, two different workflows. Where spec-first won, where conversational iteration was faster, and a practical answer for which tool fits which kind of task.',
+    takeaways: [
+      'Spec-first vs. conversational agentic development, compared directly',
+      'Where Kiro\'s structure paid off vs. slowed things down',
+      'Where Claude Code\'s flexibility helped vs. drifted from requirements',
+      'A decision rule for picking a tool per task type',
+    ],
+  },
+  {
+    id: 38,
+    title: 'Steering Files Are Prompts You Write Once: Claude + Kiro for Team Consistency',
+    level: 'Beginner-Intermediate',
+    duration: '40 min',
+    track: 'Developer Tools',
+    category: 'Kiro',
+    proven: false,
+    abstract:
+      'Every team explains their conventions in chat, every time, to every AI tool. Kiro\'s steering files fix that — markdown that persists across the IDE, CLI, and web autonomous mode, teaching Claude your patterns once instead of repeating them in every prompt. This session shows writing steering files that actually stick: library choices, error-handling conventions, and architectural rules, then testing whether Claude followed them across three different Kiro interfaces.',
+    takeaways: [
+      'Writing steering files that models actually follow, not just read',
+      'Testing persistence across IDE, CLI, and web autonomous mode',
+      'What belongs in a steering file vs. a one-off prompt',
+      'A starter template for team-wide consistency',
+    ],
+  },
+  {
+    id: 43, title: 'Terraform Modules at Scale: Versioning, Testing, and Not Breaking Every Consumer',
+    level: 'Intermediate', duration: '45 min', track: 'Infrastructure as Code', category: 'Terraform', proven: false,
+    abstract: 'A shared Terraform module used by 20 teams becomes a liability the moment you change an input without warning. This session covers semantic versioning for modules, writing Terratest cases that catch breaking changes before release, and a registry structure that lets consumers pin safely without freezing forever.',
+    takeaways: [
+      'Semantic versioning conventions for internal modules',
+      'Terratest patterns for catching breaking changes pre-release',
+      'Private registry structure for safe, gradual consumer upgrades',
+      'Deprecation strategy: giving consumers a real migration window',
+    ],
+  },
+  {
+    id: 44, title: 'Terraform State Files: What Actually Breaks and How to Recover',
+    level: 'Intermediate-Advanced', duration: '45 min', track: 'Infrastructure as Code', category: 'Terraform', proven: false,
+    abstract: 'State drift, a corrupted state file, two engineers running apply at once — every team hits one of these eventually. This session covers state locking with S3+DynamoDB, recovering from a corrupted or lost state file with terraform import and state manipulation commands, and the incident where it actually happened.',
+    takeaways: [
+      'State locking mechanics and what happens when it fails',
+      'Recovering a lost or corrupted state file step by step',
+      'terraform import and state mv for surgical fixes',
+      'Preventing concurrent-apply incidents at the team level',
+    ],
+  },
+  {
+    id: 45, title: 'Policy as Code for Terraform: Sentinel, OPA, or Just CI Checks?',
+    level: 'Intermediate', duration: '40 min', track: 'Security / IaC', category: 'Terraform', proven: false,
+    abstract: 'Every org eventually needs to block a plan that violates a rule — no public S3 buckets, no unencrypted RDS, no instance types outside budget. This session compares three approaches to enforcing that: HashiCorp Sentinel, Open Policy Agent with Conftest, and plain CI script checks, with the actual trade-offs in setup cost and team adoption.',
+    takeaways: [
+      'Sentinel vs. OPA/Conftest: setup cost and adoption trade-offs',
+      'Writing policies that catch real misconfigurations, not noise',
+      'Wiring policy checks into a PR-gated CI pipeline',
+      'When a plain CI script check is genuinely good enough',
+    ],
+  },
+  {
+    id: 46, title: 'Terraform CI/CD: Plan, Review, Apply Without Someone Fat-Fingering Production',
+    level: 'Intermediate', duration: '45 min', track: 'DevOps / IaC', category: 'Terraform', proven: false,
+    abstract: 'Running terraform apply from a laptop against production is how outages start. This session builds a real pipeline: plan output posted to the PR for human review, apply gated behind approval, and separate credentials per environment so a dev-account mistake can\'t touch prod.',
+    takeaways: [
+      'Posting readable plan diffs to PRs for review',
+      'Approval gates before apply, and who should hold them',
+      'Environment-scoped credentials to contain blast radius',
+      'What we automated away after too many manual-apply mistakes',
+    ],
+  },
+  {
+    id: 47, title: 'Terraform vs. CloudFormation vs. CDK: Picking Your IaC Stack Honestly',
+    level: 'Beginner-Intermediate', duration: '40 min', track: 'Infrastructure as Code', category: 'Terraform', proven: false,
+    abstract: 'Every IaC comparison talk is secretly a sales pitch for one tool. This one deploys the same three-tier app with Terraform, CloudFormation, and CDK, and compares state management, multi-cloud portability, and the debugging experience when something goes wrong at 2am — not just the happy path.',
+    takeaways: [
+      'The same real deployment, three ways, honestly compared',
+      'State management: Terraform\'s explicit state vs. CloudFormation\'s managed state',
+      'When multi-cloud portability actually matters vs. when it\'s theoretical',
+      'Debugging experience when a deployment fails mid-way',
+    ],
+  },
+  {
+    id: 48, title: 'Serverless Uptime Monitoring, Agentic Edition: From Static Alerts to Reasoned Diagnosis',
+    level: 'Intermediate', duration: '45 min', track: 'Serverless / AI', category: 'AI & Agents', proven: false,
+    abstract: 'The classic serverless uptime monitor is simple: EventBridge fires every 5 minutes, Lambda does an HTTPS health check against a CloudFront-fronted site, and a failure publishes to SNS for an email alert. That tells you something is down. It does not tell you why. This session rebuilds that pipeline with an agent in the loop — when the health check fails, instead of a flat "site down" email, a Bedrock agent pulls CloudFront and Lambda logs, checks recent deploys, correlates the failure against a known-issues pattern, and sends a diagnosis instead of just a symptom. Benchmarked against commercial uptime tools (UptimeRobot, Pingdom, Better Uptime) on cost and time-to-diagnosis, not just uptime detection.',
+    takeaways: [
+      'The baseline architecture: CloudFront, private S3, Lambda health check, EventBridge schedule, SNS',
+      'Where an agent adds value over a static "up/down" alert',
+      'Correlating a failure against recent deploys and logs automatically',
+      'Cost and time-to-diagnosis vs. commercial uptime monitoring tools',
+    ],
+  },
+  {
+    id: 49, title: 'Building a $25/Month AI-Powered Monitoring SaaS on Serverless AWS',
+    level: 'Intermediate', duration: '50 min', track: 'Serverless / AI / SaaS', category: 'AI & Agents', proven: false,
+    abstract: 'Uptime monitoring tools tell you a site is down. None of the mainstream ones tell you why. This session builds a real SaaS pricing and architecture model around that gap: CloudFront + private S3 + Lambda health checks + EventBridge on the monitoring side, and a Bedrock agent that reads logs, checks recent deploys, and correlates against historical incidents on the diagnosis side. We walk through the actual per-customer AWS cost breakdown at a $25/month price point — multi-region checks, unrate-limited diagnosis calls, 30-day log retention, historical pattern memory in DynamoDB — landing at roughly 60-75% margin, and where that margin disappears if a customer\'s site flaps constantly. Benchmarked against UptimeRobot and Pingdom on the one thing they don\'t do: telling you why, not just that.',
+    takeaways: [
+      'Real per-customer AWS cost breakdown at a $25/month price point',
+      'Why "diagnosis, not just detection" is the differentiator worth paying for',
+      'Historical incident memory as a retention hook, not just a feature',
+      'Guardrails against one noisy customer eating the margin on everyone else',
+    ],
+  },
+  {
+    id: 50, title: 'Agent Identity and Delegation: Portable Trust Across Multi-Agent Systems',
+    level: 'Advanced', duration: '45 min', track: 'Identity & Trust', category: 'AAIF / Agentic Standards', proven: false,
+    abstract: 'When Agent A delegates a task to Agent B running on a different platform, what actually proves B is authorized to act, and how far does that authorization extend? This session builds a real delegation chain across two independently-hosted agents using emerging portable-identity patterns, and shows what breaks when the delegation isn\'t scoped tightly enough — an agent that inherits more trust than the task required.',
+    takeaways: [
+      'Delegation protocols for cross-platform agent-to-agent trust',
+      'Scoping authorization to the task, not the whole session',
+      'What a real over-delegation failure looks like, demonstrated',
+      'Where standards are still forming vs. where patterns have stabilized',
+    ],
+  },
+  {
+    id: 51, title: 'Observability and Traceability Across Agent Platforms: One Trace, Many Vendors',
+    level: 'Advanced', duration: '45 min', track: 'Observability & Traceability', category: 'AAIF / Agentic Standards', proven: false,
+    abstract: 'A single user request can hop from a Bedrock agent to an MCP tool call to a third-party agent runtime, and today that trace usually breaks at each hop. This session builds a cross-platform trace for a real multi-agent workflow, using OpenTelemetry conventions emerging from the agentic standards work, and shows exactly where the trace currently breaks and what it takes to stitch it back together.',
+    takeaways: [
+      'Why agent traces break at platform boundaries today',
+      'Applying emerging OTel conventions for agent execution tracing',
+      'Cross-system correlation for audit and forensics after an incident',
+      'What a standardized agent trace would need to include',
+    ],
+  },
+  {
+    id: 52, title: 'Can Agents Do Commerce? Discovery, Negotiation, and Payment Authorization',
+    level: 'Intermediate-Advanced', duration: '45 min', track: 'Agentic Commerce', category: 'AAIF / Agentic Standards', proven: false,
+    abstract: 'Agentic commerce needs an agent to discover a service, negotiate terms, and authorize a payment without a human clicking "confirm" at every step — and that authorization is the part nobody has solved cleanly yet. This session builds a toy agent-to-agent purchase flow, shows where a human approval gate is still non-negotiable today, and where it genuinely isn\'t.',
+    takeaways: [
+      'The discovery → negotiation → payment authorization pipeline',
+      'Where human-in-the-loop approval is still required, and why',
+      'Scoping payment authorization so a compromised agent can\'t drain an account',
+      'What "trustworthy autonomous transaction" actually requires in practice',
+    ],
+  },
+  {
+    id: 53, title: 'Defining Reliability for Agents That Don\'t Behave the Same Way Twice',
+    level: 'Intermediate', duration: '45 min', track: 'Accuracy & Reliability', category: 'AAIF / Agentic Standards', proven: false,
+    abstract: 'SLAs assume repeatable behavior. Agents are non-deterministic by design, so "99.9% uptime" doesn\'t mean what it used to. This session covers defining reliability metrics that actually fit agentic systems — task success rate, recovery-after-failure time, consistency across repeated runs of the same task — and building a dashboard around them instead of borrowing metrics built for deterministic services.',
+    takeaways: [
+      'Why traditional SLA metrics don\'t map cleanly to agent behavior',
+      'Task success rate and consistency as agent-specific reliability metrics',
+      'Recovery protocols when an agent fails mid-task',
+      'A starter reliability dashboard for a real agentic workload',
+    ],
+  },
+  {
+    id: 54, title: 'From Business Spec to Shipped Code: Amazon Quick + Kiro, End to End',
+    level: 'Intermediate', duration: '50 min', track: 'AI/ML / Developer Tools', category: 'AI & Agents', proven: false,
+    abstract: 'AWS split its two agentic assistants cleanly: Amazon Quick for business users doing research, automation, and knowledge work, and Kiro for developers writing and shipping code — Kiro is even the direct successor to Amazon Q Developer as of its sunset. This session builds one product end to end across that split: a business analyst uses Quick to research a requirement, pull data via its 1,000+ app integrations, and draft a spec in a Quick Flow; that spec becomes Kiro\'s input, which turns it into an actual implementation through spec-driven development, hooks, and steering files. The interesting part is the handoff — what survives the translation from a Quick-authored spec to Kiro-executed code, and what gets lost.',
+    takeaways: [
+      'Where Quick\'s strengths (research, data connections, non-technical spec drafting) end and Kiro\'s begin',
+      'Turning a Quick Flow output into a spec Kiro can actually build from',
+      'What breaks in the handoff between a business-authored spec and a dev-authored implementation',
+      'A repeatable pattern for business + engineering collaboration using AWS\'s own agent split',
+    ],
+  },
+  {
+    id: 55, title: 'Amazon Quick for Engineers: When the "Business User Tool" Is Actually Useful to You',
+    level: 'Beginner-Intermediate', duration: '40 min', track: 'AI/ML', category: 'AI & Agents', proven: false,
+    abstract: 'Amazon Quick is marketed at business users, so most engineers ignore it — which is a mistake, because its data connectors (S3, Redshift, SharePoint, Google Drive) and Quick Flows for repeatable automation solve real engineering-adjacent problems: pulling a cross-system status report, summarizing an incident across Slack and Jira, building a lightweight internal dashboard without writing a React app. This session shows three of those use cases built live, and is honest about where Quick\'s no-code ceiling means you should still just write the script yourself.',
+    takeaways: [
+      'Three real engineering-adjacent tasks Quick handles without code',
+      'Data connector setup for AWS-native sources (S3, Redshift) vs. third-party (SharePoint, Drive)',
+      'Building a repeatable Quick Flow instead of a one-off script',
+      'Where Quick\'s no-code ceiling means you\'re better off just coding it',
+    ],
+  },
+  {
+    id: 56, title: 'Governing Amazon Quick at Scale: Access Control, Custom Permissions, and What DXC\'s 120K Users Taught Us',
+    level: 'Intermediate-Advanced', duration: '45 min', track: 'Governance / Enterprise', category: 'AI & Agents', proven: false,
+    abstract: 'Rolling out an agentic assistant to thousands of employees is a governance problem before it\'s a technology problem — who can connect which data source, which agents can take autonomous action versus require approval, and how do you audit what an agent did on an employee\'s behalf. This session covers Quick\'s custom permissions model at account/role/user levels, building a rollout plan that avoids the "shelfware" failure mode, and the access-control lessons visible in large public deployments (DXC\'s 120K-user rollout, Vertiv\'s scale-up).',
+    takeaways: [
+      'Custom permissions: account, role, and user-level controls',
+      'Designing autonomous-action approval gates before rollout, not after an incident',
+      'Auditing what an agent did on an employee\'s behalf',
+      'Avoiding the shelfware failure mode in large-scale AI tool rollouts',
+    ],
+  },
+  {
+    id: 57, title: 'Killing the VPN: Zero-Trust Access to Internal Apps with AWS Verified Access',
+    level: 'Intermediate', duration: '45 min', track: 'Security / Networking', category: 'AWS AI Security', proven: false,
+    abstract: 'VPNs grant network-level access and trust the device once it\'s connected — Verified Access evaluates every single request against identity and device posture in real time, no VPN client required. This session migrates a real internal application off VPN access onto Verified Access: fine-grained per-app policies, integration with an identity provider and device-posture partner, and what changes operationally when "connected to the VPN" stops being a meaningful security signal.',
+    takeaways: [
+      'Verified Access policy design: identity + device posture, per application',
+      'Migrating a real app off VPN without a big-bang cutover',
+      'Integrating with identity/device-posture partners (Okta, CrowdStrike, Jamf, etc.)',
+      'What breaks when engineers lose the mental model of "on the VPN = trusted"',
+    ],
+  },
+  {
+    id: 58, title: 'Beyond HTTP(S): Verified Access for SSH, RDP, and Databases',
+    level: 'Intermediate-Advanced', duration: '40 min', track: 'Security / Networking', category: 'AWS AI Security', proven: false,
+    abstract: 'Verified Access started as an HTTP(S)-only zero-trust proxy, but GA support for TCP, SSH, and RDP means it now covers the resources that actually worried security teams most — a bastion host, a database port, a fleet of EC2 instances. This session sets up Verified Access in front of an SSH bastion and a database, and shows real-time policy evaluation terminating an active connection mid-session when a device posture check fails.',
+    takeaways: [
+      'Extending Verified Access policies to non-HTTP(S) protocols',
+      'Fronting an SSH bastion and a database port with the same zero-trust model',
+      'Continuous evaluation: what happens when posture changes mid-session',
+      'Consolidating what used to be separate VPN + bastion + jump-host tooling',
+    ],
+  },
+  {
+    id: 59, title: 'Auditing Verified Access: Turning Access Logs into a Real Security Story',
+    level: 'Intermediate', duration: '40 min', track: 'Security / Observability', category: 'AWS AI Security', proven: false,
+    abstract: 'Verified Access centralizes policy for every application, which means it also centralizes the logs — every access decision, allowed or denied, in one place. This session builds a real dashboard from Verified Access logs: who\'s being denied and why, which policies are too strict and generating support tickets, and how to correlate a denied-access log with a GuardDuty finding during an actual investigation.',
+    takeaways: [
+      'Structuring Verified Access logs for security dashboards',
+      'Finding overly strict policies before they become support tickets',
+      'Correlating access denials with other security signals during an investigation',
+      'Building the audit trail an auditor will actually accept',
+    ],
+  },
+  {
+    id: 60, title: 'From Q in Connect to Agentic Self-Service: Building a Real AI Agent for Amazon Connect',
+    level: 'Intermediate', duration: '50 min', track: 'AI/ML / Customer Experience', category: 'AI & Agents', proven: false,
+    abstract: 'What used to be "Amazon Q in Connect" is now one of several configurable AI agents in Amazon Connect, and agentic self-service adds autonomous multi-step reasoning plus MCP tool integration on top of the older single-turn assistant. This session builds a real self-service voice agent: understanding intent, calling MCP tools to look up and modify a customer record, and handing off to a human agent with full context preserved when it hits its limits.',
+    takeaways: [
+      'The difference between legacy self-service and agentic self-service in Connect',
+      'Wiring MCP tools into a Connect AI agent for real actions, not just answers',
+      'Designing a clean handoff to a human agent with context intact',
+      'Converting existing Connect flow modules into reusable MCP tools',
+    ],
+  },
+  {
+    id: 61, title: 'Debugging a Voice Agent: Using Connect AI Agent Traces to Find Out Why It Failed',
+    level: 'Intermediate-Advanced', duration: '40 min', track: 'AI/ML / Observability', category: 'AI & Agents', proven: false,
+    abstract: 'A self-service voice agent fails a call and escalates to a human — but did it reason incorrectly, call a tool with bad parameters, or just time out? AI agent trace details in Connect show the step-by-step reasoning path for every self-service voice interaction. This session walks through real failed-call traces, showing how to distinguish a reasoning failure from a tool-integration bug from a genuine edge case the agent was never built to handle.',
+    takeaways: [
+      'Reading AI agent traces alongside the call transcript',
+      'Distinguishing reasoning failures from tool-call failures from timeouts',
+      'Building a triage process for AI-agent-handled call failures',
+      'What trace visibility changes about how confidently you deploy voice agents',
+    ],
+  },
+  {
+    id: 62, title: 'Grading Your Own AI Agent: Generative Evaluation for Self-Service Interactions',
+    level: 'Intermediate', duration: '40 min', track: 'AI/ML / Quality', category: 'AI & Agents', proven: false,
+    abstract: 'Manually sampling a handful of self-service transcripts to check quality doesn\'t scale past a few dozen calls a day. Connect\'s generative evaluation lets managers define criteria in plain language — "were all the customer\'s issues resolved?" — and get every self-service interaction assessed automatically, with cited reasoning back to the transcript. This session builds a real evaluation form, runs it against a batch of interactions, and covers where the automated grading agreed with human review and where it didn\'t.',
+    takeaways: [
+      'Writing natural-language evaluation criteria that produce consistent grading',
+      'Aggregated insights across interactions vs. drilling into individual contacts',
+      'Where automated evaluation matched human judgment, and where it missed',
+      'Using evaluation results to actually improve agent prompts, not just score them',
+    ],
+  },
+];
+
+let savedCfps = [];
+let allCfps = [];
+let activeFilter = 'all';
+
+async function loadSaved() {
+  try {
+    const res = await fetch(`${CONFIG.apiEndpoint}/cfps`, { headers: authHeader() });
+    if (!res.ok) throw new Error('fetch failed');
+    const data = await res.json();
+    savedCfps = data.map((c) => ({
+      id: `saved-${c.id}`, rawId: c.id, proven: false, level: c.difficulty, duration: '', track: '',
+      category: 'My Submissions', title: c.title, abstract: c.description,
+      takeaways: [], referenceUrl: c.referenceUrl, referenceType: c.referenceType, deletable: true,
+    }));
+  } catch (err) {
+    console.error('Failed to load saved CFPs:', err);
+    savedCfps = [];
+  }
+  allCfps = [...savedCfps, ...CFPS];
+  renderChips();
+  renderBoard();
+  render();
+}
+
+async function saveCfp() {
+  const title = document.getElementById('f-title').value.trim();
+  const description = document.getElementById('f-description').value.trim();
+  if (!title || !description) {
+    document.getElementById('form-status').textContent = 'Title and description are required.';
+    return;
+  }
+  const payload = {
+    title, difficulty: document.getElementById('f-difficulty').value, description,
+    referenceUrl: document.getElementById('f-ref-url').value.trim(),
+    referenceType: document.getElementById('f-ref-type').value,
+  };
+  document.getElementById('save-btn').textContent = 'Saving…';
+  try {
+    const res = await fetch(`${CONFIG.apiEndpoint}/cfps`, {
+      method: 'POST', headers: { ...authHeader(), 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+    });
+    if (!res.ok) throw new Error('save failed');
+    document.getElementById('save-btn').textContent = 'Saved ✓';
+    ['f-title', 'f-description', 'f-ref-url'].forEach((id) => document.getElementById(id).value = '');
+    await loadSaved();
+    setTimeout(() => { document.getElementById('save-btn').textContent = 'Save CFP'; toggleForm(); }, 900);
+  } catch (err) {
+    console.error(err);
+    document.getElementById('form-status').textContent = 'Something went wrong — try again.';
+    document.getElementById('save-btn').textContent = 'Save CFP';
+  }
+}
+
+async function deleteCfp(rawId) {
+  if (!confirm('Delete this CFP? This cannot be undone.')) return;
+  try {
+    const res = await fetch(`${CONFIG.apiEndpoint}/cfps?id=${encodeURIComponent(rawId)}`, { method: 'DELETE', headers: authHeader() });
+    if (!res.ok) throw new Error('delete failed');
+    await loadSaved();
+  } catch (err) {
+    console.error(err);
+    alert('Could not delete — try again.');
+  }
+}
+
+function toggleForm() { document.getElementById('form-box').classList.toggle('hidden'); }
+
+function renderChips() {
+  const cats = ['all', ...new Set(allCfps.map((c) => c.category))];
+  const el = document.getElementById('chips');
+  el.innerHTML = '';
+  cats.forEach((cat) => {
+    const b = document.createElement('button');
+    b.className = 'chip' + (cat === activeFilter ? ' active' : '');
+    b.textContent = cat;
+    b.onclick = () => { activeFilter = cat; renderChips(); render(); };
+    el.appendChild(b);
+  });
+}
+
+function renderBoard() {
+  const grid = document.getElementById('cb-grid');
+  grid.innerHTML = '';
+  const provenCount = allCfps.filter(c => c.proven).length;
+  document.getElementById('cb-count').textContent = `${allCfps.length} talks · ${provenCount} proven`;
+  allCfps.forEach((c, i) => {
+    const cell = document.createElement('div');
+    cell.className = 'cb-cell' + (c.proven ? ' proven' : '');
+    cell.style.setProperty('--d', Math.min(i * 0.015, 0.6) + 's');
+    cell.title = c.title;
+    cell.textContent = c.proven ? '✓' : '';
+    grid.appendChild(cell);
+  });
+}
+
+function render() {
+  const query = document.getElementById('search-box').value.toLowerCase();
+  const filtered = allCfps.filter((c) => {
+    const matchCat = activeFilter === 'all' || c.category === activeFilter;
+    const matchQuery = !query || c.title.toLowerCase().includes(query) || c.abstract.toLowerCase().includes(query);
+    return matchCat && matchQuery;
+  });
+
+  const list = document.getElementById('cfp-list');
+  list.innerHTML = '';
+  filtered.forEach((c) => {
+    const row = document.createElement('article');
+    row.className = 'cfp-row';
+    row.innerHTML = `
+      <div class="cfp-row-head">
+        <span class="badge">${c.level}</span>
+        ${c.proven ? '<span class="badge-proven">Proven ✓</span>' : ''}
+        ${c.deletable ? `<button class="del-btn" onclick="deleteCfp('${c.rawId}')" title="Delete">✕</button>` : ''}
+      </div>
+      <div class="cfp-title">${c.title}</div>
+      <div class="cfp-meta">${[c.duration, c.track].filter(Boolean).join(' · ')}</div>
+      <div class="cfp-abstract">${c.abstract}</div>
+      ${c.takeaways && c.takeaways.length ? `<details><summary>Takeaways</summary><ul class="list-inner">${c.takeaways.map(t => `<li>${t}</li>`).join('')}</ul></details>` : ''}
+      ${c.referenceUrl ? `<a class="ref-link" href="${c.referenceUrl}" target="_blank" rel="noreferrer">${c.referenceType === 'Slides' ? '📊' : c.referenceType === 'Blog' ? '📝' : '🔗'} ${c.referenceType || 'Reference'}</a>` : ''}
+    `;
+    list.appendChild(row);
+  });
+  document.getElementById('empty-msg').classList.toggle('hidden', filtered.length > 0);
+}
+
+(async function () {
+  const authed = await initAuth();
+  if (authed) {
+    document.getElementById('login-gate').classList.add('hidden');
+    document.getElementById('app').classList.remove('hidden');
+    await loadSaved();
+  }
+})();
+</script>
+</body>
+</html>
