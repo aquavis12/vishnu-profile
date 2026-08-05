@@ -137,6 +137,8 @@ summary { cursor: pointer; color: var(--azure2); font-family: var(--ff-mono); fo
 .list-inner { margin: 0.5rem 0 0; padding-left: 1.2rem; color: var(--muted); }
 .ref-link { display: inline-block; margin-top: 0.5rem; font-family: var(--ff-mono); font-size: 0.75rem; color: var(--azure2); text-decoration: none; }
 .del-btn { margin-left: auto; border: none; background: transparent; color: var(--red); cursor: pointer; font-size: 0.9rem; }
+.edit-btn { margin-left: auto; color: var(--azure2); }
+.edit-btn ~ .del-btn { margin-left: 0.3rem; }
 
 #empty-msg { text-align: center; color: var(--muted); font-family: var(--ff-mono); font-size: 0.85rem; margin-top: 2.5rem; }
 .hidden { display: none !important; }
@@ -230,10 +232,10 @@ footer a:hover { color: var(--azure); }
 
 <script>
 const CONFIG = {
-  userPoolClientId: '532m87t7s1lgk14o3lqdfeobkl',
-  hostedUiDomain: 'https://vishnu-mycfp-auth.auth.us-east-1.amazoncognito.com',
+  userPoolClientId: 'REPLACE_WITH_UserPoolClientId',
+  hostedUiDomain: 'REPLACE_WITH_HostedUiDomain',
   redirectUri: window.location.origin + window.location.pathname,
-  apiEndpoint: 'https://nla6vv5epg.execute-api.us-east-1.amazonaws.com',
+  apiEndpoint: 'REPLACE_WITH_ApiEndpoint',
 };
 
 function login() {
@@ -1112,6 +1114,7 @@ const CFPS = [
 let savedCfps = [];
 let allCfps = [];
 let activeFilter = 'all';
+let editingId = null; // null = create mode, set = editing that DynamoDB item's id
 
 async function loadSaved() {
   try {
@@ -1145,21 +1148,48 @@ async function saveCfp() {
     referenceUrl: document.getElementById('f-ref-url').value.trim(),
     referenceType: document.getElementById('f-ref-type').value,
   };
-  document.getElementById('save-btn').textContent = 'Saving…';
+  document.getElementById('save-btn').textContent = editingId ? 'Updating…' : 'Saving…';
   try {
-    const res = await fetch(`${CONFIG.apiEndpoint}/cfps`, {
-      method: 'POST', headers: { ...authHeader(), 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+    const url = editingId ? `${CONFIG.apiEndpoint}/cfps?id=${encodeURIComponent(editingId)}` : `${CONFIG.apiEndpoint}/cfps`;
+    const method = editingId ? 'PUT' : 'POST';
+    const res = await fetch(url, {
+      method, headers: { ...authHeader(), 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
     });
-    if (!res.ok) throw new Error('save failed');
-    document.getElementById('save-btn').textContent = 'Saved ✓';
-    ['f-title', 'f-description', 'f-ref-url'].forEach((id) => document.getElementById(id).value = '');
+    if (!res.ok) throw new Error(editingId ? 'update failed' : 'save failed');
+    document.getElementById('save-btn').textContent = editingId ? 'Updated ✓' : 'Saved ✓';
+    resetForm();
     await loadSaved();
-    setTimeout(() => { document.getElementById('save-btn').textContent = 'Save CFP'; toggleForm(); }, 900);
+    setTimeout(() => { toggleForm(true); }, 900);
   } catch (err) {
     console.error(err);
     document.getElementById('form-status').textContent = 'Something went wrong — try again.';
-    document.getElementById('save-btn').textContent = 'Save CFP';
+    document.getElementById('save-btn').textContent = editingId ? 'Update CFP' : 'Save CFP';
   }
+}
+
+function editCfp(rawId) {
+  const item = savedCfps.find((c) => c.rawId === rawId);
+  if (!item) return;
+  editingId = rawId;
+  document.getElementById('f-title').value = item.title;
+  document.getElementById('f-difficulty').value = item.level;
+  document.getElementById('f-description').value = item.abstract;
+  document.getElementById('f-ref-url').value = item.referenceUrl || '';
+  document.getElementById('f-ref-type').value = item.referenceType || 'None';
+  document.querySelector('#form-box h3').textContent = 'Edit CFP';
+  document.getElementById('save-btn').textContent = 'Update CFP';
+  document.getElementById('form-box').classList.remove('hidden');
+  document.getElementById('form-box').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function resetForm() {
+  editingId = null;
+  ['f-title', 'f-description', 'f-ref-url'].forEach((id) => document.getElementById(id).value = '');
+  document.getElementById('f-difficulty').value = 'Intermediate';
+  document.getElementById('f-ref-type').value = 'None';
+  document.querySelector('#form-box h3').textContent = 'Add a new CFP';
+  document.getElementById('save-btn').textContent = 'Save CFP';
+  document.getElementById('form-status').textContent = '';
 }
 
 async function deleteCfp(rawId) {
@@ -1174,7 +1204,12 @@ async function deleteCfp(rawId) {
   }
 }
 
-function toggleForm() { document.getElementById('form-box').classList.toggle('hidden'); }
+function toggleForm(forceClose) {
+  const box = document.getElementById('form-box');
+  const willBeHidden = forceClose === true ? true : !box.classList.contains('hidden');
+  if (willBeHidden) { box.classList.add('hidden'); resetForm(); }
+  else { box.classList.remove('hidden'); }
+}
 
 function renderChips() {
   const cats = ['all', ...new Set(allCfps.map((c) => c.category))];
@@ -1221,6 +1256,7 @@ function render() {
       <div class="cfp-row-head">
         <span class="badge">${c.level}</span>
         ${c.proven ? '<span class="badge-proven">Proven ✓</span>' : ''}
+        ${c.deletable ? `<button class="del-btn edit-btn" onclick="editCfp('${c.rawId}')" title="Edit">✎</button>` : ''}
         ${c.deletable ? `<button class="del-btn" onclick="deleteCfp('${c.rawId}')" title="Delete">✕</button>` : ''}
       </div>
       <div class="cfp-title">${c.title}</div>
