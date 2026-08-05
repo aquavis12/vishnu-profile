@@ -1,0 +1,306 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+  Auth + CFP storage backend for a static index.html site.
+  Cognito Hosted UI handles login + TOTP MFA (no custom login form needed).
+  API Gateway + Lambda + DynamoDB handle CFP add/list/delete, called via fetch()
+  from plain JavaScript with the Cognito ID token as Bearer auth.
+
+Parameters:
+  SiteDomain:
+    Type: String
+    Description: Your site domain, e.g. vishnurachapudi.com (used for Hosted UI callback URLs)
+    Default: vishnurachapudi.com
+  CognitoDomainPrefix:
+    Type: String
+    Description: Unique prefix for your Cognito Hosted UI domain (must be globally unique)
+    Default: vishnu-mycfp-auth
+
+Resources:
+
+  ## ---------- COGNITO: User Pool with REQUIRED TOTP MFA, no self-signup ----------
+  UserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: my-cfp-user-pool
+      MfaConfiguration: 'ON'
+      EnabledMfas:
+        - SOFTWARE_TOKEN_MFA
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 12
+          RequireUppercase: true
+          RequireLowercase: true
+          RequireNumbers: true
+          RequireSymbols: true
+      AdminCreateUserConfig:
+        AllowAdminCreateUserOnly: true   # no public sign-up — you create your one account via CLI
+      AutoVerifiedAttributes:
+        - email
+      UsernameAttributes:
+        - email
+
+  UserPoolDomain:
+    Type: AWS::Cognito::UserPoolDomain
+    Properties:
+      Domain: !Ref CognitoDomainPrefix
+      UserPoolId: !Ref UserPool
+
+  UserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      ClientName: my-cfp-web-client
+      UserPoolId: !Ref UserPool
+      GenerateSecret: false          # public client — this is a static site with no server to keep a secret
+      AllowedOAuthFlows:
+        - code
+      AllowedOAuthScopes:
+        - openid
+        - email
+        - profile
+      AllowedOAuthFlowsUserPoolClient: true
+      CallbackURLs:
+        - !Sub 'https://${SiteDomain}/my-cfp/'
+        - 'http://localhost:8080/my-cfp/'   # for local testing
+      LogoutURLs:
+        - !Sub 'https://${SiteDomain}/my-cfp/'
+        - 'http://localhost:8080/my-cfp/'
+      SupportedIdentityProviders:
+        - COGNITO
+      ExplicitAuthFlows:
+        - ALLOW_USER_SRP_AUTH
+        - ALLOW_REFRESH_TOKEN_AUTH
+
+  ## ---------- DYNAMODB: CFP storage ----------
+  CfpTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: my-cfp-submissions
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+
+  ## ---------- LAMBDA: CRUD for CFPs ----------
+  CfpFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal: { Service: lambda.amazonaws.com }
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: dynamo-access
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - dynamodb:PutItem
+                  - dynamodb:Scan
+                  - dynamodb:DeleteItem
+                Resource: !GetAtt CfpTable.Arn
+
+  CfpFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: my-cfp-api
+      Runtime: nodejs20.x
+      Handler: index.handler
+      Role: !GetAtt CfpFunctionRole.Arn
+      Timeout: 10
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref CfpTable
+      Code:
+        ZipFile: |
+          const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
+          const { DynamoDBDocumentClient, PutCommand, ScanCommand, DeleteCommand, GetCommand } = require('@aws-sdk/lib-dynamodb');
+          const { randomUUID } = require('crypto');
+
+          const client = DynamoDBDocumentClient.from(new DynamoDBClient({}));
+          const TABLE = process.env.TABLE_NAME;
+
+          const cors = {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': 'Content-Type,Authorization',
+            'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS',
+          };
+
+          exports.handler = async (event) => {
+            const method = event.requestContext.http.method;
+
+            if (method === 'OPTIONS') {
+              return { statusCode: 200, headers: cors, body: '' };
+            }
+
+            try {
+              if (method === 'GET') {
+                const result = await client.send(new ScanCommand({ TableName: TABLE }));
+                return { statusCode: 200, headers: cors, body: JSON.stringify(result.Items || []) };
+              }
+
+              if (method === 'POST') {
+                const body = JSON.parse(event.body || '{}');
+                if (!body.title || !body.description) {
+                  return { statusCode: 400, headers: cors, body: JSON.stringify({ error: 'title and description are required' }) };
+                }
+                const item = {
+                  id: randomUUID(),
+                  title: body.title,
+                  difficulty: body.difficulty || 'Intermediate',
+                  description: body.description,
+                  referenceUrl: body.referenceUrl || '',
+                  referenceType: body.referenceType || 'None',
+                  createdAt: new Date().toISOString(),
+                  updatedAt: new Date().toISOString(),
+                };
+                await client.send(new PutCommand({ TableName: TABLE, Item: item }));
+                return { statusCode: 201, headers: cors, body: JSON.stringify(item) };
+              }
+
+              if (method === 'PUT') {
+                const id = event.queryStringParameters && event.queryStringParameters.id;
+                if (!id) {
+                  return { statusCode: 400, headers: cors, body: JSON.stringify({ error: 'id query param required' }) };
+                }
+                const body = JSON.parse(event.body || '{}');
+                if (!body.title || !body.description) {
+                  return { statusCode: 400, headers: cors, body: JSON.stringify({ error: 'title and description are required' }) };
+                }
+                const existing = await client.send(new GetCommand({ TableName: TABLE, Key: { id } }));
+                if (!existing.Item) {
+                  return { statusCode: 404, headers: cors, body: JSON.stringify({ error: 'not found' }) };
+                }
+                const item = {
+                  ...existing.Item,
+                  title: body.title,
+                  difficulty: body.difficulty || existing.Item.difficulty,
+                  description: body.description,
+                  referenceUrl: body.referenceUrl || '',
+                  referenceType: body.referenceType || 'None',
+                  updatedAt: new Date().toISOString(),
+                };
+                await client.send(new PutCommand({ TableName: TABLE, Item: item }));
+                return { statusCode: 200, headers: cors, body: JSON.stringify(item) };
+              }
+
+              if (method === 'DELETE') {
+                const id = event.queryStringParameters && event.queryStringParameters.id;
+                if (!id) {
+                  return { statusCode: 400, headers: cors, body: JSON.stringify({ error: 'id query param required' }) };
+                }
+                await client.send(new DeleteCommand({ TableName: TABLE, Key: { id } }));
+                return { statusCode: 200, headers: cors, body: JSON.stringify({ deleted: id }) };
+              }
+
+              return { statusCode: 405, headers: cors, body: JSON.stringify({ error: 'method not allowed' }) };
+            } catch (err) {
+              console.error(err);
+              return { statusCode: 500, headers: cors, body: JSON.stringify({ error: 'internal error' }) };
+            }
+          };
+
+  ## ---------- API GATEWAY: HTTP API with Cognito JWT authorizer ----------
+  HttpApi:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      Name: my-cfp-api
+      ProtocolType: HTTP
+      CorsConfiguration:
+        AllowOrigins: ['*']
+        AllowHeaders: ['Content-Type', 'Authorization']
+        AllowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+
+  CognitoAuthorizer:
+    Type: AWS::ApiGatewayV2::Authorizer
+    Properties:
+      ApiId: !Ref HttpApi
+      AuthorizerType: JWT
+      IdentitySource:
+        - '$request.header.Authorization'
+      Name: cognito-jwt-authorizer
+      JwtConfiguration:
+        Audience:
+          - !Ref UserPoolClient
+        Issuer: !Sub 'https://cognito-idp.${AWS::Region}.amazonaws.com/${UserPool}'
+
+  LambdaIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref HttpApi
+      IntegrationType: AWS_PROXY
+      IntegrationUri: !GetAtt CfpFunction.Arn
+      PayloadFormatVersion: '2.0'
+
+  RouteGet:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref HttpApi
+      RouteKey: 'GET /cfps'
+      AuthorizationType: JWT
+      AuthorizerId: !Ref CognitoAuthorizer
+      Target: !Sub 'integrations/${LambdaIntegration}'
+
+  RoutePost:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref HttpApi
+      RouteKey: 'POST /cfps'
+      AuthorizationType: JWT
+      AuthorizerId: !Ref CognitoAuthorizer
+      Target: !Sub 'integrations/${LambdaIntegration}'
+
+  RouteDelete:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref HttpApi
+      RouteKey: 'DELETE /cfps'
+      AuthorizationType: JWT
+      AuthorizerId: !Ref CognitoAuthorizer
+      Target: !Sub 'integrations/${LambdaIntegration}'
+
+  RoutePut:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref HttpApi
+      RouteKey: 'PUT /cfps'
+      AuthorizationType: JWT
+      AuthorizerId: !Ref CognitoAuthorizer
+      Target: !Sub 'integrations/${LambdaIntegration}'
+
+  ApiStage:
+    Type: AWS::ApiGatewayV2::Stage
+    Properties:
+      ApiId: !Ref HttpApi
+      StageName: '$default'
+      AutoDeploy: true
+
+  LambdaInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref CfpFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${HttpApi}/*/*'
+
+Outputs:
+  UserPoolId:
+    Value: !Ref UserPool
+  UserPoolClientId:
+    Value: !Ref UserPoolClient
+  HostedUiDomain:
+    Value: !Sub 'https://${CognitoDomainPrefix}.auth.${AWS::Region}.amazoncognito.com'
+  ApiEndpoint:
+    Value: !GetAtt HttpApi.ApiEndpoint
+  NextSteps:
+    Value: >
+      1) Create your one admin user with admin-create-user (see DEPLOY.md).
+      2) Fill in the config object at the top of index.html with these Outputs.
+      3) Log in once via the Hosted UI to set up TOTP.
