@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
 
+Disallow: /my-cfp/
+
 Sitemap: https://www.vishnurachapudi.com/sitemap.xml
