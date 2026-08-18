@@ -185,6 +185,9 @@
 <!-- ═══ NAV ═══ -->
 <nav role="navigation" aria-label="Main navigation">
   <a class="nav-logo" href="#hero">vishnu<span>.</span></a>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
   <ul class="nav-links">
     <li>
       <div class="theme-toggle" id="themeSwitch" role="group" aria-label="Theme switch">
@@ -306,7 +309,7 @@
         <div class="id-card-head">identity --profile</div>
         <div class="id-row"><span class="k">Role</span><span class="v">Cloud &amp; AI Engineer</span></div>
         <div class="id-row"><span class="k">Org</span><span class="v">SUDO Consultants</span></div>
-        <div class="id-row"><span class="k">Base</span><span class="v">Hyderabad, India</span></div>
+        <div class="id-row"><span class="k">Base</span><span class="v">Andhra Pradesh, India</span></div>
         <div class="id-row"><span class="k">Education</span><span class="v">CBIT, Hyderabad</span></div>
         <div class="id-row"><span class="k">Focus</span><span class="v">AWS Security · Gen AI · Cloud Architecture</span></div>
         <div class="id-row"><span class="k">Community</span><span class="v"><a href="https://builder.aws.com/community/@vishnu1999" rel="noopener noreferrer" target="_blank">AWS Community Builder ↗</a></span></div>
@@ -421,7 +424,8 @@
         ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
         : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
 
-      L.tileLayer(tileUrl, { maxZoom: 18 }).addTo(map);
+      window._leafletMap = map;
+      window._leafletTileLayer = L.tileLayer(tileUrl, { maxZoom: 18 }).addTo(map);
 
       // Custom violet marker
       var pinIcon = L.divIcon({
@@ -801,6 +805,15 @@
     <div class="sec-label">Writing</div>
     <h2 id="blog-heading">Latest <em>Blog Posts</em></h2>
 
+    <div class="blog-filters" role="tablist" aria-label="Filter blog by category">
+      <button class="blog-filter active" data-category="all" role="tab">All</button>
+      <button class="blog-filter" data-category="aws" role="tab">AWS</button>
+      <button class="blog-filter" data-category="agentic" role="tab">Agentic AI</button>
+      <button class="blog-filter" data-category="finops" role="tab">FinOps</button>
+      <button class="blog-filter" data-category="devops" role="tab">DevOps</button>
+      <button class="blog-filter" data-category="security" role="tab">Security</button>
+    </div>
+
     <!-- Blog Carousel -->
     <div class="blog-carousel-wrapper">
       <button class="blog-nav blog-nav-prev" id="blogPrev" aria-label="Previous posts">‹</button>
@@ -808,127 +821,127 @@
 
       <div class="blog-carousel" id="blogCarousel" role="list" aria-label="Blog posts">
 
-        <a class="blog-slide" href="https://www.vishnurachapudi.com/blogs/kiro-power/" role="listitem">
+        <a class="blog-slide" href="https://www.vishnurachapudi.com/blogs/kiro-power/" role="listitem" data-category="agentic">
           <div class="blog-tags"><span class="tag">AWS</span><span class="tag">Resilience Hub</span><span class="tag">Kiro Powers</span><span class="tag">MCP</span></div>
           <h3 class="blog-title">I Built a Kiro Power for AWS Resilience Hub</h3>
           <div class="blog-meta">August 2026</div>
         </a>
 
-        <a class="blog-slide" href="https://www.vishnurachapudi.com/blogs/aws-pricing/" role="listitem">
+        <a class="blog-slide" href="https://www.vishnurachapudi.com/blogs/aws-pricing/" role="listitem" data-category="finops">
           <div class="blog-tags"><span class="tag">AWS</span><span class="tag">Pricing Calculator</span><span class="tag">EC2</span><span class="tag">FinOps</span></div>
           <h3 class="blog-title">The Pricing Calculator Feature I Wish I'd Found Three Years Ago: Bulk Import</h3>
           <div class="blog-meta">August 2026</div>
         </a>
 
-        <a class="blog-slide" href="https://www.vishnurachapudi.com/blogs/aws-transform-kiro/" role="listitem">
+        <a class="blog-slide" href="https://www.vishnurachapudi.com/blogs/aws-transform-kiro/" role="listitem" data-category="devops">
           <div class="blog-tags"><span class="tag">AWS</span><span class="tag">AWS Transform</span><span class="tag">Kiro</span><span class="tag">Kiro Power</span></div>
           <h3 class="blog-title">AWS Transform via Kiro Power: A Hands-On Walkthrough</h3>
           <div class="blog-meta">August 2026</div>
         </a>
 
-        <a class="blog-slide" href="https://www.vishnurachapudi.com/blogs/aws-transfer/" role="listitem">
+        <a class="blog-slide" href="https://www.vishnurachapudi.com/blogs/aws-transfer/" role="listitem" data-category="security">
           <div class="blog-tags"><span class="tag">AWS</span><span class="tag">Transfer Family</span><span class="tag">S3 Access Grants</span><span class="tag">IAM Identity Center</span></div>
           <h3 class="blog-title">Easy File Sharing with AWS Transfer Family Web Apps</h3>
           <div class="blog-meta">July 2026</div>
         </a>
 
-        <a class="blog-slide" href="https://www.vishnurachapudi.com/blogs/lambda-MicroVMs/" role="listitem">
+        <a class="blog-slide" href="https://www.vishnurachapudi.com/blogs/lambda-MicroVMs/" role="listitem" data-category="security">
           <div class="blog-tags"><span class="tag">AWS</span><span class="tag">Lambda MicroVMs</span><span class="tag">Bedrock</span><span class="tag">Security</span></div>
           <h3 class="blog-title">AI Code Review Sandbox — installing untrusted packages in throwaway Firecracker VMs</h3>
           <div class="blog-meta">June 2026</div>
         </a>
 
-        <a class="blog-slide" href="https://www.vishnurachapudi.com/blogs/amazon-quick/" role="listitem">
+        <a class="blog-slide" href="https://www.vishnurachapudi.com/blogs/amazon-quick/" role="listitem" data-category="agentic">
           <div class="blog-tags"><span class="tag">AWS</span><span class="tag">Quick</span><span class="tag">Agentic AI</span><span class="tag">MCP</span></div>
           <h3 class="blog-title">Amazon Quick Desktop — I set it up and explored every feature. Here's everything</h3>
           <div class="blog-meta">June 2026</div>
         </a>
 
-        <a class="blog-slide" href="https://www.vishnurachapudi.com/blogs/aws-finops-agent/" role="listitem">
+        <a class="blog-slide" href="https://www.vishnurachapudi.com/blogs/aws-finops-agent/" role="listitem" data-category="finops">
           <div class="blog-tags"><span class="tag">AWS</span><span class="tag">FinOps</span><span class="tag">Agentic AI</span><span class="tag">Preview</span></div>
           <h3 class="blog-title">AWS FinOps Agent is in preview. I ran it on my real account..</h3>
           <div class="blog-meta">June 2026</div>
         </a>
 
-        <a class="blog-slide" href="https://www.vishnurachapudi.com/blogs/aws-transform-codebase/" role="listitem">
+        <a class="blog-slide" href="https://www.vishnurachapudi.com/blogs/aws-transform-codebase/" role="listitem" data-category="agentic">
           <div class="blog-tags"><span class="tag">AWS</span><span class="tag">Transform</span><span class="tag">Java</span><span class="tag">Agentic AI</span></div>
           <h3 class="blog-title">I let AWS Transform analyse a legacy Java codebase. Here's what it found.</h3>
           <div class="blog-meta">June 2026</div>
         </a>
 
-        <a class="blog-slide" href="https://www.vishnurachapudi.com/blogs/aws-finops/" role="listitem">
+        <a class="blog-slide" href="https://www.vishnurachapudi.com/blogs/aws-finops/" role="listitem" data-category="finops">
           <div class="blog-tags"><span class="tag">AWS</span><span class="tag">Compute Optimizer</span><span class="tag">EC2</span><span class="tag">FinOps</span></div>
           <h3 class="blog-title">AWS Compute Optimizer — Stop Guessing, Start Rightsizing.</h3>
           <div class="blog-meta">June 2026</div>
         </a>
 
-        <a class="blog-slide" href="https://www.vishnurachapudi.com/blogs/agentcore-harness/" role="listitem">
+        <a class="blog-slide" href="https://www.vishnurachapudi.com/blogs/agentcore-harness/" role="listitem" data-category="agentic">
           <div class="blog-tags"><span class="tag">AWS</span><span class="tag">AgentCore</span><span class="tag">Bedrock</span><span class="tag">Agentic AI</span></div>
           <h3 class="blog-title">Deploy an AI Agent in Minutes with AgentCore Managed Harness.</h3>
           <div class="blog-meta">May 2026</div>
         </a>
 
-        <a class="blog-slide" href="https://www.vishnurachapudi.com/blogs/aws-ssm/" role="listitem">
+        <a class="blog-slide" href="https://www.vishnurachapudi.com/blogs/aws-ssm/" role="listitem" data-category="devops">
           <div class="blog-tags"><span class="tag">AWS</span><span class="tag">Systems Manager</span><span class="tag">Windows Server</span><span class="tag">EC2</span></div>
           <h3 class="blog-title">A real-world in-place upgrade pattern using AWSEC2-CloneInstanceAndUpgradeWindows</h3>
           <div class="blog-meta">Apr 2026</div>
         </a>
 
-        <a class="blog-slide" href="https://www.vishnurachapudi.com/blogs/velero-eks/" role="listitem">
+        <a class="blog-slide" href="https://www.vishnurachapudi.com/blogs/velero-eks/" role="listitem" data-category="devops">
           <div class="blog-tags"><span class="tag">AWS</span><span class="tag">Kubernetes</span><span class="tag">Velero</span><span class="tag">Disaster Recovery</span></div>
           <h3 class="blog-title">Setting up multi-region active–passive DR for EKS using Velero</h3>
           <div class="blog-meta">Apr 2026</div>
         </a>
 
-        <a class="blog-slide" href="https://www.vishnurachapudi.com/blogs/coldsnap/" role="listitem">
+        <a class="blog-slide" href="https://www.vishnurachapudi.com/blogs/coldsnap/" role="listitem" data-category="devops">
           <div class="blog-tags"><span class="tag">AWS</span><span class="tag">EBS</span><span class="tag">Coldsnap</span><span class="tag">Disaster Recovery</span></div>
           <h3 class="blog-title">21 snapshots, ~5 TB of data...Here's the tool that finally worked</h3>
           <div class="blog-meta">Apr 2026</div>
         </a>
 
-        <a class="blog-slide" href="https://www.vishnurachapudi.com/blogs/aws-nova-act/" role="listitem">
+        <a class="blog-slide" href="https://www.vishnurachapudi.com/blogs/aws-nova-act/" role="listitem" data-category="agentic">
           <div class="blog-tags"><span class="tag">AWS</span><span class="tag">Agentic AI</span><span class="tag">Nova</span></div>
           <h3 class="blog-title">Here's exactly how I built it, what broke, and what Nova Act can actually do</h3>
           <div class="blog-meta">Apr 2026</div>
         </a>
 
-        <a class="blog-slide" href="https://www.vishnurachapudi.com/blogs/aws-s3-files/" role="listitem">
+        <a class="blog-slide" href="https://www.vishnurachapudi.com/blogs/aws-s3-files/" role="listitem" data-category="devops">
           <div class="blog-tags"><span class="tag">AWS</span><span class="tag">Storage</span><span class="tag">Compute</span></div>
           <h3 class="blog-title">How Amazon S3 Files Turns Your Bucket Into a Drive</h3>
           <div class="blog-meta">Apr 2026</div>
         </a>
 
-        <a class="blog-slide" href="https://www.vishnurachapudi.com/blogs/aws-security-agent-blog/" role="listitem">
+        <a class="blog-slide" href="https://www.vishnurachapudi.com/blogs/aws-security-agent-blog/" role="listitem" data-category="security">
           <div class="blog-tags"><span class="tag">AWS</span><span class="tag">Security</span><span class="tag">Agentic AI</span></div>
           <h3 class="blog-title">I Pentested My Modernized Java App with AWS Security Agent</h3>
           <div class="blog-meta">Mar 2026</div>
         </a>
 
-        <a class="blog-slide" href="https://www.vishnurachapudi.com/blogs/aws-reachability-blog/" role="listitem">
+        <a class="blog-slide" href="https://www.vishnurachapudi.com/blogs/aws-reachability-blog/" role="listitem" data-category="security">
           <div class="blog-tags"><span class="tag">AWS</span><span class="tag">Networking</span><span class="tag">VPC</span></div>
           <h3 class="blog-title">Stop Guessing. Start Tracing. — How AWS Reachability Analyzer Found Our Broken Network</h3>
           <div class="blog-meta">Mar 2026</div>
         </a>
 
-        <a class="blog-slide" href="https://www.vishnurachapudi.com/blogs/aws-transform-blog/" role="listitem">
+        <a class="blog-slide" href="https://www.vishnurachapudi.com/blogs/aws-transform-blog/" role="listitem" data-category="agentic">
           <div class="blog-tags"><span class="tag">AWS</span><span class="tag">Transform</span><span class="tag">Agentic AI</span></div>
           <h3 class="blog-title">I Modernized a Legacy Java App with AWS Transform — Here's What Happened</h3>
           <div class="blog-meta">Mar 2026</div>
         </a>
 
-        <a class="blog-slide" href="https://www.vishnurachapudi.com/aws-devops-agent/index.html" role="listitem">
+        <a class="blog-slide" href="https://www.vishnurachapudi.com/aws-devops-agent/index.html" role="listitem" data-category="devops">
           <div class="blog-tags"><span class="tag">AWS</span><span class="tag">DevOps</span><span class="tag">AIOps</span></div>
           <h3 class="blog-title">I Tested AWS DevOps Agent — Here's What Happened When I Broke My EC2 Instance</h3>
           <div class="blog-meta">Mar 2026</div>
         </a>
 
-        <a class="blog-slide" href="https://dev.to/aws-builders/building-an-aws-daily-helper-assistant-with-strands-agents-and-bedrock-agentcore-2290" role="listitem" target="_blank" rel="noopener noreferrer">
+        <a class="blog-slide" href="https://dev.to/aws-builders/building-an-aws-daily-helper-assistant-with-strands-agents-and-bedrock-agentcore-2290" role="listitem" target="_blank" rel="noopener noreferrer" data-category="agentic">
           <div class="blog-tags"><span class="tag">Gen AI</span><span class="tag">Agents</span><span class="tag">Bedrock</span></div>
           <h3 class="blog-title">Building an AWS Daily Helper with Strands Agents &amp; Bedrock AgentCore</h3>
           <div class="blog-meta">Dev.to</div>
         </a>
 
-        <a class="blog-slide" href="https://technodiaryvishnu.hashnode.dev/secure-lint-and-validate-your-terraform-like-a-pro" role="listitem" target="_blank" rel="noopener noreferrer">
+        <a class="blog-slide" href="https://technodiaryvishnu.hashnode.dev/secure-lint-and-validate-your-terraform-like-a-pro" role="listitem" target="_blank" rel="noopener noreferrer" data-category="devops">
           <div class="blog-tags"><span class="tag">Terraform</span><span class="tag">DevOps</span><span class="tag">Security</span></div>
           <h3 class="blog-title">Secure, Lint and Validate Your Terraform Like a Pro</h3>
           <div class="blog-meta">Hashnode</div>
@@ -1150,6 +1163,13 @@
     themeSwitch.querySelectorAll('button').forEach(btn => {
       btn.classList.toggle('active', btn.dataset.theme === theme);
     });
+    // Swap Leaflet tiles if map exists
+    if (window._leafletMap && window._leafletTileLayer) {
+      var newUrl = theme === 'light' 
+        ? 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png'
+        : 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+      window._leafletTileLayer.setUrl(newUrl);
+    }
   }
 
   const saved = localStorage.getItem(STORAGE_KEY) || 'dark';
@@ -1413,6 +1433,43 @@
     const scrollAmt = 340;
     blogPrev.addEventListener('click', () => blogCarousel.scrollBy({ left: -scrollAmt, behavior: 'smooth' }));
     blogNext.addEventListener('click', () => blogCarousel.scrollBy({ left: scrollAmt, behavior: 'smooth' }));
+  }
+
+  /* ─── BLOG CATEGORY FILTERS ─── */
+  const blogFilterBtns = document.querySelectorAll('.blog-filter');
+  const blogSlides = document.querySelectorAll('.blog-slide');
+  
+  blogFilterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      blogFilterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const cat = btn.dataset.category;
+      blogSlides.forEach(slide => {
+        if (cat === 'all' || cat === 'aws' || slide.dataset.category === cat) {
+          slide.style.display = '';
+        } else {
+          slide.style.display = 'none';
+        }
+      });
+      // Scroll carousel back to start
+      if (blogCarousel) blogCarousel.scrollTo({ left: 0, behavior: 'smooth' });
+    });
+  });
+
+  /* ─── HAMBURGER NAV ─── */
+  const hamburger = document.getElementById('navHamburger');
+  const navLinksEl = document.querySelector('.nav-links');
+  if (hamburger && navLinksEl) {
+    hamburger.addEventListener('click', () => {
+      const isOpen = document.body.classList.toggle('nav-open');
+      hamburger.setAttribute('aria-expanded', isOpen);
+    });
+    navLinksEl.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        document.body.classList.remove('nav-open');
+        hamburger.setAttribute('aria-expanded', 'false');
+      });
+    });
   }
 
   /* ─── YOUTUBE FACADES ─── */
