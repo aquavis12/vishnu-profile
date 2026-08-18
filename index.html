@@ -589,7 +589,9 @@
     </div>
 
     <div class="carousel-outer" id="galleryCarousel" aria-label="Photo gallery carousel">
-      <div class="carousel-stage" id="carouselStage" aria-live="polite"></div>
+      <div class="carousel-stage">
+        <div id="carouselTrack" style="display:flex;transition:transform 0.6s cubic-bezier(0.4,0,0.2,1);will-change:transform;height:100%;"></div>
+      </div>
       <button class="carousel-expand" id="carouselExpand" aria-label="View full size">⛶</button>
       <button class="carousel-btn carousel-prev" id="carouselPrev" aria-label="Previous photo">‹</button>
       <button class="carousel-btn carousel-next" id="carouselNext" aria-label="Next photo">›</button>
