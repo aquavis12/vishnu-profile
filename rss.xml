@@ -1,116 +1,135 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
   <channel>
-    <title>Vishnu Rachapudi</title>
+    <title>Vishnu Rachapudi — Cloud &amp; AI Blog</title>
     <link>https://www.vishnurachapudi.com/</link>
-    <description>Technical write-ups on AWS, Gen AI, security and DevOps.</description>
-    <language>en</language>
-    <lastBuildDate>Fri, 31 Jul 2026 06:51:26 +0000</lastBuildDate>
+    <description>Technical articles on AWS, Generative AI, Cloud Security, DevOps, and Agentic AI by Vishnu Rachapudi — 14x AWS Certified Cloud &amp; AI Engineer.</description>
+    <language>en-in</language>
+    <lastBuildDate>Mon, 18 Aug 2026 00:00:00 +0530</lastBuildDate>
     <atom:link href="https://www.vishnurachapudi.com/rss.xml" rel="self" type="application/rss+xml"/>
+    <image>
+      <url>https://www.vishnurachapudi.com/profile.png</url>
+      <title>Vishnu Rachapudi</title>
+      <link>https://www.vishnurachapudi.com/</link>
+    </image>
+
     <item>
-      <title>Upgrading Windows Server 2016 → 2022 on AWS Without Losing the MAC Address | Vishnu Rachapudi</title>
-      <link>https://www.vishnurachapudi.com/blogs/aws-ssm/</link>
-      <guid isPermaLink="true">https://www.vishnurachapudi.com/blogs/aws-ssm/</guid>
-      <pubDate>Fri, 31 Jul 2026 06:51:10 +0000</pubDate>
-      <description>AWS Systems Manager Windows Server EC2 A real-world in-place upgrade pattern using AWSEC2-CloneInstanceAndUpgradeWindows, ENI reuse, and a few hard-earned lessons.</description>
+      <title>I Built a Kiro Power for AWS Resilience Hub</title>
+      <link>https://www.vishnurachapudi.com/blogs/kiro-power/</link>
+      <description>How I built an open-source Kiro Power bundling 4 MCP servers and 4 skills for automated AWS resilience assessment — officially published on kiro.dev/powers.</description>
+      <dc:creator>Vishnu Rachapudi</dc:creator>
+      <pubDate>Sun, 18 Aug 2026 00:00:00 +0530</pubDate>
+      <category>AWS</category>
+      <category>Kiro Powers</category>
+      <category>Resilience Hub</category>
+      <guid isPermaLink="true">https://www.vishnurachapudi.com/blogs/kiro-power/</guid>
     </item>
+
     <item>
-      <title>Velero EKS Multi-Region DR | Vishnu Rachapudi</title>
-      <link>https://www.vishnurachapudi.com/blogs/velero-eks/</link>
-      <guid isPermaLink="true">https://www.vishnurachapudi.com/blogs/velero-eks/</guid>
-      <pubDate>Fri, 31 Jul 2026 06:51:10 +0000</pubDate>
-      <description>AWS Kubernetes Velero Disaster Recovery Setting up multi-region active–passive DR for EKS using Velero, S3 Cross-Region Replication, Helm, and IRSA — with every command, every error, and every fix documented.</description>
+      <title>The Pricing Calculator Feature I Wish I'd Found Three Years Ago: Bulk Import</title>
+      <link>https://www.vishnurachapudi.com/blogs/aws-pricing/</link>
+      <description>AWS Pricing Calculator's Bulk Import feature for EC2 cost estimation at scale — a FinOps game changer.</description>
+      <dc:creator>Vishnu Rachapudi</dc:creator>
+      <pubDate>Thu, 01 Aug 2026 00:00:00 +0530</pubDate>
+      <category>AWS</category>
+      <category>FinOps</category>
+      <guid isPermaLink="true">https://www.vishnurachapudi.com/blogs/aws-pricing/</guid>
     </item>
+
     <item>
-      <title>Recovering EBS Snapshots with ColdSnap: A Real DR Story from the Field | Vishnu Rachapudi</title>
+      <title>AWS Transform via Kiro Power: A Hands-On Walkthrough</title>
+      <link>https://www.vishnurachapudi.com/blogs/aws-transform-kiro/</link>
+      <description>Using the AWS Transform Kiro Power for automated Lambda runtime modernization — step-by-step walkthrough.</description>
+      <dc:creator>Vishnu Rachapudi</dc:creator>
+      <pubDate>Thu, 01 Aug 2026 00:00:00 +0530</pubDate>
+      <category>AWS</category>
+      <category>Kiro</category>
+      <category>Transform</category>
+      <guid isPermaLink="true">https://www.vishnurachapudi.com/blogs/aws-transform-kiro/</guid>
+    </item>
+
+    <item>
+      <title>Easy File Sharing with AWS Transfer Family Web Apps</title>
+      <link>https://www.vishnurachapudi.com/blogs/aws-transfer/</link>
+      <description>Setting up secure browser-based file sharing with AWS Transfer Family, S3 Access Grants, and IAM Identity Center.</description>
+      <dc:creator>Vishnu Rachapudi</dc:creator>
+      <pubDate>Tue, 01 Jul 2026 00:00:00 +0530</pubDate>
+      <category>AWS</category>
+      <category>Transfer Family</category>
+      <guid isPermaLink="true">https://www.vishnurachapudi.com/blogs/aws-transfer/</guid>
+    </item>
+
+    <item>
+      <title>AI Code Review Sandbox — installing untrusted packages in throwaway Firecracker VMs</title>
+      <link>https://www.vishnurachapudi.com/blogs/lambda-MicroVMs/</link>
+      <description>Building a secure AI code review sandbox using AWS Lambda MicroVMs and Bedrock for safely executing untrusted code.</description>
+      <dc:creator>Vishnu Rachapudi</dc:creator>
+      <pubDate>Sun, 01 Jun 2026 00:00:00 +0530</pubDate>
+      <category>AWS</category>
+      <category>Security</category>
+      <category>Lambda</category>
+      <guid isPermaLink="true">https://www.vishnurachapudi.com/blogs/lambda-MicroVMs/</guid>
+    </item>
+
+    <item>
+      <title>AWS FinOps Agent is in preview. I ran it on my real account.</title>
+      <link>https://www.vishnurachapudi.com/blogs/aws-finops-agent/</link>
+      <description>Hands-on experience deploying the AWS FinOps Agent on a production account for automated cost optimization.</description>
+      <dc:creator>Vishnu Rachapudi</dc:creator>
+      <pubDate>Sun, 01 Jun 2026 00:00:00 +0530</pubDate>
+      <category>AWS</category>
+      <category>FinOps</category>
+      <category>Agentic AI</category>
+      <guid isPermaLink="true">https://www.vishnurachapudi.com/blogs/aws-finops-agent/</guid>
+    </item>
+
+    <item>
+      <title>Deploy an AI Agent in Minutes with AgentCore Managed Harness</title>
+      <link>https://www.vishnurachapudi.com/blogs/agentcore-harness/</link>
+      <description>Deploying production AI agents using AWS Bedrock AgentCore Managed Harness — from Strands SDK to runtime.</description>
+      <dc:creator>Vishnu Rachapudi</dc:creator>
+      <pubDate>Thu, 01 May 2026 00:00:00 +0530</pubDate>
+      <category>AWS</category>
+      <category>AgentCore</category>
+      <category>Bedrock</category>
+      <guid isPermaLink="true">https://www.vishnurachapudi.com/blogs/agentcore-harness/</guid>
+    </item>
+
+    <item>
+      <title>21 snapshots, ~5 TB of data...Here's the tool that finally worked</title>
       <link>https://www.vishnurachapudi.com/blogs/coldsnap/</link>
+      <description>Emergency DR recovery using ColdSnap CLI during an AWS regional degradation — recovering 21 EBS snapshots when all native tools failed.</description>
+      <dc:creator>Vishnu Rachapudi</dc:creator>
+      <pubDate>Tue, 01 Apr 2026 00:00:00 +0530</pubDate>
+      <category>AWS</category>
+      <category>Disaster Recovery</category>
+      <category>EBS</category>
       <guid isPermaLink="true">https://www.vishnurachapudi.com/blogs/coldsnap/</guid>
-      <pubDate>Fri, 31 Jul 2026 06:51:10 +0000</pubDate>
-      <description>AWS EBS Coldsnap Disaster Recovery 21 snapshots, ~5 TB of data, a degraded region, and every conventional recovery path failing one by one. Here's the tool that finally worked — and exactly how we used it.</description>
     </item>
+
     <item>
-      <title>Testing My Website with Nova Act | Vishnu Rachapudi</title>
-      <link>https://www.vishnurachapudi.com/blogs/aws-nova-act/</link>
-      <guid isPermaLink="true">https://www.vishnurachapudi.com/blogs/aws-nova-act/</guid>
-      <pubDate>Fri, 31 Jul 2026 06:51:10 +0000</pubDate>
-      <description>AWS Agentic AI Nova Here's exactly how I built it, what broke, and what Nova Act can actually do beyond a simple smoke test.</description>
+      <title>Setting up multi-region active–passive DR for EKS using Velero</title>
+      <link>https://www.vishnurachapudi.com/blogs/velero-eks/</link>
+      <description>Complete walkthrough of multi-region DR for EKS using Velero, S3 Cross-Region Replication, Helm, and IRSA.</description>
+      <dc:creator>Vishnu Rachapudi</dc:creator>
+      <pubDate>Tue, 01 Apr 2026 00:00:00 +0530</pubDate>
+      <category>AWS</category>
+      <category>Kubernetes</category>
+      <category>Disaster Recovery</category>
+      <guid isPermaLink="true">https://www.vishnurachapudi.com/blogs/velero-eks/</guid>
     </item>
-    <item>
-      <title>No boto3. No SDK. Just Files. — Amazon S3 Files</title>
-      <link>https://www.vishnurachapudi.com/blogs/aws-s3-files/</link>
-      <guid isPermaLink="true">https://www.vishnurachapudi.com/blogs/aws-s3-files/</guid>
-      <pubDate>Fri, 31 Jul 2026 06:51:10 +0000</pubDate>
-      <description>Amazon S3 Files is generally available — mount your S3 bucket as a POSIX filesystem on EC2. No boto3. No SDK. Complete EC2 walkthrough with real screenshots. Part 1 of 2. By Vishnu Rachapudi, 14x AWS Certified Engineer.</description>
-    </item>
-    <item>
-      <title>I Pentested My Modernized Java App with AWS Security Agent — Here's What It Found</title>
-      <link>https://www.vishnurachapudi.com/blogs/aws-security-agent-blog/</link>
-      <guid isPermaLink="true">https://www.vishnurachapudi.com/blogs/aws-security-agent-blog/</guid>
-      <pubDate>Fri, 31 Jul 2026 06:51:10 +0000</pubDate>
-      <description>AWS Security Agentic AI I Pentested My Modernized Java App with AWS Security Agent — Here's What It Found</description>
-    </item>
-    <item>
-      <title>Stop Guessing. Start Tracing. | AWS Reachability Analyzer Deep Dive</title>
-      <link>https://www.vishnurachapudi.com/blogs/aws-reachability-blog/</link>
-      <guid isPermaLink="true">https://www.vishnurachapudi.com/blogs/aws-reachability-blog/</guid>
-      <pubDate>Fri, 31 Jul 2026 06:51:10 +0000</pubDate>
-      <description>AWS Networking VPC Stop Guessing. Start Tracing. — How AWS Reachability Analyzer Found Our Broken Network 10 VPCs, 1 Transit Gateway, and a jump server that couldn't reach anything. A complete walkthrough for $0.10.</description>
-    </item>
+
     <item>
       <title>I Modernized a Legacy Java App with AWS Transform — Here's What Happened</title>
       <link>https://www.vishnurachapudi.com/blogs/aws-transform-blog/</link>
+      <description>Using AWS Transform's agentic AI to modernize a legacy Java application — full walkthrough with results.</description>
+      <dc:creator>Vishnu Rachapudi</dc:creator>
+      <pubDate>Sat, 01 Mar 2026 00:00:00 +0530</pubDate>
+      <category>AWS</category>
+      <category>Transform</category>
+      <category>Agentic AI</category>
       <guid isPermaLink="true">https://www.vishnurachapudi.com/blogs/aws-transform-blog/</guid>
-      <pubDate>Fri, 31 Jul 2026 06:51:10 +0000</pubDate>
-      <description>AWS Transform Agentic AI I Modernized a Legacy Java App with AWS Transform — Here's What Happened</description>
     </item>
-    <item>
-      <title>Easy File Sharing with AWS Transfer Family Web Apps | Vishnu Rachapudi</title>
-      <link>https://www.vishnurachapudi.com/blogs/aws-transfer/</link>
-      <guid isPermaLink="true">https://www.vishnurachapudi.com/blogs/aws-transfer/</guid>
-      <pubDate>Wed, 01 Jul 2026 09:00:00 +0000</pubDate>
-      <description>We set up a fully managed, no-code file sharing portal for a customer using AWS Transfer Family Web Apps — branded custom domain, SSO auth, per-user S3 Access Grants, and DR via Cross-Region Replication.</description>
-    </item>
-    <item>
-      <title>AI Code Review Sandbox — Lambda MicroVMs + Bedrock Kimi K2.5 | Vishnu Rachapudi</title>
-      <link>https://www.vishnurachapudi.com/blogs/lambda-MicroVMs/</link>
-      <guid isPermaLink="true">https://www.vishnurachapudi.com/blogs/lambda-MicroVMs/</guid>
-      <pubDate>Mon, 01 Jun 2026 09:00:00 +0000</pubDate>
-      <description>I built a security scanner that installs untrusted packages inside isolated Lambda MicroVMs (Firecracker), runs real security tools, and uses Bedrock Kimi K2.5 to generate vulnerability reports. ~$0.01 per scan.</description>
-    </item>
-    <item>
-      <title>Amazon Quick Desktop — I Set It Up and Explored Every Feature | Vishnu Rachapudi</title>
-      <link>https://www.vishnurachapudi.com/blogs/amazon-quick/</link>
-      <guid isPermaLink="true">https://www.vishnurachapudi.com/blogs/amazon-quick/</guid>
-      <pubDate>Mon, 01 Jun 2026 09:00:00 +0000</pubDate>
-      <description>Amazon Quick Desktop hands-on (Preview, April 2026): local-first architecture, MCP servers (local, remote, imported JSON), coding agent delegation via ACP, local file indexing with semantic search, knowledge graph, voice mode. Full walkthrough.</description>
-    </item>
-    <item>
-      <title>AWS FinOps Agent (Preview) — I Let It Run on My Real Account | Vishnu Rachapudi</title>
-      <link>https://www.vishnurachapudi.com/blogs/aws-finops-agent/</link>
-      <guid isPermaLink="true">https://www.vishnurachapudi.com/blogs/aws-finops-agent/</guid>
-      <pubDate>Mon, 01 Jun 2026 09:00:00 +0000</pubDate>
-      <description>AWS FinOps Agent is in preview and I</description>
-    </item>
-    <item>
-      <title>AWS Transform — From Legacy Java 8 + JBoss to Modern Spring Boot | Vishnu Rachapudi</title>
-      <link>https://www.vishnurachapudi.com/blogs/aws-transform-codebase/</link>
-      <guid isPermaLink="true">https://www.vishnurachapudi.com/blogs/aws-transform-codebase/</guid>
-      <pubDate>Mon, 01 Jun 2026 09:00:00 +0000</pubDate>
-      <description>I ran AWS/comprehensive-codebase-analysis on a real Spring Boot 2.5.14 + Java 8 + JBoss WAR. 33 files, 2,216 lines of analysis, 8 debt items found, and two clear next-step transformations — here</description>
-    </item>
-    <item>
-      <title>AWS Compute Optimizer — Stop Guessing, Start Rightsizing | Vishnu Rachapudi</title>
-      <link>https://www.vishnurachapudi.com/blogs/aws-finops/</link>
-      <guid isPermaLink="true">https://www.vishnurachapudi.com/blogs/aws-finops/</guid>
-      <pubDate>Mon, 01 Jun 2026 09:00:00 +0000</pubDate>
-      <description>P90 vs P99.5. Max savings vs Max performance. 14, 32, or 93-day lookback. Locking recommendations to your dedicated host family. Everything you need to tune Compute Optimizer for your actual workloads — with screenshots.</description>
-    </item>
-    <item>
-      <title>Deploy an AI Agent in Minutes with AgentCore Managed Harness | Vishnu Rachapudi</title>
-      <link>https://www.vishnurachapudi.com/blogs/agentcore-harness/</link>
-      <guid isPermaLink="true">https://www.vishnurachapudi.com/blogs/agentcore-harness/</guid>
-      <pubDate>Fri, 01 May 2026 09:00:00 +0000</pubDate>
-      <description>No orchestration code. No infrastructure yak-shaving. Just a config file, the agentcore CLI, and a working agent on AWS in minutes. Here</description>
-    </item>
+
   </channel>
 </rss>

@@ -1,6 +1,13 @@
 User-agent: *
 Allow: /
+Allow: /blogs/
+Allow: /gallery/
+Allow: /aws-devops-agent/
 
 Disallow: /my-cfp/
 
+# Sitemaps
 Sitemap: https://www.vishnurachapudi.com/sitemap.xml
+
+# Crawl-delay (optional, be polite to crawlers)
+Crawl-delay: 1
