@@ -165,9 +165,9 @@
 
   <h1>AWS Billing and Cost Management Dashboards: Managed Reports and Scheduled Delivery</h1>
   <p class="subtitle">
-    AWS quietly rolled out managed dashboards under Billing and Cost Management, plus a scheduled reports
-    feature that emails a password-protected PDF of your cost data on a cadence you set. I spent an
-    afternoon walking through both in a sandbox account. Here's what it actually does.
+    AWS dropped managed dashboards under Billing and Cost Management without much noise, along with a scheduled reports
+    feature that emails a password-protected PDF of your cost data on whatever cadence you want. I set aside an
+    afternoon to poke through both in a sandbox account. Here's what I found.
   </p>
 
   <div class="byline">
@@ -190,9 +190,20 @@
   <p>
     Under <strong>Billing and Cost Management &rarr; Dashboards</strong>, there's now a <code>Managed</code>
     tab sitting next to your custom dashboards, and every dashboard &mdash; managed or custom &mdash; can
-    now be scheduled to email itself out as a password-protected PDF on a daily, weekly, or monthly cadence.
-    This is the reporting layer AWS should have shipped years ago.
+    be scheduled to email itself out as a password-protected PDF on a daily, weekly, or monthly cadence.
+    Honestly, this is the reporting layer AWS should have shipped years ago.
   </p>
+
+  <div class="tip">
+    <p class="card-label"><span class="label">Key Highlights</span></p>
+    <ul>
+      <li><strong>Five managed dashboards</strong> ship out of the box &mdash; locked layout, consistent baseline across every account.</li>
+      <li><strong>Scheduled email delivery</strong> of password-protected PDFs on daily, weekly, or monthly cadence.</li>
+      <li><strong>Custom widget builder</strong> got a refresh &mdash; predefined widgets plus a configurable custom panel.</li>
+      <li><strong>No more Lambda-to-SES pipelines</strong> just to get a cost report into someone's inbox.</li>
+      <li><strong>Reporting period gotcha:</strong> use relative ranges like "Last month" so the window re-resolves each delivery.</li>
+    </ul>
+  </div>
 
   <div class="toc">
     <div class="toc-label">In this post</div>
@@ -210,8 +221,8 @@
   <h2>What's new</h2>
 
   <p>
-    The Dashboards landing page announces the headline feature the moment you open it &mdash; a blue banner
-    calling out scheduled email delivery of password-protected PDF cost reports, sitting right above the
+    The Dashboards landing page announces the headline feature right when you open it &mdash; a blue banner
+    calling out scheduled email delivery of password-protected PDF cost reports, sitting above the
     full list of dashboards.
   </p>
 
@@ -443,6 +454,22 @@
   <div class="section-label" id="s5">Section 04</div>
   <h2>Where this actually helps</h2>
 
+  <p>
+    Here's a taste of what the actual delivered dashboard data looks like. These are from a real sandbox
+    account for the week of Aug 12&ndash;18, 2026 &mdash; the kind of thing that lands in your inbox
+    as a password-protected PDF.
+  </p>
+
+  <div class="shot">
+    <img src="data:image/png;base64,{{EBS_VOLUME_AND_SNAPSHOT_CHART_BASE64}}" alt="EBS Volume usage (IOPS-Mo) and Snapshot usage (GB-Month) dashboard for Aug 12-18, 2026">
+    <p class="shot-caption">EBS Volume usage showing IOPS and throughput for gp3 volumes, plus gp2 volume usage. Snapshot storage hovering around 10&ndash;12 GB-Month across the week.</p>
+  </div>
+
+  <div class="shot">
+    <img src="data:image/png;base64,{{COST_AND_DATA_TRANSFER_CHART_BASE64}}" alt="Cost breakdown and Data transfer usage dashboard for Aug 12-18, 2026">
+    <p class="shot-caption">Aggregate cost breakdown by service &mdash; NAT Gateway, EBS, EC2 (t2.small, t2.medium, t3.micro), Load Balancer, and Snapshots all visible. Data transfer split across regions and AZs, peaking around 6&ndash;8 GB on active days.</p>
+  </div>
+
   <ul>
     <li><strong>Managed services / MSP work</strong> &mdash; a standard monthly cost report to a client
       distribution list, without building a Cost Explorer export pipeline yourself.</li>
@@ -453,7 +480,7 @@
   </ul>
 
   <p>
-    What it doesn't do: it's not a replacement for a real FinOps practice, Cost Anomaly Detection, or a
+    What it doesn't do: it's not going to replace a real FinOps practice, Cost Anomaly Detection, or a
     Compute Optimizer-driven rightsizing loop. It's a reporting layer on top of tools that already existed.
     But as a reporting layer, it's the first one from AWS that doesn't require me to stitch together
     Cost Explorer exports and a Lambda-to-SES pipeline just to get a monthly PDF into someone's inbox.
@@ -461,17 +488,17 @@
 
   <div class="takeaways">
     <div class="label">Key takeaways</div>
-    <div class="takeaway"><strong>Five managed dashboards ship locked, on purpose.</strong> Consistent cost
-      baseline across every account, no rebuilding widgets per onboarding.</div>
+    <div class="takeaway"><strong>Five managed dashboards ship locked, on purpose.</strong> Gives you a consistent cost
+      baseline across every account without rebuilding widgets each time you onboard.</div>
     <div class="takeaway"><strong>Scheduled reports run on AWS User Notifications.</strong> First-time
-      recipients must verify, so don't assume delivery starts immediately on a fresh distribution list.</div>
-    <div class="takeaway"><strong>The PDF password sits in the same delivery email.</strong> Real
-      protection against attachment interception, none against the email itself being forwarded.</div>
+      recipients need to verify their email, so don't expect delivery to start immediately on a fresh distribution list.</div>
+    <div class="takeaway"><strong>The PDF password sits in the same delivery email.</strong> Protects
+      against attachment interception, but not against the email itself being forwarded.</div>
     <div class="takeaway"><strong>Reporting period defaults matter for recurring reports.</strong> Use
       relative ranges like "Last month" so the window re-resolves on every delivery instead of staying
       fixed to whatever date you built the schedule on.</div>
     <div class="takeaway"><strong>Empty dashboards export "successfully" with nothing in them.</strong>
-      Confirm widgets actually saved before wiring this into an automated onboarding flow.</div>
+      Make sure your widgets actually saved before wiring this into an automated onboarding flow.</div>
   </div>
 
 </div>
