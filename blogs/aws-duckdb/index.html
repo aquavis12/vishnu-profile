@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Reading CloudTrail with DuckDB | Vishnu Rachapudi</title>
-<meta name="description" content="I put DuckDB on an EC2 instance and read CloudTrail straight out of S3, no Glue crawler and no Athena. 118 events in a throwaway account were enough to prove the detection query I had already written was wrong.">
-<link rel="canonical" href="https://www.vishnurachapudi.com/blogs/duckdb-cloudtrail/">
+<meta name="description" content="I put DuckDB on an EC2 instance and read CloudTrail straight out of S3 with no Glue crawler and no Athena workgroup. Ad-hoc analytical SQL over AWS log data with no infrastructure to maintain, and the detection query that 118 real events proved wrong.">
+<link rel="canonical" href="https://www.vishnurachapudi.com/blogs/aws-duckdb/">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Reading CloudTrail with DuckDB">
 <meta property="og:description" content="No Glue crawler, no Athena workgroup. And the detection query that 118 real events proved wrong.">
-<meta property="og:url" content="https://www.vishnurachapudi.com/blogs/duckdb-cloudtrail/">
+<meta property="og:url" content="https://www.vishnurachapudi.com/blogs/aws-duckdb/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:creator" content="@vishnu_cloud">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@ td:last-child{font-family:var(--mono);font-size:13px;color:var(--dim)}
 
 <nav class="topnav"><div class="topnav-in">
   <a class="brand" href="https://www.vishnurachapudi.com">vishnu.</a>
-  <div class="navlinks"><a href="#s01">the query i was going to ship</a><a href="#s02">why cloudtrail is the awkward shape</a><a href="#s03">getting duckdb onto the box</a><a href="#s04">one macro, and the nesting goes away</a><a href="#s05">what 118 events actually look like</a><a href="#s06">the baseline table</a><a href="#s07">the burst that looked like an attack</a><a href="#s08">four kinds of state, four lifetimes</a><a href="#s09">how i would actually run this</a></div>
+  <div class="navlinks"><a href="#s01">the query i was going to ship</a><a href="#s02">why cloudtrail is the awkward shape</a><a href="#s03">getting duckdb onto the box</a><a href="#s04">one macro, and the nesting goes away</a><a href="#s05">what 118 events actually look like</a><a href="#s06">the baseline table</a><a href="#s07">the burst that looked like an attack</a><a href="#s08">four kinds of state, four lifetimes</a><a href="#s09">where i think this goes</a><a href="#s10">how i would actually run this</a></div>
   <a class="back" href="https://www.vishnurachapudi.com/blogs">&larr; blog</a>
 </div></nav>
 
@@ -167,7 +167,7 @@ td:last-child{font-family:var(--mono);font-size:13px;color:var(--dim)}
 
 <h1>Reading CloudTrail with DuckDB</h1>
 
-<p class="dek">AWS bought the team behind DuckDB in August, so I put it on an EC2 instance and read CloudTrail straight out of S3 &mdash; no Glue crawler, no Athena workgroup. A throwaway account with 118 events in it was enough to prove the detection query I had already written was wrong.</p>
+<p class="dek">AWS bought the team behind DuckDB in August, so I put it on an EC2 instance and read CloudTrail straight out of S3 &mdash; no Glue crawler, no Athena workgroup. A throwaway account with 118 events in it was enough to prove the detection query I had already written was wrong &mdash; and to convince me this is worth building out properly.</p>
 
 <div class="byline">
   <div class="av">VR</div>
@@ -175,7 +175,7 @@ td:last-child{font-family:var(--mono);font-size:13px;color:var(--dim)}
     <b>Vishnu Rachapudi</b>
     <span>Cloud &amp; AI Engineer &middot; AWS Community Builder (Security)</span>
   </div>
-  <div class="when">September 2026<br>10 min read</div>
+  <div class="when">September 2026<br>12 min read</div>
 </div>
 
 <div class="toc">
@@ -188,7 +188,8 @@ td:last-child{font-family:var(--mono);font-size:13px;color:var(--dim)}
 <li><a href="#s06"><span class="num">06</span>The baseline table</a></li>
 <li><a href="#s07"><span class="num">07</span>The burst that looked like an attack</a></li>
 <li><a href="#s08"><span class="num">08</span>Four kinds of state, four lifetimes</a></li>
-<li><a href="#s09"><span class="num">09</span>How I would actually run this</a></li></ol>
+<li><a href="#s09"><span class="num">09</span>Where I think this goes</a></li>
+<li><a href="#s10"><span class="num">10</span>How I would actually run this</a></li></ol>
 </div>
 
 <section>
@@ -406,7 +407,48 @@ td:last-child{font-family:var(--mono);font-size:13px;color:var(--dim)}
 </section>
 
 <section>
-<h2 id="s09"><span class="sn">09</span>How I would actually run this</h2>
+<section>
+<h2 id="s09"><span class="sn">09</span>Where I think this goes</h2>
+
+<p>Everything above is one log source. I built <code>forensics.db</code> for CloudTrail and that is all I have actually run &mdash; so the rest of this section is a projection, not a report.</p>
+
+<p>But CloudTrail was the awkward case. Gzipped JSON with events nested inside an array is the hardest shape AWS delivers logs in, and if one macro handles that, the others should be easier rather than harder. Flow Logs can be delivered as Hive-partitioned Parquet, which needs no parsing at all. The Cost and Usage Report is already Parquet. Config snapshots are JSON inventory.</p>
+
+<p>So the long-term idea I am working towards is one database file per log source, each carrying its own macro and its own sheet of staged queries:</p>
+
+<table>
+<thead><tr><th>File</th><th>Would read</th></tr></thead>
+<tbody>
+<tr><td><code>forensics.db</code></td><td>CloudTrail &mdash; built, and what this post covers</td></tr>
+<tr><td><code>vpc.db</code></td><td>VPC Flow Logs &mdash; not built yet</td></tr>
+<tr><td><code>cur.db</code></td><td>Cost and Usage Report &mdash; not built yet</td></tr>
+<tr><td><code>config.db</code></td><td>Config snapshots &mdash; not built yet</td></tr>
+</tbody>
+</table>
+
+<p>The reason I think it holds up is that the database file stays tiny. It holds macros and saved baselines, not log data &mdash; a few kilobytes, small enough to commit to a repo and carry between accounts. If that works, the next engagement starts with a query sheet that already knows the shape of the data instead of a crawler you are waiting on. I will find out whether it works when I build the second one.</p>
+
+<h3>The output question</h3>
+
+<p>One difference from Athena worth being straight about, because it caught me out. Athena writes every query result to an S3 results bucket automatically. DuckDB writes nothing unless you ask, so by default the work disappears when the session ends.</p>
+
+<p>Asking is one statement:</p>
+
+<pre><code><span class="k">COPY</span> (
+  <span class="k">SELECT</span> principal_arn, source_ip, user_agent, <span class="f">count</span>(*) <span class="k">AS</span> events
+  <span class="k">FROM</span> <span class="f">trail</span>(<span class="f">getvariable</span>(<span class="s">'trail_path'</span>))
+  <span class="k">GROUP BY</span> <span class="n">1</span>,<span class="n">2</span>,<span class="n">3</span>
+) <span class="k">TO</span> <span class="s">'s3://findings/baselines/acct-1234/2026-09-11.parquet'</span> (<span class="k">FORMAT</span> parquet);</code></pre>
+
+<p>I have come round to preferring it this way. Athena stores everything whether it was worth keeping or not, and you pay to retain the noise. Here the thirty throwaway variations leave nothing behind, and the one query that produced something useful gets written down deliberately. Run that monthly and the baseline becomes a series you can diff, which is worth more than any single run of it.</p>
+
+<div class="box">
+  <h3>Worth remembering</h3>
+  <p>The asset is the baseline, not the engine. A written-down description of normal for an account &mdash; which principals act, from which addresses, under which user agents, what the read-only chatter looks like &mdash; is what makes detection possible at all. You cannot recognise new without it. Whatever queries that baseline is an implementation detail, and it will change.</p>
+</div>
+</section>
+
+<h2 id="s10"><span class="sn">10</span>How I would actually run this</h2>
 
 <ol>
   <li>Put the install in an SSM document, not in your shell history. Idempotent, architecture-aware for Graviton, attached as a State Manager Association so the tooling is already on the instance before anything goes wrong.</li>
@@ -417,9 +459,13 @@ td:last-child{font-family:var(--mono);font-size:13px;color:var(--dim)}
   <li>Test every rule against a real account before you trust it, even a boring one. Especially a boring one &mdash; the benign noise is the part synthetic data never gets right.</li>
 </ol>
 
-<p>And to be clear about the limits: this works for scoping one account over a window of hours or days, with one person iterating. It is the wrong tool for continuous detection across an organisation, for retention queries spanning years, or for a shared surface a SOC team hits concurrently. That is Security Lake, or Athena, or your SIEM, and there the catalog you resented during setup is exactly what makes it work.</p>
+<p>I want to be careful about what I am claiming here, because there is a version of this post that says Athena is finished and it would be wrong.</p>
 
-<p>Athena's $5/TB is not expensive. It is expensive relative to zero when one person runs thirty variations of the same query in an hour, which is what incident scoping actually looks like. DuckDB replaced the exploratory loop, not the security platform.</p>
+<p>The moment you need continuous detection across an organisation, retention queries spanning years, or a shared query surface that a SOC team hits concurrently, the catalog stops being overhead and becomes the entire point. That is Security Lake, or Athena, or your SIEM. Those are platforms, and platforms need the infrastructure I spent this post avoiding.</p>
+
+<p>What DuckDB replaced is the exploratory loop. Athena's $5/TB is not expensive in absolute terms; it is expensive relative to zero when one person runs thirty variations of the same query in an hour, which is exactly what incident scoping looks like. And the setup tax is paid per account, every time, which for anyone working across a lot of customer environments is the cost that actually accumulates.</p>
+
+<p>So the honest positioning is narrower than &ldquo;replacement&rdquo; and more useful than &ldquo;neat trick&rdquo;: this is ad-hoc analytical SQL over log data with no infrastructure to stand up or maintain, and at scale it gives you a faster picture than waiting on a crawler to finish.</p>
 
 <div class="takeaways">
   <h3>Key takeaways</h3>
@@ -429,6 +475,7 @@ td:last-child{font-family:var(--mono);font-size:13px;color:var(--dim)}
     <li><strong>Failed is not denied.</strong> <code>error_code IS NOT NULL</code> catches &ldquo;this bucket has no CORS config&rdquo; with the same enthusiasm as <code>AccessDenied</code>. Match the authorization errors by name.</li>
     <li><strong>NULL principals are real events.</strong> AWS services have no ARN. Group on <code>identity_type</code> as well, or those 21 calls vanish from your results without a warning.</li>
     <li><strong>Synthetic data validates your assumptions, not your query.</strong> Mine passed every planted test and failed on a near-empty real account within the hour.</li>
+    <li><strong>Nothing is stored unless you ask.</strong> No automatic results bucket like Athena's. <code>COPY TO</code> writes the one result worth keeping, and the throwaway queries leave nothing behind &mdash; which I have come to prefer.</li>
   </ul>
 </div>
 </section>
