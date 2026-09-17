@@ -178,7 +178,7 @@
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
   <noscript><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" /></noscript>
   <link rel="preload" as="image" href="https://www.vishnurachapudi.com/profile.png" fetchpriority="high" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.min.css" />
 </head>
 
 <body>
@@ -1356,6 +1356,8 @@
 
   /* ─── GALLERY CAROUSEL ─── */
   const GALLERY_BASE = 'https://www.vishnurachapudi.com/gallery/';
+  // Serve optimized WebP (originals kept as fallback on server)
+  const webp = (f) => GALLERY_BASE + f.replace(/\.(png|jpe?g)$/i, '.webp');
   const GALLERY = [
     { src: 'gallery-blr-1.jpg', thumb: 'gallery-blr-1.jpg', title: 'AWS Summit Bengaluru 2026', meta: 'Developer Community Theatre', tag: 'Summit BLR', filter: 'blr', alt: 'AWS Summit Bengaluru 2026' },
     { src: 'gallery-blr-2.jpg', thumb: 'gallery-blr-2.jpg', title: 'AWS Summit Bengaluru 2026', meta: 'Speaking Session', tag: 'Summit BLR', filter: 'blr', alt: 'AWS Summit Bengaluru 2026' },
@@ -1408,7 +1410,7 @@
       // Main slide
       const slide = document.createElement('div');
       slide.className = 'carousel-slide';
-      slide.innerHTML = `<img src="${GALLERY_BASE}${item.src}" alt="${item.alt}" loading="lazy" />
+      slide.innerHTML = `<img src="${webp(item.src)}" alt="${item.alt}" loading="lazy" />
         <div class="carousel-caption"><span class="carousel-tag">${item.tag}</span><strong>${item.title}</strong><span>${item.meta}</span></div>`;
       slide.addEventListener('click', () => openLightbox(i));
       track.appendChild(slide);
@@ -1416,7 +1418,7 @@
       // Thumb
       const thumb = document.createElement('button');
       thumb.className = 'carousel-thumb';
-      thumb.style.backgroundImage = `url(${GALLERY_BASE}${item.thumb})`;
+      thumb.style.backgroundImage = `url(${webp(item.thumb)})`;
       thumb.setAttribute('aria-label', item.title);
       thumb.addEventListener('click', () => goTo(i));
       thumbsEl.appendChild(thumb);
@@ -1511,7 +1513,7 @@
   function updateLightbox() {
     const item = filteredGallery[lbIndex];
     if (!item) return;
-    lbImg.src = GALLERY_BASE + item.src;
+    lbImg.src = webp(item.src);
     lbImg.alt = item.alt;
     lbTitle.textContent = item.title;
     lbMeta.textContent = item.meta;
