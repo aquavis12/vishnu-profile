@@ -3624,3 +3624,91 @@ html[data-theme="light"] .award-year { color: #3a2a00; }
 @media (max-width: 560px) {
   .social-row { grid-template-columns: 1fr 1fr; }
 }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE HARDENING — fill gaps across all devices
+   Tablet (≤900) · large phone (≤620) · small phone (≤400)
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Tablet & small laptop ── */
+@media (max-width: 900px) {
+  /* Nav has many items now → switch to hamburger earlier */
+  .nav-hamburger { display: flex; }
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0; right: 0;
+    background: var(--glass);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    gap: 1rem;
+    box-shadow: var(--shadow);
+  }
+  .nav-open .nav-links { display: flex; }
+  .nav-links a { font-size: 0.95rem; }
+  .nav-cta { align-self: stretch; text-align: center; }
+  .theme-toggle { align-self: flex-start; }
+
+  .cert-vendors { grid-template-columns: 1fr 1fr; }
+  .media-carousel .media-card { flex: 0 0 300px; }
+}
+
+/* ── Large phone ── */
+@media (max-width: 620px) {
+  section { padding: 3rem 1rem; }
+  .wrap { padding: 0 1rem; }
+
+  /* Talks header stacks */
+  .talks-head { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+
+  /* Talk rows: date/title/loc stack cleanly */
+  .talk-row { padding: 1rem 0; }
+  .talk-date { font-size: 0.72rem; }
+
+  /* Pagination wraps comfortably */
+  .talks-pager { flex-wrap: wrap; gap: 0.8rem; }
+  .talks-pager-btn { flex: 1 1 auto; }
+
+  /* Certs full width */
+  .cert-vendors { grid-template-columns: 1fr; }
+  .cert-featured { padding: 1.3rem; }
+  .cert-featured-count { font-size: 1.2rem; }
+  .cert-featured-count span { font-size: 1.8rem; }
+
+  /* Media + blog carousels: peek next card */
+  .media-carousel .media-card { flex: 0 0 84%; }
+  .blog-slide { flex: 0 0 84%; }
+
+  /* Stats: 2-up grid so numbers stay readable */
+  .stats-row { grid-template-columns: repeat(2, 1fr) !important; gap: 0.8rem; }
+
+  /* Services band single column already handled; ensure padding */
+  .about-pillars { padding: 1.3rem; }
+
+  /* Hero photo scales down */
+  .hero-avatar { width: 220px !important; height: 220px !important; }
+
+  /* Section headings scale */
+  section h2 { font-size: 1.7rem; }
+}
+
+/* ── Small phone ── */
+@media (max-width: 400px) {
+  h1 { font-size: 2.4rem !important; }
+  .social-row { grid-template-columns: 1fr; }
+  .stats-row { grid-template-columns: repeat(2, 1fr) !important; }
+  .cert-pill { font-size: 0.7rem; padding: 0.35rem 0.65rem; }
+  .hero-avatar { width: 190px !important; height: 190px !important; }
+  .btn { width: 100%; justify-content: center; }
+  .btn-row { flex-direction: column; }
+}
+
+/* ── Prevent any horizontal overflow globally ── */
+html, body { max-width: 100%; overflow-x: hidden; }
+img, iframe, video { max-width: 100%; }
