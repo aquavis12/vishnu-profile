@@ -3529,3 +3529,98 @@ h1 em { line-height: 1.08; display: inline-block; padding-bottom: 0.08em; }
   padding: 0.3rem 0.7rem;
   border-radius: var(--radius-pill);
 }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   SECTION LAYOUT POLISH — Awards · Connect · Timeline · Stats
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Awards: icon-led cards with cleaner hierarchy ── */
+.award-grid { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; }
+.award-card {
+  position: relative;
+  padding: 1.5rem 1.3rem 1.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.award-ico {
+  font-size: 1.5rem;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+  display: inline-block;
+}
+.award-year {
+  position: absolute;
+  top: 1.1rem;
+  right: 1.2rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--bg);
+  background: var(--accent3);
+  padding: 0.15rem 0.55rem;
+  border-radius: var(--radius-pill);
+}
+html[data-theme="light"] .award-year { color: #3a2a00; }
+.award-title {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  line-height: 1.35;
+  color: var(--text);
+}
+.award-org { font-size: 0.8rem; color: var(--muted); }
+
+/* ── Connect: intro + roomy responsive social grid ── */
+.connect-lead {
+  color: var(--muted);
+  font-size: 1rem;
+  max-width: 46ch;
+  margin-bottom: 1.5rem;
+}
+.social-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.75rem;
+}
+.soc-link {
+  justify-content: flex-start;
+  padding: 0.85rem 1.1rem !important;
+  border-radius: var(--radius-sm) !important;
+  font-weight: 500;
+}
+.soc-ico {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px; height: 26px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  color: var(--accent);
+}
+.soc-link:hover .soc-ico { background: var(--accent); color: #fff; }
+
+/* ── Timeline: crisper nodes + connecting line ── */
+.tl-item { padding-top: 0.5rem; }
+.tl-title { font-size: 0.98rem; }
+.tl-body { font-size: 0.82rem; color: var(--muted); }
+
+/* ── Stats row: card-framed, cohesive ── */
+.stats-row {
+  gap: 0.6rem;
+  padding: 1.1rem 1.2rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
+  flex-wrap: wrap;
+}
+.stat { padding: 0.3rem 0.6rem; }
+.stat-label { color: var(--muted); }
+
+@media (max-width: 560px) {
+  .social-row { grid-template-columns: 1fr 1fr; }
+}
