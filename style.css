@@ -3186,3 +3186,141 @@ html[data-theme="light"] .cert-vendor-n { color: #fff; }
   margin-bottom: 0.7rem;
 }
 html[data-theme="light"] .blog-latest-badge { color: #3a2a00; }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   EXTRAS POLISH — refined controls & micro-interactions
+   Cohesive premium finish for buttons, tabs, toggles, pills,
+   badges, carousel controls, scrollbar. (Creative pass)
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Buttons: springy press + subtle sheen ── */
+.btn {
+  transition: transform 0.18s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s ease, background 0.25s ease, color 0.25s ease;
+  letter-spacing: 0.01em;
+}
+.btn:active { transform: translateY(0) scale(0.97); }
+.btn-primary { position: relative; overflow: hidden; }
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.25) 50%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform 0.6s ease;
+}
+.btn-primary:hover::after { transform: translateX(120%); }
+
+/* ── Theme toggle: pill slider feel ── */
+.theme-toggle { padding: 4px; gap: 2px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.08); }
+.theme-toggle button {
+  border-radius: var(--radius-pill);
+  transition: background 0.25s ease, transform 0.25s ease, color 0.25s ease;
+}
+.theme-toggle button.active {
+  background: var(--accent);
+  color: #fff;
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px -2px var(--accent);
+}
+html[data-theme="light"] .theme-toggle button.active { color: #fff; }
+
+/* ── Blog filters & gallery tabs: unified segmented control ── */
+.blog-filter,
+.gallery-tab {
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  padding: 0.45rem 1rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.blog-filter:hover,
+.gallery-tab:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.blog-filter.active,
+.gallery-tab.active {
+  background: var(--accent) !important;
+  border-color: var(--accent) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 12px -4px var(--accent);
+}
+html[data-theme="light"] .blog-filter.active,
+html[data-theme="light"] .gallery-tab.active { color: #fff !important; }
+
+/* ── Tag / pill chips: lift + fill on hover ── */
+.tag, .f-tag, .cert-pill {
+  transition: transform 0.18s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  cursor: default;
+}
+.tag:hover, .f-tag:hover, .cert-pill:hover { transform: translateY(-2px); }
+
+/* ── Carousel controls: circular glass buttons with pop ── */
+.carousel-btn, .carousel-expand, .blog-nav {
+  transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), background 0.25s ease, box-shadow 0.25s ease, color 0.2s ease;
+  border: 1px solid var(--border);
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.carousel-btn:hover, .carousel-expand:hover, .blog-nav:hover {
+  transform: translateY(-50%) scale(1.12);
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+  box-shadow: 0 8px 22px -8px var(--accent);
+}
+.carousel-expand:hover { transform: scale(1.12); }
+
+/* Dots: pill-expand active */
+.carousel-dot {
+  transition: all 0.3s ease;
+  border-radius: var(--radius-pill);
+}
+.carousel-dot.active {
+  width: 22px !important;
+  background: var(--accent) !important;
+}
+
+/* ── Scroll progress bar: warm gradient ── */
+#scrollbar {
+  background: linear-gradient(90deg, var(--accent), var(--accent3)) !important;
+  box-shadow: 0 0 10px -2px var(--accent);
+}
+
+/* ── Back to top: circular with lift ── */
+#toTop {
+  border: none;
+  transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s ease, opacity 0.3s ease;
+}
+#toTop:hover { transform: translateY(-4px) scale(1.06); }
+
+/* ── Social links: icon-forward hover slide ── */
+.soc-link { transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease; }
+.soc-link:hover { transform: translateY(-3px); }
+
+/* ── Focus-visible ring for keyboard users (a11y polish) ── */
+a:focus-visible, button:focus-visible, .btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+/* ── Kiro Power hero button: align with warm amber theme ── */
+.btn-ghost[href*="kiro.dev"] {
+  border-color: color-mix(in srgb, var(--gold) 40%, transparent) !important;
+  color: var(--gold) !important;
+}
+.btn-ghost[href*="kiro.dev"]:hover {
+  background: color-mix(in srgb, var(--gold) 10%, transparent) !important;
+  border-color: var(--gold) !important;
+}
+
+/* ── Reduced motion: respect user preference ── */
+@media (prefers-reduced-motion: reduce) {
+  .btn-primary::after { display: none; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.08s !important; }
+}
