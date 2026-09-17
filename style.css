@@ -14,8 +14,8 @@
   --border: rgba(139,92,246,0.10);
   --border-hover: rgba(139,92,246,0.18);
   --text: #f0eef5;
-  --muted: #9b95a8;
-  --faint: #6b6578;
+  --muted: #aca6b8;
+  --faint: #8b8598;
   --accent: #a78bfa;
   --accent2: #c4b5fd;
   --gold: #fbbf24;
@@ -49,8 +49,8 @@ html[data-theme="light"] {
   --border: rgba(124,58,237,0.12);
   --border-hover: rgba(124,58,237,0.22);
   --text: #1a1625;
-  --muted: #5b4f6e;
-  --faint: #8b7fa3;
+  --muted: #574b6a;
+  --faint: #6f6486;
   --accent: #7c3aed;
   --accent2: #6d28d9;
   --gold: #b07c0a;
@@ -203,6 +203,22 @@ a {
   transition: color var(--transition);
 }
 a:hover { color: var(--accent); }
+
+/* Inline content links must be distinguishable by more than color (WCAG 1.4.1) */
+.about-body a,
+.id-row a,
+.lightbox-info a,
+p a:not(.btn) {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}
+.about-body a:hover,
+.id-row a:hover,
+.lightbox-info a:hover,
+p a:not(.btn):hover {
+  text-decoration-thickness: 2px;
+}
 
 /* ─── Typography ─── */
 h1, h2, h3, h4, h5, h6 {
@@ -364,6 +380,11 @@ nav::after {
   background: transparent;
   color: var(--muted);
   padding: 6px 10px;
+  min-width: 32px;
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border-radius: var(--radius-pill);
   cursor: pointer;
   font-size: 0.8rem;
