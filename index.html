@@ -213,11 +213,10 @@
       <div class="hero-main">
         <div class="avail-pill"><span class="avail-dot" aria-hidden="true"></span> Available for opportunities</div>
         <div class="hero-eyebrow">Cloud &amp; AI Engineer · SUDO Consultants</div>
-        <h1>Hey there,<br>I'm <em>Vishnu</em></h1>
+        <h1>Hey there,<br>I'm <em id="typedName" aria-label="Vishnu">Vishnu</em><span class="type-caret" id="typeCaret" aria-hidden="true"></span></h1>
         <p class="hero-sub">
-          I'm a <strong>14x AWS Certified</strong> Cloud &amp; AI Engineer and <strong>AWS Golden Jacket</strong> holder.
-          I build secure, production-grade cloud systems and Gen AI applications — and share what I learn through
-          writing and speaking. Currently open to new opportunities.
+          <strong>14x AWS Certified</strong> Cloud &amp; AI Engineer and <strong>AWS Golden Jacket</strong> holder.
+          I build secure cloud systems and Gen AI applications. Open to new opportunities.
         </p>
 
         <div class="terminal" aria-hidden="true">
@@ -233,9 +232,9 @@
         </div>
 
         <div class="btn-row">
-          <a class="btn btn-primary" href="https://www.linkedin.com/in/vishnu-rachapudi-28956920b/" rel="noopener noreferrer" target="_blank">Connect on LinkedIn</a>
-          <a class="btn btn-ghost" href="https://dev.to/vishnu_rachapudi_75e73248" rel="noopener noreferrer" target="_blank">Read the Blog</a>
-          <a class="btn btn-ghost" href="https://kiro.dev/powers" rel="noopener noreferrer" target="_blank">Kiro Power ↗</a>
+          <a class="btn btn-primary" href="/Vishnu_Rachapudi_Resume.pdf" download rel="noopener">Download Résumé ↓</a>
+          <a class="btn btn-ghost" href="https://www.linkedin.com/in/vishnu-rachapudi-28956920b/" rel="noopener noreferrer" target="_blank">LinkedIn</a>
+          <a class="btn btn-ghost" href="mailto:rachapudivishnu9@gmail.com">Email Me</a>
         </div>
 
         <div class="stats-row" role="list" aria-label="Career highlights">
@@ -1259,7 +1258,11 @@
     <div class="sec-label">Connect</div>
     <h2 id="connect-heading">Let's <em>Connect</em></h2>
 
-    <p class="connect-lead">Open to speaking, collaboration, and cloud &amp; AI conversations. Find me across the web:</p>
+    <p class="connect-lead">Open to Cloud &amp; AI roles and speaking. Email is fastest:</p>
+    <div class="connect-actions">
+      <a class="btn btn-primary" href="mailto:rachapudivishnu9@gmail.com">rachapudivishnu9@gmail.com</a>
+      <a class="btn btn-ghost" href="/Vishnu_Rachapudi_Resume.pdf" download rel="noopener">Résumé ↓</a>
+    </div>
     <div class="social-row" role="list" aria-label="Social links">
       <a class="soc-link reveal" href="https://www.linkedin.com/in/vishnu-rachapudi-28956920b/" target="_blank" rel="noopener noreferrer" role="listitem"><span class="soc-ico" aria-hidden="true">in</span> LinkedIn</a>
       <a class="soc-link reveal" href="https://www.youtube.com/@CloudAndTFbyVishnu" target="_blank" rel="noopener noreferrer" role="listitem"><span class="soc-ico" aria-hidden="true">▶</span> YouTube</a>
@@ -1290,6 +1293,39 @@
 <script>
 (function(){
   'use strict';
+
+  /* ─── HERO TYPING ANIMATION ─── */
+  (function () {
+    const el = document.getElementById('typedName');
+    const caret = document.getElementById('typeCaret');
+    if (!el) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const words = ['Vishnu', 'a Cloud Engineer', 'an AI Engineer', 'Vishnu'];
+    let w = 0, i = 0, deleting = false;
+    el.textContent = '';
+
+    function tick() {
+      const word = words[w];
+      if (!deleting) {
+        el.textContent = word.slice(0, i + 1);
+        i++;
+        if (i === word.length) {
+          // last word ("Vishnu") stays; stop cycling there
+          if (w === words.length - 1) { if (caret) caret.classList.add('done'); return; }
+          deleting = true;
+          setTimeout(tick, 1400);
+          return;
+        }
+      } else {
+        el.textContent = word.slice(0, i - 1);
+        i--;
+        if (i === 0) { deleting = false; w++; }
+      }
+      setTimeout(tick, deleting ? 55 : 110);
+    }
+    setTimeout(tick, 500);
+  })();
 
   /* ─── THEME TOGGLE (dark/light, localStorage) ─── */
   const themeSwitch = document.getElementById('themeSwitch');

@@ -4063,3 +4063,27 @@ html[data-theme="dark"] .theme-toggle button.active { color: #111113 !important;
 /* Hero photo frame neutral */
 .hero-avatar { border-color: var(--border) !important; }
 .id-badge::before { background: var(--accent) !important; opacity: 0.06 !important; }
+
+
+/* ── Hero typing caret ── */
+.type-caret {
+  display: inline-block;
+  width: 3px;
+  height: 0.9em;
+  margin-left: 4px;
+  background: var(--accent);
+  vertical-align: baseline;
+  animation: type-blink 0.9s step-end infinite;
+}
+.type-caret.done { animation: type-blink 1.1s step-end infinite; opacity: 0.6; }
+@keyframes type-blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+#typedName { white-space: nowrap; }
+
+
+/* ── Connect action buttons ── */
+.connect-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.75rem;
+}
