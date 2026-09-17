@@ -3924,3 +3924,142 @@ section { padding-block: 4rem; }
   .tl-item { padding-left: 2rem !important; }
   .tl-title { font-size: 0.95rem !important; }
 }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   MONOCHROME — refined grayscale / ink theme (final override)
+   Single neutral system; ink for accents. Editorial & timeless.
+   ═══════════════════════════════════════════════════════════════ */
+
+:root,
+html[data-theme="light"] {
+  --bg: #fafafa;
+  --bg2: #ffffff;
+  --bg3: #f2f2f3;
+  --surface: #ffffff;
+  --raised: #f6f6f7;
+  --border: rgba(17,17,19,0.12);
+  --border-hover: rgba(17,17,19,0.42);
+  --text: #111113;
+  --muted: #5a5a5f;
+  --faint: #8e8e94;
+  --accent: #18181b;      /* ink */
+  --accent2: #3f3f46;
+  --accent3: #71717a;     /* mid-gray highlight */
+  --gold: #52525b;
+  --link: #18181b;
+  --glass: rgba(250,250,250,0.82);
+  --shadow: 0 8px 30px -16px rgba(17,17,19,0.18);
+  --shadow-glow: 0 16px 44px -22px rgba(17,17,19,0.28);
+  --radius: 14px;
+  --radius-sm: 10px;
+}
+
+html[data-theme="dark"] {
+  --bg: #0b0b0d;
+  --bg2: #141416;
+  --bg3: #1a1a1d;
+  --surface: #141416;
+  --raised: #1f1f23;
+  --border: rgba(255,255,255,0.12);
+  --border-hover: rgba(255,255,255,0.42);
+  --text: #f4f4f5;
+  --muted: #a1a1aa;
+  --faint: #71717a;
+  --accent: #fafafa;      /* light ink on dark */
+  --accent2: #d4d4d8;
+  --accent3: #a1a1aa;
+  --gold: #d4d4d8;
+  --link: #fafafa;
+  --glass: rgba(11,11,13,0.8);
+}
+
+/* Neutral background orbs (barely-there) */
+body::before { background: radial-gradient(circle, rgba(113,113,122,0.06) 0%, transparent 70%) !important; }
+body::after  { background: radial-gradient(circle, rgba(113,113,122,0.05) 0%, transparent 70%) !important; }
+
+/* Kill all remaining color casts → grayscale accents everywhere */
+.avail-pill {
+  background: color-mix(in srgb, var(--accent) 6%, transparent) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+.avail-dot { background: #16a34a !important; }  /* keep the "available" dot green — it's a status signal */
+
+/* Hero name + section em → ink, not gradient */
+h1 em, h2 em { color: var(--accent) !important; -webkit-text-fill-color: currentColor !important; background: none !important; }
+
+/* Accent chips/badges → neutral ink system */
+.blog-latest-badge,
+.talk-row.featured::after,
+.award-year,
+.cert-vendor-n {
+  background: var(--accent) !important;
+  color: var(--bg2) !important;
+}
+html[data-theme="dark"] .blog-latest-badge,
+html[data-theme="dark"] .talk-row.featured::after,
+html[data-theme="dark"] .award-year,
+html[data-theme="dark"] .cert-vendor-n { color: #111113 !important; }
+
+/* Buttons: ink primary, outlined ghost */
+.btn-primary, .nav-cta {
+  background: var(--accent) !important;
+  color: var(--bg2) !important;
+  box-shadow: none !important;
+}
+html[data-theme="dark"] .btn-primary,
+html[data-theme="dark"] .nav-cta { color: #111113 !important; }
+.btn-primary:hover, .nav-cta:hover { background: var(--accent2) !important; }
+
+/* Terminal syntax → monochrome tones (keep it legible, not colorful) */
+.t-prompt { color: var(--text) !important; }
+.t-cmd    { color: var(--muted) !important; font-weight: 600; }
+.t-gold   { color: var(--text) !important; text-decoration: underline; text-underline-offset: 2px; }
+.t-out    { color: var(--muted) !important; }
+
+/* Map pins, progress bar, scroll → ink */
+#scrollbar { background: var(--accent) !important; box-shadow: none !important; }
+
+/* Social icon chips + focus tags → neutral */
+.soc-ico { background: var(--bg3) !important; color: var(--text) !important; }
+.f-tag, .tag, .cert-pill { color: var(--muted) !important; }
+.f-tag:hover, .tag:hover, .cert-pill:hover { color: var(--text) !important; border-color: var(--accent) !important; }
+
+/* Filters / tabs active → ink fill */
+.blog-filter.active, .gallery-tab.active,
+.theme-toggle button.active {
+  background: var(--accent) !important;
+  border-color: var(--accent) !important;
+  color: var(--bg2) !important;
+}
+html[data-theme="dark"] .blog-filter.active,
+html[data-theme="dark"] .gallery-tab.active,
+html[data-theme="dark"] .theme-toggle button.active { color: #111113 !important; }
+
+/* Pillar dots, timeline nodes, availability → uniform ink */
+.pillar::before,
+.pillar:nth-child(2)::before,
+.pillar:nth-child(3)::before,
+.pillar:nth-child(4)::before {
+  background: var(--accent) !important;
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 12%, transparent) !important;
+}
+.tl-item::before { border-color: var(--accent) !important; }
+.tl-date { color: var(--text) !important; background: var(--bg3) !important; }
+.award-card { border-left-color: var(--accent) !important; }
+
+/* Cert featured block → subtle neutral gradient */
+.cert-featured {
+  background: linear-gradient(135deg, var(--bg3), var(--surface)) !important;
+}
+.cert-featured-count span { color: var(--accent) !important; }
+.cert-featured-badge { color: var(--muted) !important; }
+
+/* Stat numbers → ink (all of them, no alternating color) */
+.stat-num,
+.stats-row .stat:nth-child(even) .stat-num { color: var(--accent) !important; }
+
+/* Hero photo frame neutral */
+.hero-avatar { border-color: var(--border) !important; }
+.id-badge::before { background: var(--accent) !important; opacity: 0.06 !important; }
