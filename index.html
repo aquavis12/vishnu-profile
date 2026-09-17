@@ -216,9 +216,9 @@
         <div class="hero-eyebrow">Cloud &amp; AI Engineer · SUDO Consultants</div>
         <h1>Vishnu <em>Rachapudi</em></h1>
         <p class="hero-sub">
-          <strong>14x AWS Certified</strong> — every Professional &amp; Specialty exam earned.
-          I architect production workloads, build with Gen AI and Agentic frameworks,
-          and <strong>build, break, write, and speak</strong> — all about cloud.
+          <strong>14x AWS Certified</strong> Cloud &amp; AI Engineer and <strong>AWS Golden Jacket</strong> holder.
+          I design secure, production-grade cloud systems, build with Gen AI and agentic frameworks, and
+          teach what I learn through writing and speaking.
         </p>
 
         <div class="terminal" aria-hidden="true">
@@ -273,14 +273,16 @@
     <div class="about-grid">
       <div class="about-main">
         <p class="about-lead">
-          I'm a <b>Cloud &amp; AI Engineer</b> who builds, breaks, writes, and speaks — all about AWS.
-          My day-to-day is architecting production workloads and shipping with Gen AI, Bedrock, and Agentic AI frameworks.
+          I'm a <b>Cloud &amp; AI Engineer</b> working at the intersection of <b>AWS, security, and applied AI</b>.
+          Most days I'm architecting production workloads or building agentic systems with Bedrock — and the rest
+          of the time I'm writing about it or on a stage sharing it.
         </p>
         <div class="about-body">
           <p>
-            At <strong>SUDO Consultants</strong> I work across security, FinOps, and modernization —
-            and I hold <strong>14 AWS certifications</strong> (every Professional &amp; Specialty exam),
-            plus Terraform, Vault, Fortinet, and Oracle Cloud. Multi-cloud, security-first.
+            At <strong>SUDO Consultants</strong> I work across cloud security, FinOps, and application
+            modernization. I hold all <strong>14 AWS certifications</strong> — which earned me the
+            <strong>AWS Golden Jacket</strong> — along with credentials in Terraform, Vault, Fortinet,
+            and Oracle Cloud. Multi-cloud, security-first.
           </p>
           <p>
             Beyond the console, I'm an active <strong>AWS Community Builder (Security)</strong>, I publish deep
@@ -329,7 +331,7 @@
       <div class="pillar" role="listitem">
         <div class="p-title">Write</div>
         <div class="p-desc">Deep technical posts on AWS, security &amp; DevOps.</div>
-        <div class="p-tag">50+ articles</div>
+        <div class="p-tag">60+ articles</div>
       </div>
       <div class="pillar" role="listitem">
         <div class="p-title">Speak</div>
@@ -338,7 +340,7 @@
       </div>
       <div class="pillar" role="listitem">
         <div class="p-title">Lead</div>
-        <div class="p-desc">Golden Jackets India — all-cert AWS community.</div>
+        <div class="p-desc">Golden Jackets India — engineers who hold every AWS cert.</div>
         <div class="p-tag">Chapter Lead</div>
       </div>
     </div>
@@ -441,7 +443,7 @@
       // Custom violet marker
       var pinIcon = L.divIcon({
         className: 'custom-pin',
-        html: '<div style="width:14px;height:14px;background:#a78bfa;border-radius:50%;border:2px solid #fff;box-shadow:0 0 12px rgba(167,139,250,0.6);"></div>',
+        html: '<div style="width:14px;height:14px;background:#818cf8;border-radius:50%;border:2px solid #fff;box-shadow:0 0 12px rgba(129,140,248,0.7);"></div>',
         iconSize: [14, 14],
         iconAnchor: [7, 7]
       });
@@ -463,9 +465,22 @@
       ];
 
       locations.forEach(function(loc) {
-        L.marker([loc.lat, loc.lng], { icon: pinIcon })
+        var accessibleName = loc.title + ' — ' + loc.desc;
+        var marker = L.marker([loc.lat, loc.lng], {
+          icon: pinIcon,
+          title: accessibleName,
+          alt: accessibleName,
+          keyboard: true
+        })
           .addTo(map)
-          .bindPopup('<strong style="color:#a78bfa;">' + loc.title + '</strong><br><span style="font-size:0.85em;">' + loc.desc + '</span>');
+          .bindPopup('<strong style="color:#818cf8;">' + loc.title + '</strong><br><span style="font-size:0.85em;">' + loc.desc + '</span>');
+
+        // Guarantee an accessible name on the marker element for the a11y tree
+        var el = marker.getElement();
+        if (el) {
+          el.setAttribute('aria-label', accessibleName);
+          el.setAttribute('role', 'button');
+        }
       });
       }
 
@@ -571,131 +586,131 @@
     <h2 id="talks-heading">On <em>Stage</em></h2>
     <div class="talks-list" role="list" aria-label="Speaking engagements">
 
-      <article class="talk-row" role="listitem">
+      <div class="talk-row" role="listitem">
         <div class="talk-date">Oct 2025</div>
         <div><div class="talk-title">AWS Community Day UAE 2025</div><div class="talk-event">Revolutionizing Enterprise Productivity with Family of Qs</div></div>
         <div class="talk-loc">Dubai, UAE</div>
-      </article>
+      </div>
 
-      <article class="talk-row" role="listitem">
+      <div class="talk-row" role="listitem">
         <div class="talk-date">Oct 2025</div>
         <div><div class="talk-title">GITEX GLOBAL 2025</div><div class="talk-event">Q for the Future — Enterprise Productivity with Family of Qs</div></div>
         <div class="talk-loc">Dubai, UAE</div>
-      </article>
+      </div>
 
-      <article class="talk-row" role="listitem">
+      <div class="talk-row" role="listitem">
         <div class="talk-date">Dec 2025</div>
         <div><div class="talk-title">AWS Community Day Kochi (AI/ML)</div><div class="talk-event">Amazon QuickSuite &amp; Agentic AI</div></div>
         <div class="talk-loc">Kochi, India</div>
-      </article>
+      </div>
 
-      <article class="talk-row" role="listitem">
+      <div class="talk-row" role="listitem">
         <div class="talk-date">Dec 2025</div>
         <div><div class="talk-title">AWS Student Community Day MLRIT 2025</div><div class="talk-event">Develop &amp; Deploy using Kiro &amp; App Runner</div></div>
         <div class="talk-loc">Hyderabad, India</div>
-      </article>
+      </div>
 
-      <article class="talk-row" role="listitem">
+      <div class="talk-row" role="listitem">
         <div class="talk-date">Feb 2026</div>
         <div><div class="talk-title">AWS User Group Hyderabad</div><div class="talk-event">Agentic AI on AWS — from SDK to Runtime</div></div>
         <div class="talk-loc">Hyderabad, India</div>
-      </article>
+      </div>
 
-      <article class="talk-row" role="listitem">
+      <div class="talk-row" role="listitem">
         <div class="talk-date">Mar 2026</div>
         <div><div class="talk-title">AWS User Group Punjab</div><div class="talk-event">AWS Certified AI Practitioner — Roadmap Session</div></div>
         <div class="talk-loc">Online</div>
-      </article>
+      </div>
 
-      <article class="talk-row" role="listitem">
+      <div class="talk-row" role="listitem">
         <div class="talk-date">Apr 2026</div>
         <div><div class="talk-title">AWSCC Techno India University — Cloud Quest</div><div class="talk-event">Navigating the AWS Ecosystem — Core Services, Global Infrastructure &amp; Management Console</div></div>
         <div class="talk-loc">Online</div>
-      </article>
+      </div>
 
-      <article class="talk-row" role="listitem">
+      <div class="talk-row" role="listitem">
         <div class="talk-date">23 Apr 2026</div>
         <div><div class="talk-title">AWS Summit Bengaluru 2026 — Developer Community Theatre</div><div class="talk-event">Keeping Serverless Modern: Upgrading AWS Lambda Runtimes with AWS Transform</div></div>
         <div class="talk-loc">Bengaluru, India</div>
-      </article>
+      </div>
 
-      <article class="talk-row" role="listitem">
+      <div class="talk-row" role="listitem">
         <div class="talk-date">23 May 2026</div>
         <div><div class="talk-title">AWS User Group Mysore - May community session</div><div class="talk-event">RoadMap to AWS Certifications from Associate to Golden Jacket</div></div>
         <div class="talk-loc">Online</div>
-      </article>
+      </div>
 
-      <article class="talk-row" role="listitem">
+      <div class="talk-row" role="listitem">
         <div class="talk-date">19 June 2026</div>
         <div><div class="talk-title">AWS Global Community Gathering - #20</div><div class="talk-event">AWS Transform and AWS Security Agent</div></div>
         <div class="talk-loc">Online</div>
-      </article>
+      </div>
 
-      <article class="talk-row" role="listitem">
+      <div class="talk-row" role="listitem">
         <div class="talk-date">27 June 2026</div>
         <div><div class="talk-title">AWS Student Builder Groups at REC</div><div class="talk-event">Introduction to Cloud Computing & AI: Fundamentals of the Modern Tech Era</div></div>
         <div class="talk-loc">Online</div>
-      </article>
+      </div>
 
-      <article class="talk-row" role="listitem">
+      <div class="talk-row" role="listitem">
         <div class="talk-date">11-12 July 2026</div>
         <div><div class="talk-title">AWS Student Builder Groups MAIT - Delhi</div><div class="talk-event">Introduction to Gen AI on AWS & Amazon PartyRock</div></div>
         <div class="talk-loc">Delhi, India</div>
-      </article>
+      </div>
 
-      <article class="talk-row" role="listitem">
+      <div class="talk-row" role="listitem">
         <div class="talk-date">1 Aug 2026</div>
         <div><div class="talk-title">AWS Student Community Day - Nagpur 2026</div><div class="talk-event">I Let AWS AI Modernize & Pen-Test A Legacy App – Here's What Actually Happened</div></div>
         <div class="talk-loc">IIM Nagpur, India</div>
-      </article>
+      </div>
 
-      <article class="talk-row" role="listitem">
+      <div class="talk-row" role="listitem">
         <div class="talk-date">13 Aug 2026</div>
         <div><div class="talk-title">AWS Student Builder Groups at RGUKT - Ongole</div><div class="talk-event">Introduction to Cloud Computing & AI: Fundamentals of the Modern Tech Era</div></div>
         <div class="talk-loc">RGUKT Ongole, India</div>
-      </article>
+      </div>
 
-      <article class="talk-row" role="listitem">
+      <div class="talk-row" role="listitem">
         <div class="talk-date">20-22 Aug 2026</div>
         <div><div class="talk-title">AWS Student Builder Groups at Siddhartha University</div><div class="talk-event">AWS Cloud Practitioner & AI Prep Workshop</div></div>
         <div class="talk-loc">Vijayawada, India</div>
-      </article>
+      </div>
 
-      <article class="talk-row " role="listitem">
+      <div class="talk-row" role="listitem">
         <div class="talk-date">22 Aug 2026</div>
         <div><div class="talk-title">AWS Student Builder Groups at Chandigarh University</div><div class="talk-event">Introduction to Cloud Computing & AI: Fundamentals of the Modern Tech Era</div></div>
         <div class="talk-loc">Online</div>
-      </article>
+      </div>
 
-      <article class="talk-row" role="listitem">
+      <div class="talk-row" role="listitem">
         <div class="talk-date">27 Aug 2026</div>
         <div><div class="talk-title">Road to AWS Community Day - Bolivia 2026</div><div class="talk-event">I Let AWS AI Modernize & Pen-Test A Legacy App – Here's What Actually Happened</div></div>
         <div class="talk-loc">Online</div>
-      </article>
+      </div>
 
-            <article class="talk-row" role="listitem">
+            <div class="talk-row" role="listitem">
         <div class="talk-date">28-29 Aug 2026</div>
         <div><div class="talk-title">AWS Student Builder Groups at Siddhartha University</div><div class="talk-event">AWS Cloud Practitioner & AI Prep Workshop - Cloud Arena</div></div>
         <div class="talk-loc">Vijayawada, India</div>
-      </article>
+      </div>
 
-      <article class="talk-row" role="listitem">
+      <div class="talk-row" role="listitem">
         <div class="talk-date">12 Sep 2026</div>
         <div><div class="talk-title">AWS Community Day - Vadodara 2026</div><div class="talk-event">I Let AWS AI Modernize & Pen-Test A Legacy App – Here's What Actually Happened</div></div>
         <div class="talk-loc">Vadodara, India</div>
-      </article>
+      </div>
 
-      <article class="talk-row featured" role="listitem">
+      <div class="talk-row featured" role="listitem">
         <div class="talk-date">19 Sep 2026</div>
         <div><div class="talk-title">AWS Student Community Day - Vizag 2026</div><div class="talk-event">Introduction to Agentic AI Web Stack & Workshop: Building Your First AI Agent in Serverless Mode</div></div>
         <div class="talk-loc">Visakhapatnam, India</div>
-      </article>
+      </div>
 
-      <article class="talk-row featured" role="listitem">
+      <div class="talk-row featured" role="listitem">
         <div class="talk-date">3 Oct 2026</div>
         <div><div class="talk-title">AWS Student Community Day - Tirupati 2026</div><div class="talk-event">Kiro, End to End: The Agentic IDE, Powers and Crew</div></div>
         <div class="talk-loc">Mohan Babu University, Tirupati, India</div>
-      </article>
+      </div>
       
 
     </div>
@@ -726,8 +741,8 @@
       <button class="carousel-btn carousel-next" id="carouselNext" aria-label="Next photo">›</button>
     </div>
 
-    <div class="carousel-thumbs" id="carouselThumbs" role="list" aria-label="Photo thumbnails"></div>
-    <div class="carousel-dots" id="carouselDots" role="list" aria-label="Photo navigation dots"></div>
+    <div class="carousel-thumbs" id="carouselThumbs" role="group" aria-label="Photo thumbnails"></div>
+    <div class="carousel-dots" id="carouselDots" role="group" aria-label="Photo navigation dots"></div>
 
     <div class="gallery-cta-row">
       <p class="gallery-cta-text" id="galleryCount">AWS Summit · GITEX · Community Days</p>
