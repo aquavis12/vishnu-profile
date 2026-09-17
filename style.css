@@ -3712,3 +3712,132 @@ html[data-theme="light"] .award-year { color: #3a2a00; }
 /* ── Prevent any horizontal overflow globally ── */
 html, body { max-width: 100%; overflow-x: hidden; }
 img, iframe, video { max-width: 100%; }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   PROFESSIONAL REFINEMENT — editorial neutral, single accent,
+   tighter type/spacing, cleaner frames. (Final override layer)
+   ═══════════════════════════════════════════════════════════════ */
+
+:root,
+html[data-theme="light"] {
+  --bg: #fbfaf7;          /* refined warm off-white (less yellow) */
+  --bg2: #ffffff;
+  --bg3: #f3f2ee;
+  --surface: #ffffff;
+  --raised: #f7f6f2;
+  --border: rgba(23,32,33,0.09);
+  --border-hover: rgba(15,111,102,0.35);
+  --text: #16211f;
+  --muted: #545c59;
+  --faint: #8b918d;
+  --accent: #0f766e;      /* deep, confident teal */
+  --accent2: #0b5c55;
+  --accent3: #b6842a;     /* muted brass, used sparingly */
+  --gold: #a9781f;
+  --link: #0b5c55;
+  --shadow: 0 8px 30px -16px rgba(23,32,33,0.16);
+  --shadow-glow: 0 16px 44px -22px rgba(15,111,102,0.24);
+  /* Tamer, more editorial radii */
+  --radius: 16px;
+  --radius-sm: 11px;
+}
+
+html[data-theme="dark"] {
+  --bg: #0f1416;
+  --bg2: #141a1c;
+  --bg3: #1a2124;
+  --surface: #141a1c;
+  --raised: #1e2629;
+  --border: rgba(255,255,255,0.07);
+  --border-hover: rgba(45,212,191,0.35);
+  --text: #eef1ee;
+  --muted: #9aa39f;
+  --faint: #6b736f;
+  --accent: #2dd4bf;
+  --accent2: #5eead4;
+  --accent3: #d9a441;
+  --gold: #d9a441;
+  --link: #7ceadd;
+}
+
+/* Calmer background orbs (subtle, single-accent) */
+body::before { background: radial-gradient(circle, rgba(15,118,110,0.06) 0%, transparent 70%) !important; }
+body::after  { background: radial-gradient(circle, rgba(15,118,110,0.045) 0%, transparent 70%) !important; }
+
+/* ── Typography: steadier, more composed ── */
+h1 {
+  font-size: clamp(2.6rem, 6vw, 4.6rem) !important;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  font-weight: 700;
+}
+.hero-sub { font-size: 1.08rem; line-height: 1.7; }
+section h2 { letter-spacing: -0.02em; }
+
+/* ── Hero photo: clean rounded frame instead of organic blob ── */
+.hero-avatar {
+  border-radius: 20px !important;
+  border-width: 1px !important;
+  border-color: var(--border) !important;
+  box-shadow: var(--shadow) !important;
+}
+.id-badge::before {
+  border-radius: 24px !important;
+  inset: -12px -14px -14px -12px !important;
+  opacity: 0.10 !important;
+  background: var(--accent) !important;
+}
+
+/* ── Softer, unified card system ── */
+.panel, .highlight-card, .media-card, .award-card, .cert-vendor,
+.cert-featured, .blog-slide, .id-card, .about-pillars, .stats-row {
+  box-shadow: var(--shadow);
+}
+.panel:hover, .highlight-card:hover, .media-card:hover,
+.award-card:hover, .cert-vendor:hover, .blog-slide:hover {
+  box-shadow: var(--shadow-glow);
+  transform: translateY(-2px);   /* subtler lift */
+}
+
+/* ── Buttons: crisper, less bouncy ── */
+.btn { border-radius: 10px; font-weight: 600; letter-spacing: 0; }
+.btn:active { transform: translateY(0) scale(0.99); }
+.nav-cta { border-radius: 10px; }
+
+/* ── Availability pill: quieter, professional ── */
+.avail-pill {
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 28%, transparent);
+  color: var(--accent);
+}
+.avail-dot { background: var(--accent); }
+
+/* ── Tame the amber: use accent (teal) for structural accents, brass only for the featured/latest badges ── */
+.sec-label::before { color: var(--faint); }
+.stats-row .stat:nth-child(even) .stat-num { color: var(--accent) !important; }
+.pillar:nth-child(2)::before { background: var(--accent); box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 15%, transparent); }
+.pillar:nth-child(3)::before { background: var(--accent2); box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent2) 15%, transparent); }
+.pillar:nth-child(4)::before { background: var(--accent); box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 15%, transparent); }
+
+/* ── Awards: replace playful emoji with a refined uniform mark ── */
+.award-ico { display: none; }
+.award-card {
+  padding-left: 1.4rem;
+  border-left: 3px solid var(--accent);
+}
+.award-year { background: var(--bg3); color: var(--accent); }
+html[data-theme="light"] .award-year { color: var(--accent); }
+
+/* ── Connect: monogram chips already text-based; refine color ── */
+.soc-ico { background: color-mix(in srgb, var(--accent) 10%, transparent); color: var(--accent); border-radius: 7px; }
+
+/* ── Featured/latest badges keep brass for warmth, but muted ── */
+.blog-latest-badge, .talk-row.featured::after { background: var(--accent3); }
+
+/* ── Terminal window: neutral, professional chrome ── */
+.terminal { box-shadow: var(--shadow); }
+
+/* ── Section spacing rhythm: a touch tighter/consistent ── */
+section { padding-block: 4rem; }
+.panel { padding: 2.5rem 2.25rem; }
