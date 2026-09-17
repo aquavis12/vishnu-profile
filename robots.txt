@@ -4,7 +4,7 @@ Allow: /blogs/
 Allow: /gallery/
 Allow: /aws-devops-agent/
 
-Disallow: /my-cfp/
+Disallow: /project/
 
 # Sitemaps
 Sitemap: https://www.vishnurachapudi.com/sitemap.xml
