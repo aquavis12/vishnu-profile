@@ -926,7 +926,7 @@
           <h3 class="blog-title">CloudWatch AI Operations: What Investigations Actually Does</h3>
           <div class="blog-meta">September 2026</div>
         </a>
-        <a class="blog-slide" href="https://www.vishnurachapudi.com/blogs/kiro-cli-cloudwatch-mcp/" role="listitem" data-category="agentic-ai">
+        <a class="blog-slide" href="https://www.vishnurachapudi.com/blogs/kiro-cli-cloudwatch-mcp/" role="listitem" data-category="agentic">
           <div class="blog-tags"><span class="tag">Kiro CLI</span><span class="tag">MCP</span><span class="tag">CloudWatch</span><span class="tag">CloudTrail</span></div>
           <h3 class="blog-title">Kiro CLI + CloudWatch MCP: Investigating Alarms From a Terminal</h3>
           <div class="blog-meta">September 2026</div>
@@ -1620,6 +1620,12 @@
   /* ─── BLOG CATEGORY FILTERS ─── */
   const blogFilterBtns = document.querySelectorAll('.blog-filter');
   const blogSlides = document.querySelectorAll('.blog-slide');
+
+  /* Live blog post count */
+  const blogCounterEl = document.getElementById('blogCounter');
+  if (blogCounterEl && blogSlides.length) {
+    blogCounterEl.textContent = 'Scroll or drag to explore · ' + blogSlides.length + ' posts';
+  }
   
   blogFilterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
