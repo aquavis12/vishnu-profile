@@ -2915,3 +2915,119 @@ nav {
 }
 .hero-avatar { box-shadow: 0 0 30px -8px var(--accent), 0 0 60px -20px var(--accent) !important; }
 .tl-item::before { box-shadow: 0 0 16px -6px var(--accent) !important; }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   STRUCTURAL REVAMP — layout/composition (not colors)
+   Full-bleed hero · services band · alternating section rhythm ·
+   cleaner headers. Override layer.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Warm hero glow (replace violet radial) ── */
+#hero::before {
+  background: radial-gradient(ellipse at 25% 40%, color-mix(in srgb, var(--accent) 10%, transparent) 0%, transparent 60%),
+              radial-gradient(ellipse at 75% 30%, color-mix(in srgb, var(--accent3) 9%, transparent) 0%, transparent 55%) !important;
+}
+#hero::after {
+  background: linear-gradient(90deg, transparent, var(--accent), var(--accent3), transparent) !important;
+}
+
+/* ── Hero: bigger, better proportioned ── */
+.hero-grid {
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 3rem;
+}
+.hero-sub {
+  font-size: 1.15rem;
+  max-width: 46ch;
+  color: var(--muted);
+}
+
+/* Hero photo: larger, editorial framing */
+.hero-avatar {
+  width: 300px !important;
+  height: 300px !important;
+  border-radius: 30% 70% 68% 32% / 42% 40% 60% 58%;
+  border-width: 4px !important;
+}
+.id-badge { padding: 0.5rem; }
+.id-badge::before { opacity: 0.18; }
+.id-meta { text-align: center; margin-top: 1.2rem; }
+.id-name { font-size: 1.35rem; }
+
+/* ── Alternating section rhythm ── */
+/* Odd content sections become "open" (no heavy card), even stay carded */
+#about .panel,
+#certifications .panel,
+#blog .panel,
+#connect .panel {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 1rem 0;
+}
+#about .panel:hover,
+#certifications .panel:hover,
+#blog .panel:hover,
+#connect .panel:hover {
+  transform: none;
+  box-shadow: none;
+}
+/* Give carded sections more presence */
+#highlights .panel,
+#speaking-map .panel,
+#talks .panel,
+#media .panel,
+#awards .panel,
+#timeline .panel {
+  border-radius: var(--radius);
+}
+
+/* ── Bigger, cleaner section headers ── */
+section h2 {
+  font-size: clamp(2rem, 4.5vw, 3rem);
+  letter-spacing: -0.02em;
+}
+.sec-label {
+  font-size: 0.72rem;
+  margin-bottom: 0.75rem;
+}
+
+/* ── Services band ("What I do") — the pillars, pulled forward ── */
+.about-pillars {
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.1rem;
+  margin-top: 2.5rem;
+  padding: 2rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.pillar {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 0.4rem 0.4rem 0.4rem 3.2rem;
+}
+.pillar::before { top: 0.7rem; left: 0.4rem; }
+.pillar:hover {
+  transform: translateY(-3px);
+  box-shadow: none;
+  border: none;
+}
+.p-title { font-size: 1.15rem; }
+
+/* ── Section top spacing rhythm ── */
+section { padding-block: 4.5rem; }
+
+/* ── Responsive: services band + hero collapse cleanly ── */
+@media (max-width: 860px) {
+  .hero-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .about-pillars { grid-template-columns: 1fr 1fr; }
+  .hero-avatar { width: 240px !important; height: 240px !important; }
+}
+@media (max-width: 520px) {
+  .about-pillars { grid-template-columns: 1fr; padding: 1.4rem; }
+}
