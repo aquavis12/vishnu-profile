@@ -240,7 +240,7 @@
         <div class="stats-row" role="list" aria-label="Career highlights">
           <div class="stat" role="listitem"><div class="stat-num">14</div><div class="stat-label">AWS Certs</div><div class="bar"><i></i></div></div>
           <div class="stat" role="listitem"><div class="stat-num">27</div><div class="stat-label">Total Certs</div><div class="bar"><i></i></div></div>
-          <div class="stat" role="listitem"><div class="stat-num">15+</div><div class="stat-label">Talks Given</div><div class="bar"><i></i></div></div>
+          <div class="stat" role="listitem"><div class="stat-num">21</div><div class="stat-label">Sessions</div><div class="bar"><i></i></div></div>
           <div class="stat" role="listitem"><div class="stat-num">60+</div><div class="stat-label">Blog Posts</div><div class="bar"><i></i></div></div>
           <div class="stat" role="listitem"><div class="stat-num">500+</div><div class="stat-label">Students Mentored</div><div class="bar"><i></i></div></div>
         </div>
@@ -334,7 +334,7 @@
       <div class="pillar" role="listitem">
         <div class="p-title">Speak</div>
         <div class="p-desc">Community Days &amp; international conference stages.</div>
-        <div class="p-tag">15+ talks</div>
+        <div class="p-tag">21 sessions</div>
       </div>
       <div class="pillar" role="listitem">
         <div class="p-title">Lead</div>
@@ -596,7 +596,10 @@
 <section id="talks" aria-labelledby="talks-heading">
   <div class="wrap"><div class="panel">
     <div class="sec-label">Speaking & Community</div>
-    <h2 id="talks-heading">On <em>Stage</em></h2>
+    <div class="talks-head">
+      <h2 id="talks-heading">On <em>Stage</em></h2>
+      <span class="talks-count" id="talksCount" aria-live="polite"></span>
+    </div>
     <div class="talks-list" role="list" aria-label="Speaking engagements">
 
       <div class="talk-row" role="listitem">
@@ -1585,6 +1588,11 @@
     const rows = Array.from(list.querySelectorAll('.talk-row'));
     rows.slice().reverse().forEach(row => list.appendChild(row));
     const ordered = Array.from(list.querySelectorAll('.talk-row'));
+
+    // Live session count badge
+    const countEl = document.getElementById('talksCount');
+    if (countEl) countEl.textContent = '🎤 ' + ordered.length + ' sessions';
+
     const perPage = 6;
     const pages = Math.ceil(ordered.length / perPage);
     let page = 0;
