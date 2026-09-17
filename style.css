@@ -3338,3 +3338,92 @@ h1 em { line-height: 1.08; display: inline-block; padding-bottom: 0.08em; }
 @media (max-width: 860px) {
   #hero { padding-top: 7rem; min-height: auto; }
 }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   CONTAINERS & CAROUSELS — slight refinements (custom CSS)
+   Better framing, consistent radii, refined captions & thumbs
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Gallery carousel: framed stage with inset ring */
+.carousel-outer {
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  background: var(--surface);
+  padding: 0.5rem;
+}
+.carousel-stage { border-radius: calc(var(--radius) - 6px); }
+.carousel-slide img { border-radius: calc(var(--radius) - 6px); }
+
+/* Warmer, softer caption gradient */
+.carousel-caption {
+  background: linear-gradient(transparent, color-mix(in srgb, var(--text) 88%, transparent)) !important;
+  padding: 2.2rem 1.6rem 1.4rem;
+}
+.carousel-tag {
+  background: var(--accent) !important;
+  border: none !important;
+  color: #fff !important;
+  border-radius: var(--radius-pill);
+  padding: 0.22rem 0.7rem;
+}
+
+/* Thumbnails: rounded, ring on active */
+.carousel-thumbs {
+  gap: 0.55rem;
+  padding: 0.9rem 0.2rem 0;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.carousel-thumb {
+  width: 54px; height: 40px;
+  border-radius: var(--radius-sm);
+  border: 2px solid transparent;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.6;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+.carousel-thumb:hover { opacity: 0.9; transform: translateY(-2px); }
+.carousel-thumb.active { opacity: 1; border-color: var(--accent); box-shadow: 0 4px 12px -4px var(--accent); }
+
+/* Dots row centered + spaced */
+.carousel-dots { justify-content: center; gap: 0.4rem; padding-top: 0.8rem; }
+.carousel-dot { width: 8px; height: 8px; background: var(--border-hover); border: none; }
+
+/* ── Consistent grid rhythm across card sections ── */
+.highlights-grid,
+.talks-media-grid,
+.award-grid {
+  gap: 1.1rem;
+}
+.highlights-grid { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+
+/* ── Blog carousel: subtle edge fade so cards feel "in a container" ── */
+.blog-carousel-wrapper { position: relative; }
+.blog-carousel-wrapper::before,
+.blog-carousel-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 40px;
+  z-index: 3;
+  pointer-events: none;
+}
+.blog-carousel-wrapper::before { left: 0; background: linear-gradient(90deg, var(--bg), transparent); }
+.blog-carousel-wrapper::after { right: 0; background: linear-gradient(270deg, var(--bg), transparent); }
+
+/* Media (video/podcast) cards: consistent aspect + framing */
+.media-card { overflow: hidden; }
+.talks-media-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+
+/* Speaking map: framed like the gallery */
+#speakingMap {
+  box-shadow: inset 0 0 0 1px var(--border);
+}
+
+/* Equalize card section inner padding for consistency */
+.highlight-card, .media-card, .award-card, .cert-vendor {
+  padding: 1.3rem 1.35rem;
+}
