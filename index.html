@@ -1580,6 +1580,41 @@
 
   revealEls.forEach(el => revealObserver.observe(el));
 
+  /* ─── RICH SCROLL ANIMATIONS (auto-applied) ─── */
+  (function () {
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) return;
+
+    // Enable the hidden-until-revealed states only now that JS runs (prevents FOUC / no-JS blank)
+    document.documentElement.classList.add('js-anim');
+
+    // Tag elements to animate without editing markup
+    const panels = document.querySelectorAll('section .panel, #hero .hero-main, #hero .hero-side');
+    panels.forEach(p => p.classList.add('anim'));
+
+    // Grids whose children should stagger in
+    const grids = document.querySelectorAll(
+      '.highlights-grid, .cert-vendors, .award-grid, .about-pillars, .social-row, .talks-media-grid'
+    );
+    grids.forEach(g => g.classList.add('stagger'));
+
+    const statsRow = document.querySelector('.stats-row');
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          const sec = entry.target.closest('section');
+          if (sec) sec.classList.add('head-in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
+
+    document.querySelectorAll('.anim, .stagger').forEach(el => io.observe(el));
+    if (statsRow) { statsRow.classList.add('anim'); io.observe(statsRow); }
+  })();
+
   /* ─── SCROLL LISTENER ─── */
   let ticking = false;
   window.addEventListener('scroll', () => {

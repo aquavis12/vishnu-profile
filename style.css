@@ -3034,8 +3034,11 @@ section { padding-block: 4.5rem; }
 
 
 /* ── Wider layout ── */
-.wrap { max-width: 1280px; }
-section { max-width: 1280px; }
+.wrap { max-width: 1440px; }
+section { max-width: 1440px; }
+/* Constrain reading-heavy text so wider layout stays readable */
+.about-lead, .about-body, .hero-sub, .connect-lead { max-width: 62ch; }
+.about-body { max-width: 68ch; }
 
 
 /* ═══════════════════════════════════════════════════════════════
@@ -4086,4 +4089,64 @@ html[data-theme="dark"] .theme-toggle button.active { color: #111113 !important;
   gap: 0.75rem;
   flex-wrap: wrap;
   margin-bottom: 1.75rem;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   MORE ANIMATIONS — scroll reveals, staggered cards, hover motion
+   Applied broadly via JS-added .in-view class. GPU-friendly.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Base state for animated elements — only hidden when JS is active (no FOUC/no-JS safe) */
+.js-anim .anim {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.6s cubic-bezier(0.22,1,0.36,1), transform 0.6s cubic-bezier(0.22,1,0.36,1);
+  will-change: opacity, transform;
+}
+.js-anim .anim.in-view { opacity: 1; transform: none; }
+.js-anim .stagger > * { opacity: 0; }
+
+/* Variants */
+.anim-left  { transform: translateX(-28px); }
+.anim-right { transform: translateX(28px); }
+.anim-scale { transform: scale(0.94); }
+.anim-left.in-view, .anim-right.in-view, .anim-scale.in-view { transform: none; }
+
+/* Staggered children (cards within a grid) */
+.js-anim .stagger > * { transform: translateY(22px); transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.22,1,0.36,1); }
+.js-anim .stagger.in-view > * { opacity: 1; transform: none; }
+.stagger.in-view > *:nth-child(1) { transition-delay: 0.02s; }
+.stagger.in-view > *:nth-child(2) { transition-delay: 0.08s; }
+.stagger.in-view > *:nth-child(3) { transition-delay: 0.14s; }
+.stagger.in-view > *:nth-child(4) { transition-delay: 0.20s; }
+.stagger.in-view > *:nth-child(5) { transition-delay: 0.26s; }
+.stagger.in-view > *:nth-child(6) { transition-delay: 0.32s; }
+.stagger.in-view > *:nth-child(7) { transition-delay: 0.38s; }
+.stagger.in-view > *:nth-child(n+8) { transition-delay: 0.42s; }
+
+/* Section headings rise + accent underline draw-in */
+.sec-label { opacity: 0; transform: translateY(10px); transition: all 0.5s ease; }
+section.head-in .sec-label { opacity: 1; transform: none; }
+
+/* Subtle hover lift on interactive cards (adds life) */
+.cert-vendor, .award-card, .highlight-card, .media-card, .blog-slide {
+  transition: transform 0.28s cubic-bezier(0.22,1,0.36,1), box-shadow 0.28s ease, border-color 0.28s ease;
+}
+
+/* Stat numbers count-up feel: subtle pop when revealed */
+.stats-row.in-view .stat-num { animation: stat-pop 0.5s cubic-bezier(0.34,1.56,0.64,1) both; }
+.stats-row.in-view .stat:nth-child(2) .stat-num { animation-delay: 0.06s; }
+.stats-row.in-view .stat:nth-child(3) .stat-num { animation-delay: 0.12s; }
+.stats-row.in-view .stat:nth-child(4) .stat-num { animation-delay: 0.18s; }
+.stats-row.in-view .stat:nth-child(5) .stat-num { animation-delay: 0.24s; }
+@keyframes stat-pop { 0% { transform: scale(0.6); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+/* Nav link underline grow (already present) + logo subtle */
+.nav-logo { transition: opacity 0.3s ease, transform 0.3s ease; }
+.nav-logo:hover { transform: translateY(-1px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .js-anim .anim, .js-anim .stagger > *, .sec-label { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .stats-row.in-view .stat-num { animation: none !important; }
 }
