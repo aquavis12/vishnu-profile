@@ -175,8 +175,9 @@
   <!-- ═══ PERFORMANCE ═══ -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="preload" as="image" href="https://www.vishnurachapudi.com/profile.png" />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" /></noscript>
+  <link rel="preload" as="image" href="https://www.vishnurachapudi.com/profile.png" fetchpriority="high" />
   <link rel="stylesheet" href="style.css" />
 </head>
 
@@ -248,7 +249,7 @@
 
       <aside class="hero-side" aria-label="Profile and certification status">
         <div class="id-badge">
-          <img src="https://www.vishnurachapudi.com/profile.png" alt="Vishnu Rachapudi — Cloud &amp; AI Engineer, 14x AWS Certified" class="hero-avatar" width="220" height="220" loading="eager" fetchpriority="high" />
+          <img src="https://www.vishnurachapudi.com/profile.png" alt="Vishnu Rachapudi — Cloud &amp; AI Engineer, 14x AWS Certified" class="hero-avatar" width="300" height="300" loading="eager" fetchpriority="high" decoding="async" />
           <div class="id-meta">
             <div class="id-name">Vishnu Rachapudi</div>
             <div class="id-role">Cloud &amp; AI Engineer</div>
