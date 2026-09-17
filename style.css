@@ -3841,3 +3841,86 @@ html[data-theme="light"] .award-year { color: var(--accent); }
 /* ── Section spacing rhythm: a touch tighter/consistent ── */
 section { padding-block: 4rem; }
 .panel { padding: 2.5rem 2.25rem; }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   TIMELINE REDESIGN — clean vertical path (professional)
+   Replaces the cramped horizontal scroll with a scannable rail.
+   ═══════════════════════════════════════════════════════════════ */
+
+.timeline {
+  display: block !important;
+  overflow: visible !important;
+  padding: 0.5rem 0 0 !important;
+  position: relative;
+  max-width: 760px;
+  margin: 0 auto;
+}
+/* Vertical rail line */
+.timeline::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 6px;
+  bottom: 6px;
+  left: 8px;
+  width: 2px !important;
+  height: auto !important;
+  background: linear-gradient(180deg, var(--accent), color-mix(in srgb, var(--accent) 25%, transparent)) !important;
+  transform: none !important;
+}
+
+.tl-item {
+  display: block !important;
+  flex: none !important;
+  text-align: left !important;
+  align-items: flex-start !important;
+  position: relative;
+  padding: 0 0 1.6rem 2.2rem !important;
+  scroll-snap-align: none !important;
+}
+.tl-item:last-child { padding-bottom: 0 !important; }
+
+/* Node dot on the rail */
+.tl-item::before {
+  content: '' !important;
+  position: absolute;
+  left: 0;
+  top: 4px;
+  width: 18px !important;
+  height: 18px !important;
+  border-radius: 50% !important;
+  background: var(--surface) !important;
+  border: 3px solid var(--accent) !important;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 12%, transparent) !important;
+  margin: 0 !important;
+  transition: transform 0.2s ease, background 0.2s ease !important;
+}
+.tl-item:hover::before {
+  background: var(--accent) !important;
+  transform: scale(1.15) !important;
+}
+/* Highlight the most recent milestone */
+.tl-item:first-child::before {
+  background: var(--accent) !important;
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 18%, transparent) !important;
+}
+
+.tl-date {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.68rem !important;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--accent) !important;
+  background: color-mix(in srgb, var(--accent) 9%, transparent);
+  padding: 0.15rem 0.55rem;
+  border-radius: var(--radius-pill);
+  margin-bottom: 0.4rem !important;
+}
+.tl-title { font-size: 1rem !important; margin-bottom: 0.15rem !important; }
+.tl-body { font-size: 0.85rem !important; }
+
+@media (max-width: 620px) {
+  .tl-item { padding-left: 2rem !important; }
+  .tl-title { font-size: 0.95rem !important; }
+}
