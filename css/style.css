@@ -4150,3 +4150,17 @@ section.head-in .sec-label { opacity: 1; transform: none; }
   .js-anim .anim, .js-anim .stagger > *, .sec-label { opacity: 1 !important; transform: none !important; transition: none !important; }
   .stats-row.in-view .stat-num { animation: none !important; }
 }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   LIGHTHOUSE FIXES — contrast, compositing
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Footer copyright contrast (was --faint, failed 4.5:1) */
+footer { color: var(--muted); }
+
+/* Promote animated decorative elements to their own compositor layer
+   so transform/opacity animations stay off the main thread */
+body::before, body::after { will-change: transform; transform: translateZ(0); }
+.avail-dot, .type-caret, .cursor { will-change: opacity; }
+.tl-item::before, .pillar::before { will-change: transform; }
