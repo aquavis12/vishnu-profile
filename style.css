@@ -3324,3 +3324,17 @@ a:focus-visible, button:focus-visible, .btn:focus-visible {
   .btn-primary::after { display: none; }
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.08s !important; }
 }
+
+
+/* ── Hero top clearance fix: keep oversized H1 clear of fixed nav ── */
+#hero {
+  align-items: center;
+  padding-top: 8.5rem;
+  padding-bottom: 3rem;
+}
+h1 { padding-top: 0.25rem; }        /* prevent gradient descenders/ascenders clipping */
+h1 em { line-height: 1.08; display: inline-block; padding-bottom: 0.08em; }
+
+@media (max-width: 860px) {
+  #hero { padding-top: 7rem; min-height: auto; }
+}
