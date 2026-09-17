@@ -2547,3 +2547,371 @@ nav {
 
 /* Rounder buttons to match the studio radius */
 .btn { border-radius: var(--radius-pill); }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   WARM STUDIO ("Binjan") — light-first cream canvas, teal + amber,
+   friendly oversized hero, rounded service cards. Override layer.
+   ═══════════════════════════════════════════════════════════════ */
+
+:root,
+html[data-theme="light"] {
+  --bg: #fdf6ec;          /* warm cream */
+  --bg2: #fffaf2;
+  --bg3: #f6ecdd;
+  --surface: #ffffff;
+  --raised: #fffaf2;
+  --border: rgba(31,42,42,0.10);
+  --border-hover: rgba(20,138,127,0.40);
+  --text: #1f2a2a;        /* deep warm charcoal */
+  --muted: #5c6360;
+  --faint: #8a8f8b;
+  --accent: #148a7f;      /* teal */
+  --accent2: #0f6f66;
+  --accent3: #f0a500;     /* warm amber */
+  --gold: #e08a00;
+  --link: #0f6f66;
+  --glass: rgba(253,246,236,0.82);
+  --shadow: 0 14px 40px -18px rgba(31,42,42,0.20);
+  --shadow-glow: 0 22px 60px -22px rgba(20,138,127,0.30);
+  --radius: 26px;
+  --radius-sm: 16px;
+}
+
+/* Dark mode kept as a warm-charcoal alternate */
+html[data-theme="dark"] {
+  --bg: #14181a;
+  --bg2: #191e20;
+  --bg3: #1f2528;
+  --surface: #191e20;
+  --raised: #222a2d;
+  --border: rgba(255,255,255,0.08);
+  --border-hover: rgba(45,212,191,0.40);
+  --text: #f1efe8;
+  --muted: #a6ada9;
+  --faint: #757c78;
+  --accent: #2dd4bf;
+  --accent2: #5eead4;
+  --accent3: #f5b301;
+  --gold: #f5b301;
+  --link: #7ceadd;
+  --glass: rgba(20,24,26,0.78);
+}
+
+/* Warm background orbs */
+body::before { background: radial-gradient(circle, rgba(20,138,127,0.10) 0%, transparent 70%) !important; }
+body::after  { background: radial-gradient(circle, rgba(240,165,0,0.10) 0%, transparent 70%) !important; }
+
+/* ─── Friendly oversized hero ─── */
+h1 {
+  font-size: clamp(2.8rem, 7vw, 5.2rem) !important;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+}
+h1 em {
+  -webkit-text-fill-color: currentColor;
+  color: var(--accent);
+  background: none;
+}
+.hero-eyebrow { color: var(--accent2); }
+
+/* Brush/blob accent behind the profile photo */
+.id-badge { position: relative; }
+.id-badge::before {
+  content: '';
+  position: absolute;
+  inset: -18px -22px -22px -18px;
+  background: var(--accent);
+  border-radius: 42% 58% 55% 45% / 55% 45% 60% 40%;
+  opacity: 0.14;
+  z-index: -1;
+  animation: float-orb 18s ease-in-out infinite;
+}
+.hero-avatar { border-color: var(--accent) !important; }
+
+/* ─── Availability pill in warm palette ─── */
+.avail-pill {
+  background: color-mix(in srgb, var(--accent3) 16%, transparent);
+  border-color: color-mix(in srgb, var(--accent3) 45%, transparent);
+  color: var(--gold);
+}
+.avail-dot { background: var(--accent3); }
+
+/* ─── Nav CTA warm ─── */
+.nav-cta {
+  background: var(--accent) !important;
+  color: #fff !important;
+  box-shadow: 0 6px 16px -6px var(--accent);
+}
+.nav-cta:hover { color: #fff !important; box-shadow: 0 10px 24px -8px var(--accent); }
+
+/* ─── Rounded service cards (pillars) with colored icon dots ─── */
+.about-pillars { gap: 1rem; }
+.pillar {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 1.6rem 1.4rem;
+  box-shadow: var(--shadow);
+  position: relative;
+  padding-left: 3.5rem;
+}
+.pillar::before {
+  content: '';
+  position: absolute;
+  left: 1.3rem;
+  top: 1.7rem;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+.pillar:nth-child(2)::before { background: var(--accent3); box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent3) 18%, transparent); }
+.pillar:nth-child(3)::before { background: #e0533d; box-shadow: 0 0 0 5px rgba(224,83,61,0.18); }
+.pillar:nth-child(4)::before { background: #6b6ff0; box-shadow: 0 0 0 5px rgba(107,111,240,0.18); }
+.pillar:hover {
+  transform: translateY(-4px);
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-glow);
+}
+
+/* ─── Big friendly stat numbers ─── */
+.stat-num {
+  font-family: var(--font-heading);
+  font-size: clamp(1.8rem, 3vw, 2.6rem) !important;
+  color: var(--accent) !important;
+}
+.stats-row .stat:nth-child(even) .stat-num { color: var(--accent3) !important; }
+
+/* ─── Buttons: rounded, warm ─── */
+.btn { border-radius: var(--radius-pill); }
+.btn-primary {
+  background: var(--accent) !important;
+  color: #fff !important;
+  box-shadow: 0 8px 22px -8px var(--accent);
+}
+.btn-primary:hover { box-shadow: 0 12px 30px -10px var(--accent); }
+
+/* ─── Panels & cards: soft, warm, rounded ─── */
+.panel {
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  border-color: var(--border);
+}
+.panel:hover { box-shadow: var(--shadow-glow); }
+
+/* Frosted warm nav */
+nav {
+  background: var(--glass);
+  backdrop-filter: blur(18px) saturate(1.3);
+  -webkit-backdrop-filter: blur(18px) saturate(1.3);
+}
+
+/* Section labels: warm comment style */
+.sec-label { color: var(--accent); }
+
+/* Terminal reads as a soft light card in warm mode */
+.terminal {
+  background: var(--surface);
+  border-color: var(--border);
+  box-shadow: var(--shadow);
+}
+.terminal::after {
+  background: var(--bg3);
+  color: var(--muted);
+}
+.t-cmd { color: var(--accent2); }
+.t-prompt { color: var(--accent); }
+.t-gold { color: var(--gold); }
+.t-out { color: var(--muted); }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   WARM STUDIO — apply to ALL remaining sections (completion layer)
+   Replaces leftover violet hovers/glows with teal + amber.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Focus tags (about) */
+.f-tag {
+  background: color-mix(in srgb, var(--accent) 8%, var(--surface));
+  border-color: var(--border);
+  color: var(--accent2);
+}
+.f-tag:hover {
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Highlight (impact) cards */
+.highlight-card {
+  background: var(--surface);
+  border-color: var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
+}
+.highlight-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-glow);
+}
+.highlight-card::before { background: linear-gradient(90deg, var(--accent), var(--accent3)); }
+.highlight-title { color: var(--text); }
+
+/* Certifications */
+.cert-chip {
+  background: var(--surface);
+  border-color: var(--border);
+  border-radius: var(--radius-sm);
+}
+.cert-chip:hover {
+  border-color: var(--accent);
+  box-shadow: 0 8px 20px -10px var(--accent);
+}
+.cert-chip span { color: var(--accent3); }
+
+/* Talks list */
+.talk-loc {
+  background: color-mix(in srgb, var(--accent) 9%, var(--surface));
+  border-color: var(--border);
+  color: var(--accent2);
+}
+.talk-row:hover .talk-loc {
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.talk-row:hover { background: var(--bg3); }
+.talk-row::before { background: linear-gradient(180deg, var(--accent), var(--accent3)); }
+.talk-row.featured {
+  border-left-color: var(--accent3);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent3) 8%, transparent), transparent);
+}
+.talk-row.featured::after {
+  background: var(--accent3);
+  color: #3a2a00;
+}
+.talk-row.featured .talk-date { color: var(--gold); }
+
+/* Gallery tabs */
+.gallery-tab {
+  border-radius: var(--radius-pill);
+  border-color: var(--border);
+}
+.gallery-tab:hover,
+.gallery-tab.active {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Carousel controls */
+.carousel-btn:hover,
+.carousel-expand:hover { background: var(--accent); border-color: var(--accent); }
+.carousel-thumb.active { outline: 2px solid var(--accent); }
+.carousel-dot.active { background: var(--accent); }
+.carousel-tag { background: var(--accent); color: #fff; }
+
+/* Media cards */
+.media-card {
+  background: var(--surface);
+  border-color: var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
+}
+.media-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-glow);
+}
+
+/* Blog carousel slides */
+.blog-slide {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
+}
+.blog-slide::before { background: linear-gradient(135deg, var(--accent), var(--accent3)); }
+.blog-slide:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-glow);
+  border-color: var(--border-hover);
+}
+.blog-slide:hover .blog-title { color: var(--accent); }
+.tag {
+  background: color-mix(in srgb, var(--accent) 8%, var(--surface));
+  border-color: var(--border);
+  color: var(--accent2);
+}
+.tag:hover {
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Awards */
+.award-card {
+  background: var(--surface);
+  border-color: var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
+}
+.award-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent3);
+  box-shadow: var(--shadow-glow);
+}
+.award-card::before { background: linear-gradient(90deg, var(--accent3), var(--accent)); }
+.award-year { color: var(--accent3); }
+
+/* Timeline */
+.tl-item::before {
+  background: var(--surface);
+  border: 2px solid var(--accent);
+}
+.tl-item:hover::before { background: var(--accent); }
+.tl-date { color: var(--accent2); }
+
+/* Connect / social links */
+.soc-link {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: var(--radius-pill);
+}
+.soc-link:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  transform: translateY(-2px);
+}
+
+/* Progress bar + scroll indicator in warm accent */
+.stat .bar i { background: linear-gradient(90deg, var(--accent), var(--accent3)) !important; }
+
+
+/* Warm theme — neutralize remaining visible violet fills */
+.yt-play { background: var(--accent) !important; box-shadow: 0 4px 20px -6px var(--accent) !important; }
+.yt-facade:hover .yt-play { box-shadow: 0 8px 30px -8px var(--accent) !important; }
+.badge-conf {
+  background: color-mix(in srgb, var(--accent) 15%, transparent) !important;
+  border-color: color-mix(in srgb, var(--accent) 25%, transparent) !important;
+  color: var(--accent) !important;
+}
+.blog-filter:hover,
+.blog-filter.active {
+  background: color-mix(in srgb, var(--accent) 12%, transparent) !important;
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+}
+#toTop { background: var(--accent) !important; box-shadow: 0 4px 16px -4px var(--accent) !important; }
+#toTop:hover { box-shadow: 0 8px 24px -6px var(--accent) !important; }
+.map-pin { background: var(--accent) !important; box-shadow: 0 0 12px -2px var(--accent) !important; }
+.talk-row.featured::after {
+  background: var(--accent3) !important;
+  color: #3a2a00 !important;
+  box-shadow: 0 2px 8px -2px var(--accent3) !important;
+}
+.hero-avatar { box-shadow: 0 0 30px -8px var(--accent), 0 0 60px -20px var(--accent) !important; }
+.tl-item::before { box-shadow: 0 0 16px -6px var(--accent) !important; }

@@ -216,7 +216,7 @@
       <div class="hero-main">
         <div class="avail-pill"><span class="avail-dot" aria-hidden="true"></span> Available for opportunities</div>
         <div class="hero-eyebrow">Cloud &amp; AI Engineer · SUDO Consultants</div>
-        <h1>Vishnu <em>Rachapudi</em></h1>
+        <h1>Hey there,<br>I'm <em>Vishnu</em></h1>
         <p class="hero-sub">
           <strong>14x AWS Certified</strong> Cloud &amp; AI Engineer and <strong>AWS Golden Jacket</strong> holder.
           I design secure, production-grade cloud systems, build with Gen AI and agentic frameworks, and
@@ -445,7 +445,7 @@
       // Custom violet marker
       var pinIcon = L.divIcon({
         className: 'custom-pin',
-        html: '<div style="width:14px;height:14px;background:#818cf8;border-radius:50%;border:2px solid #fff;box-shadow:0 0 12px rgba(129,140,248,0.7);"></div>',
+        html: '<div style="width:14px;height:14px;background:#148a7f;border-radius:50%;border:2px solid #fff;box-shadow:0 0 12px rgba(20,138,127,0.7);"></div>',
         iconSize: [14, 14],
         iconAnchor: [7, 7]
       });
@@ -475,7 +475,7 @@
           keyboard: true
         })
           .addTo(map)
-          .bindPopup('<strong style="color:#818cf8;">' + loc.title + '</strong><br><span style="font-size:0.85em;">' + loc.desc + '</span>');
+          .bindPopup('<strong style="color:#148a7f;">' + loc.title + '</strong><br><span style="font-size:0.85em;">' + loc.desc + '</span>');
 
         // Guarantee an accessible name on the marker element for the a11y tree
         var el = marker.getElement();
@@ -1279,7 +1279,7 @@
     }
   }
 
-  const saved = localStorage.getItem(STORAGE_KEY) || 'dark';
+  const saved = localStorage.getItem(STORAGE_KEY) || 'light';
   setTheme(saved);
 
   themeSwitch.addEventListener('click', e => {
