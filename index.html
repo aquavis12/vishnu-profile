@@ -590,7 +590,6 @@
     </div>
   </div></div>
 </section>
-</text>
 
 
 <!-- ═══ TALKS ═══ -->
@@ -725,8 +724,13 @@
         <div><div class="talk-title">AWS Student Community Day - Tirupati 2026</div><div class="talk-event">Kiro, End to End: The Agentic IDE, Powers and Crew</div></div>
         <div class="talk-loc">Mohan Babu University, Tirupati, India</div>
       </div>
-      
 
+    </div>
+
+    <div class="talks-pager" id="talksPager" aria-label="Talks pagination">
+      <button class="talks-pager-btn" id="talksPrev" aria-label="Previous talks">‹ Prev</button>
+      <span class="talks-pager-info" id="talksPageInfo">Page 1</span>
+      <button class="talks-pager-btn" id="talksNext" aria-label="More talks">Next ›</button>
     </div>
   </div></div>
 </section>
@@ -783,7 +787,10 @@
     <div class="sec-label">VishTalks</div>
     <h2 id="media-heading">Watch &amp; <em>Listen</em></h2>
 
-    <div class="talks-media-grid" role="list" aria-label="Video talks and podcast episodes">
+    <div class="media-carousel-wrapper">
+      <button class="blog-nav blog-nav-prev" id="mediaPrev" aria-label="Previous">‹</button>
+      <button class="blog-nav blog-nav-next" id="mediaNext" aria-label="Next">›</button>
+    <div class="talks-media-grid media-carousel" id="mediaCarousel" role="list" aria-label="Video talks and podcast episodes">
 
       <div class="media-card" role="listitem">
         <div class="media-type-badge badge-yt">▶ YouTube</div>
@@ -869,13 +876,14 @@
         <div class="media-meta">Tutorial · DevOps · @CloudAndTFbyVishnu</div>
       </div>
 
-      <div class="media-card" role="listitem" style="grid-column:1/-1;">
+      <div class="media-card" role="listitem">
         <div class="media-type-badge badge-spot">♫ Spotify</div>
         <iframe src="https://open.spotify.com/embed/episode/3OTnWRaYcl7FlQtArH3jel?utm_source=generator&theme=0" title="Learn2Upskill Podcast — AWS Cert Journey" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" style="width:100%;height:152px;border:none;border-radius:8px;margin:0.4rem 0;display:block;"></iframe>
         <div class="media-title">Learn2Upskill Podcast — AWS Cert Journey</div>
         <div class="media-meta">Jun 2025 · Spotify · Learn2Upskill</div>
       </div>
 
+    </div>
     </div>
   </div></div>
 </section>
@@ -1554,6 +1562,52 @@
     blogPrev.addEventListener('click', () => blogCarousel.scrollBy({ left: -scrollAmt, behavior: 'smooth' }));
     blogNext.addEventListener('click', () => blogCarousel.scrollBy({ left: scrollAmt, behavior: 'smooth' }));
   }
+
+  /* ─── VISHTALKS (MEDIA) CAROUSEL NAV ─── */
+  const mediaCarousel = document.getElementById('mediaCarousel');
+  const mediaPrev = document.getElementById('mediaPrev');
+  const mediaNext = document.getElementById('mediaNext');
+  if (mediaCarousel && mediaPrev && mediaNext) {
+    const amt = 340;
+    mediaPrev.addEventListener('click', () => mediaCarousel.scrollBy({ left: -amt, behavior: 'smooth' }));
+    mediaNext.addEventListener('click', () => mediaCarousel.scrollBy({ left: amt, behavior: 'smooth' }));
+  }
+
+  /* ─── TALKS PAGINATION ─── */
+  (function () {
+    const list = document.querySelector('.talks-list');
+    const prev = document.getElementById('talksPrev');
+    const next = document.getElementById('talksNext');
+    const info = document.getElementById('talksPageInfo');
+    if (!list || !prev || !next || !info) return;
+
+    // Reorder DOM to newest-first so pagination shows recent/upcoming talks first
+    const rows = Array.from(list.querySelectorAll('.talk-row'));
+    rows.slice().reverse().forEach(row => list.appendChild(row));
+    const ordered = Array.from(list.querySelectorAll('.talk-row'));
+    const perPage = 6;
+    const pages = Math.ceil(ordered.length / perPage);
+    let page = 0;
+
+    function render() {
+      ordered.forEach((row, i) => {
+        const onPage = i >= page * perPage && i < (page + 1) * perPage;
+        row.classList.toggle('is-hidden', !onPage);
+      });
+      info.textContent = 'Page ' + (page + 1) + ' / ' + pages;
+      prev.disabled = page === 0;
+      next.disabled = page >= pages - 1;
+    }
+
+    prev.addEventListener('click', () => {
+      if (page > 0) { page--; render(); list.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+    next.addEventListener('click', () => {
+      if (page < pages - 1) { page++; render(); list.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+
+    render();
+  })();
 
   /* ─── BLOG CATEGORY FILTERS ─── */
   const blogFilterBtns = document.querySelectorAll('.blog-filter');
