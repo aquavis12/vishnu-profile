@@ -5,13 +5,97 @@
     <link>https://www.vishnurachapudi.com/</link>
     <description>Technical articles on AWS, Generative AI, Cloud Security, DevOps, and Agentic AI by Vishnu Rachapudi — 14x AWS Certified Cloud &amp; AI Engineer.</description>
     <language>en-in</language>
-    <lastBuildDate>Mon, 18 Aug 2026 00:00:00 +0530</lastBuildDate>
+    <lastBuildDate>Thu, 17 Sep 2026 00:00:00 +0530</lastBuildDate>
     <atom:link href="https://www.vishnurachapudi.com/rss.xml" rel="self" type="application/rss+xml"/>
     <image>
       <url>https://www.vishnurachapudi.com/profile.png</url>
       <title>Vishnu Rachapudi</title>
       <link>https://www.vishnurachapudi.com/</link>
     </image>
+
+    <item>
+      <title>Reading CloudTrail with DuckDB</title>
+      <link>https://www.vishnurachapudi.com/blogs/aws-duckdb/</link>
+      <description>Putting DuckDB on an EC2 instance to read CloudTrail straight out of S3 — ad-hoc analytical SQL over AWS log data with no Glue crawler and no Athena workgroup.</description>
+      <dc:creator>Vishnu Rachapudi</dc:creator>
+      <pubDate>Fri, 11 Sep 2026 00:00:00 +0530</pubDate>
+      <category>AWS</category>
+      <category>CloudTrail</category>
+      <category>DuckDB</category>
+      <guid isPermaLink="true">https://www.vishnurachapudi.com/blogs/aws-duckdb/</guid>
+    </item>
+
+    <item>
+      <title>AWS Config Beyond Rules: Conformance Packs and Advanced Queries</title>
+      <link>https://www.vishnurachapudi.com/blogs/aws-config/</link>
+      <description>Hands-on with AWS Config conformance packs and advanced queries — the IAM operational best practices pack, what a 25% compliance score really means, and finding unversioned S3 buckets in seconds.</description>
+      <dc:creator>Vishnu Rachapudi</dc:creator>
+      <pubDate>Fri, 11 Sep 2026 00:00:00 +0530</pubDate>
+      <category>AWS</category>
+      <category>Config</category>
+      <category>Security</category>
+      <guid isPermaLink="true">https://www.vishnurachapudi.com/blogs/aws-config/</guid>
+    </item>
+
+    <item>
+      <title>CloudWatch AI Operations: What Investigations Actually Does</title>
+      <link>https://www.vishnurachapudi.com/blogs/cloudwatch-ai-ops/</link>
+      <description>Hands-on with Amazon CloudWatch AI Operations Investigations — investigation group setup, IAM control, and a Lambda IAM failure investigated end to end into a real RCA.</description>
+      <dc:creator>Vishnu Rachapudi</dc:creator>
+      <pubDate>Tue, 01 Sep 2026 00:00:00 +0530</pubDate>
+      <category>AWS</category>
+      <category>CloudWatch</category>
+      <category>Agentic AI</category>
+      <guid isPermaLink="true">https://www.vishnurachapudi.com/blogs/cloudwatch-ai-ops/</guid>
+    </item>
+
+    <item>
+      <title>Kiro CLI + CloudWatch MCP: Investigating Alarms From a Terminal</title>
+      <link>https://www.vishnurachapudi.com/blogs/kiro-cli-cloudwatch-mcp/</link>
+      <description>Install Kiro CLI on CloudShell or your own Linux machine, wire up the AWS CloudWatch and CloudTrail MCP servers, and investigate a CloudWatch alarm end to end from the terminal.</description>
+      <dc:creator>Vishnu Rachapudi</dc:creator>
+      <pubDate>Tue, 01 Sep 2026 00:00:00 +0530</pubDate>
+      <category>AWS</category>
+      <category>Kiro</category>
+      <category>CloudWatch</category>
+      <guid isPermaLink="true">https://www.vishnurachapudi.com/blogs/kiro-cli-cloudwatch-mcp/</guid>
+    </item>
+
+    <item>
+      <title>I Built a Kiro Power That Scans Your AWS Account Without Leaving the IDE</title>
+      <link>https://www.vishnurachapudi.com/blogs/aws-kiro-security/</link>
+      <description>An open-source Kiro Power for AWS security scanning — 194 checks across 43 services, three scan modes, and four MCP servers, pointed at a real account scoring 72/100 and 12.5% CIS compliance.</description>
+      <dc:creator>Vishnu Rachapudi</dc:creator>
+      <pubDate>Mon, 18 Aug 2026 00:00:00 +0530</pubDate>
+      <category>AWS</category>
+      <category>Kiro Powers</category>
+      <category>Security</category>
+      <guid isPermaLink="true">https://www.vishnurachapudi.com/blogs/aws-kiro-security/</guid>
+    </item>
+
+    <item>
+      <title>AWS Billing and Cost Management Dashboards: Managed Reports and Scheduled Delivery</title>
+      <link>https://www.vishnurachapudi.com/blogs/aws-billing/</link>
+      <description>Setting up AWS Billing and Cost Management dashboards with managed reports and scheduled delivery — cost, EBS, and data transfer insights landing in your inbox automatically.</description>
+      <dc:creator>Vishnu Rachapudi</dc:creator>
+      <pubDate>Mon, 18 Aug 2026 00:00:00 +0530</pubDate>
+      <category>AWS</category>
+      <category>FinOps</category>
+      <category>Billing</category>
+      <guid isPermaLink="true">https://www.vishnurachapudi.com/blogs/aws-billing/</guid>
+    </item>
+
+    <item>
+      <title>Letting CloudTrail write the IAM policy</title>
+      <link>https://www.vishnurachapudi.com/blogs/aws-cloudtrail-iam/</link>
+      <description>Using IAM Access Analyzer to read CloudTrail and generate a least-privilege policy — replacing AdministratorAccess with the ten read-only calls the account actually makes.</description>
+      <dc:creator>Vishnu Rachapudi</dc:creator>
+      <pubDate>Mon, 18 Aug 2026 00:00:00 +0530</pubDate>
+      <category>AWS</category>
+      <category>IAM</category>
+      <category>Security</category>
+      <guid isPermaLink="true">https://www.vishnurachapudi.com/blogs/aws-cloudtrail-iam/</guid>
+    </item>
 
     <item>
       <title>I Built a Kiro Power for AWS Resilience Hub</title>
