@@ -2425,3 +2425,125 @@ section > .wrap > .panel {
   .blog-slide { flex: 0 0 280px; }
   .blog-nav { display: none; }
 }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   STUDIO OVERHAUL — 2026 full-UI retune (override layer)
+   Modern oversized-type + soft floating cards, dark-first with a
+   refined light mode. Keeps the code-editor terminal identity.
+   ═══════════════════════════════════════════════════════════════ */
+
+:root {
+  --bg: #0a0a0f;
+  --bg2: #101018;
+  --bg3: #16161f;
+  --surface: #16161f;
+  --raised: #1d1d28;
+  --border: rgba(255,255,255,0.08);
+  --border-hover: rgba(129,140,248,0.35);
+  --text: #f4f4f7;
+  --muted: #a7a7b4;
+  --faint: #74747f;
+  --accent: #7c7cf0;
+  --accent2: #a78bfa;
+  --accent3: #2dd4bf;
+  --link: #b9b9fb;
+  --glass: rgba(12,12,18,0.72);
+  --radius: 20px;
+  --radius-sm: 12px;
+  --shadow: 0 10px 40px rgba(0,0,0,0.45);
+  --shadow-glow: 0 20px 60px -20px rgba(124,124,240,0.35);
+}
+
+html[data-theme="light"] {
+  --bg: #f4f4f7;
+  --bg2: #ffffff;
+  --bg3: #f0f0f6;
+  --surface: #ffffff;
+  --raised: #f6f6fb;
+  --border: rgba(17,17,27,0.09);
+  --border-hover: rgba(79,70,229,0.35);
+  --text: #14141c;
+  --muted: #55555f;
+  --faint: #8a8a95;
+  --accent: #5b57e6;
+  --accent2: #7c3aed;
+  --accent3: #0d9488;
+  --link: #5b57e6;
+  --glass: rgba(255,255,255,0.8);
+  --shadow: 0 10px 40px rgba(20,20,40,0.08);
+  --shadow-glow: 0 20px 60px -20px rgba(91,87,230,0.25);
+}
+
+/* ─── Availability pill ─── */
+.avail-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.9rem;
+  background: color-mix(in srgb, var(--accent3) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent3) 35%, transparent);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  color: var(--accent3);
+  margin-bottom: 1.1rem;
+  animation: slideUp 0.6s ease both;
+}
+.avail-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--accent3);
+  animation: avail-pulse 1.8s ease-out infinite;
+}
+@keyframes avail-pulse {
+  0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent3) 65%, transparent); }
+  70%  { box-shadow: 0 0 0 7px color-mix(in srgb, var(--accent3) 0%, transparent); }
+  100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent3) 0%, transparent); }
+}
+
+/* ─── Nav "Let's Talk" CTA ─── */
+.nav-cta {
+  font-family: var(--font-mono);
+  font-size: 0.8rem !important;
+  font-weight: 600;
+  color: var(--bg) !important;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  padding: 0.5rem 1rem !important;
+  border-radius: var(--radius-pill);
+  transition: transform var(--transition), box-shadow var(--transition);
+  box-shadow: 0 4px 14px -4px var(--accent);
+}
+.nav-cta::after { display: none !important; }
+.nav-cta:hover {
+  color: var(--bg) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px -6px var(--accent);
+}
+html[data-theme="light"] .nav-cta { color: #fff !important; }
+
+/* ─── Oversized hero name ─── */
+h1 {
+  font-size: clamp(3rem, 8vw, 6rem) !important;
+  letter-spacing: -0.03em;
+  line-height: 0.98;
+}
+
+/* ─── Softer, floating cards ─── */
+.panel {
+  box-shadow: var(--shadow);
+}
+.panel:hover {
+  box-shadow: var(--shadow-glow);
+  transform: translateY(-3px);
+}
+
+/* Frosted, floating nav */
+nav {
+  background: var(--glass);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+}
+
+/* Rounder buttons to match the studio radius */
+.btn { border-radius: var(--radius-pill); }
