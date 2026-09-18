@@ -119,6 +119,7 @@ footer.post{margin:60px 0 0;padding:26px 0 70px;border-top:1px solid var(--line)
 
 <article>
 <h2 id="s01"><span class="n">01</span>What actually changed</h2>
+<p class="callout">Upload a zip of Python source. No Dockerfile. Get a running container on EKS. That is <strong>Elastic Beanstalk Cluster Mode</strong>, launched this week — Beanstalk apps now run on EKS instead of EC2 instances you own. Cloud Native Buildpacks handle the containerization: I uploaded four files (<code>app.py</code>, <code>requirements.txt</code>, <code>Procfile</code>, <code>runtime.txt</code>), Beanstalk detected Python, built the image, pushed it to ECR, and ran it.</p>
 <p>In Standard Mode, Beanstalk provisions EC2 instances in your account, installs a platform on them, and manages the Auto Scaling group. You can SSH in. You can see the instances. That is still there and still fully supported.</p>
 <p>Cluster Mode is different. You pick <strong>Cluster</strong> as the deployment type, hand over source code, a Dockerfile, or a container image, and Beanstalk creates and operates an EKS cluster underneath. The first deployment for a given set of subnets triggers cluster creation. Subsequent deployments reuse it.</p>
 <p>The console makes the tradeoff unusually explicit — Standard is labelled free-tier eligible with full instance-level access; Cluster is labelled best for multiple apps that share infrastructure, powered by EKS.</p>
@@ -389,7 +390,6 @@ def burn():
    <div class="av">VR</div>
    <div class="who"><b>Vishnu Rachapudi</b><br><span class="note">Cloud &amp; AI Engineer &middot; AWS Community Builder (Security)</span></div>
  </div>
- <p class="note">Written from a real deployment into Elastic Beanstalk Cluster Mode. Screenshots and the event log are from my own AWS account.</p>
 </footer>
 </main>
 </body>
