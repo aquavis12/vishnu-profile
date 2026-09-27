@@ -14,6 +14,19 @@
     </image>
 
     <item>
+      <title>Lambda CI/CD with GitHub Actions and S3 Reference Mode</title>
+      <link>https://builder.aws.com/content/3JmiZT7GPJ6ydDKaF0s7m9gh5Ld/lambda-cicd-with-github-actions-and-s3-reference-mode</link>
+      <description>Building a CI/CD pipeline for AWS Lambda with GitHub Actions and S3 reference mode — packaging, uploading to S3, and deploying function code straight from an S3 object.</description>
+      <dc:creator>Vishnu Rachapudi</dc:creator>
+      <pubDate>Wed, 17 Sep 2026 00:00:00 +0530</pubDate>
+      <category>AWS</category>
+      <category>Lambda</category>
+      <category>GitHub Actions</category>
+      <category>CI/CD</category>
+      <guid isPermaLink="true">https://builder.aws.com/content/3JmiZT7GPJ6ydDKaF0s7m9gh5Ld/lambda-cicd-with-github-actions-and-s3-reference-mode</guid>
+    </item>
+
+    <item>
       <title>Elastic Beanstalk Cluster Mode: Beanstalk is now EKS underneath</title>
       <link>https://www.vishnurachapudi.com/blogs/aws-eb-eks/</link>
       <description>Hands-on with AWS Elastic Beanstalk Cluster Mode: what changed, the Cloud Native Buildpacks builder trap, Kubernetes requests and limits, the full CloudFormation timeline, cost, and what I would actually do.</description>
