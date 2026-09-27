@@ -5,13 +5,26 @@
     <link>https://www.vishnurachapudi.com/</link>
     <description>Technical articles on AWS, Generative AI, Cloud Security, DevOps, and Agentic AI by Vishnu Rachapudi — 14x AWS Certified Cloud &amp; AI Engineer.</description>
     <language>en-in</language>
-    <lastBuildDate>Thu, 17 Sep 2026 00:00:00 +0530</lastBuildDate>
+    <lastBuildDate>Wed, 17 Sep 2026 00:00:00 +0530</lastBuildDate>
     <atom:link href="https://www.vishnurachapudi.com/rss.xml" rel="self" type="application/rss+xml"/>
     <image>
       <url>https://www.vishnurachapudi.com/profile.png</url>
       <title>Vishnu Rachapudi</title>
       <link>https://www.vishnurachapudi.com/</link>
     </image>
+
+    <item>
+      <title>Elastic Beanstalk Cluster Mode: Beanstalk is now EKS underneath</title>
+      <link>https://www.vishnurachapudi.com/blogs/aws-eb-eks/</link>
+      <description>Hands-on with AWS Elastic Beanstalk Cluster Mode: what changed, the Cloud Native Buildpacks builder trap, Kubernetes requests and limits, the full CloudFormation timeline, cost, and what I would actually do.</description>
+      <dc:creator>Vishnu Rachapudi</dc:creator>
+      <pubDate>Wed, 17 Sep 2026 00:00:00 +0530</pubDate>
+      <category>AWS</category>
+      <category>Elastic Beanstalk</category>
+      <category>EKS</category>
+      <category>Kubernetes</category>
+      <guid isPermaLink="true">https://www.vishnurachapudi.com/blogs/aws-eb-eks/</guid>
+    </item>
 
     <item>
       <title>Reading CloudTrail with DuckDB</title>
