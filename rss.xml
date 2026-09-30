@@ -5,13 +5,25 @@
     <link>https://www.vishnurachapudi.com/</link>
     <description>Technical articles on AWS, Generative AI, Cloud Security, DevOps, and Agentic AI by Vishnu Rachapudi — 14x AWS Certified Cloud &amp; AI Engineer.</description>
     <language>en-in</language>
-    <lastBuildDate>Wed, 17 Sep 2026 00:00:00 +0530</lastBuildDate>
+    <lastBuildDate>Mon, 29 Sep 2026 00:00:00 +0530</lastBuildDate>
     <atom:link href="https://www.vishnurachapudi.com/rss.xml" rel="self" type="application/rss+xml"/>
     <image>
       <url>https://www.vishnurachapudi.com/profile.png</url>
       <title>Vishnu Rachapudi</title>
       <link>https://www.vishnurachapudi.com/</link>
     </image>
+
+    <item>
+      <title>How I Passed AWS Certified AI Business Strategist (AB1-C01 Beta)</title>
+      <link>https://dev.to/aws-builders/how-i-passed-aws-certified-ai-business-strategist-ab1-c01-beta-369o</link>
+      <description>Study guide, vocabulary cheat sheet, and exam traps for the AWS Certified AI Business Strategist (AB1-C01) beta — 85 questions, 3 hours, scored 743/1000, my 15th AWS certification.</description>
+      <dc:creator>Vishnu Rachapudi</dc:creator>
+      <pubDate>Mon, 29 Sep 2026 00:00:00 +0530</pubDate>
+      <category>AWS</category>
+      <category>Certification</category>
+      <category>AI Business Strategist</category>
+      <guid isPermaLink="true">https://dev.to/aws-builders/how-i-passed-aws-certified-ai-business-strategist-ab1-c01-beta-369o</guid>
+    </item>
 
     <item>
       <title>Lambda CI/CD with GitHub Actions and S3 Reference Mode</title>

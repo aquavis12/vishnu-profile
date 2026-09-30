@@ -1,1 +1,6 @@
 .omni/mcp-port
+.claude/
+.github/
+.cursor/
+.kiro/
+.agents/
