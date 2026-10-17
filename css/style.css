@@ -4303,3 +4303,39 @@ body::before, body::after { will-change: transform; transform: translateZ(0); }
 @media (prefers-reduced-motion: reduce) {
   .vc-dot { animation: none; }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   PROFESSIONAL UI POLISH (overrides)
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Flatten 3D card tilts to clean vertical lifts — reads more professional */
+.id-badge:hover,
+.media-card:hover,
+.blog-card:hover,
+.highlight-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Themed, slim page scrollbar */
+html { scrollbar-width: thin; scrollbar-color: var(--accent) transparent; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--border-hover);
+  border-radius: 100px;
+  border: 2px solid var(--bg);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* Slightly calmer, more consistent section rhythm on large screens */
+@media (min-width: 900px) {
+  section { padding-top: 5.5rem; padding-bottom: 5.5rem; }
+}
+
+/* Refined primary button: steadier, less neon on hover */
+.btn-primary {
+  box-shadow: 0 2px 10px rgba(79,140,240,0.22);
+}
+.btn-primary:hover {
+  box-shadow: 0 6px 20px rgba(79,140,240,0.30);
+}
