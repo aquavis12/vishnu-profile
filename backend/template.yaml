@@ -1,0 +1,68 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Visitor counter for vishnurachapudi.com — HTTP API + Lambda + DynamoDB.
+  Deploy with: sam build && sam deploy --guided
+
+Parameters:
+  AllowOrigin:
+    Type: String
+    Default: https://www.vishnurachapudi.com
+    Description: CORS origin allowed to call the counter API.
+
+Globals:
+  Function:
+    Timeout: 10
+    MemorySize: 128
+    Runtime: python3.13
+
+Resources:
+  CounterTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: visitor-counter
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+
+  CounterFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambda_function.handler
+      CodeUri: .
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref CounterTable
+          ITEM_ID: site
+          ALLOW_ORIGIN: !Ref AllowOrigin
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref CounterTable
+      Events:
+        GetCount:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref CounterApi
+            Path: /count
+            Method: GET
+
+  CounterApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      CorsConfiguration:
+        AllowOrigins:
+          - !Ref AllowOrigin
+        AllowMethods:
+          - GET
+          - OPTIONS
+        AllowHeaders:
+          - Content-Type
+
+Outputs:
+  CounterApiUrl:
+    Description: Paste this into COUNTER_API in index.html (append nothing; path /count is included).
+    Value: !Sub "https://${CounterApi}.execute-api.${AWS::Region}.amazonaws.com/count"

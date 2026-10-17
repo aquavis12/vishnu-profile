@@ -4,12 +4,16 @@
 
   <url>
     <loc>https://www.vishnurachapudi.com/</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
       <image:loc>https://www.vishnurachapudi.com/profile.webp</image:loc>
       <image:title>Vishnu Rachapudi — 15x AWS Certified Cloud and AI Engineer</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://m.media-amazon.com/images/P/B0HN5TCVML.01._SCLZZZZZZZ_SX500_.jpg</image:loc>
+      <image:title>Mastering Amazon EC2: Compute, Storage, Networking and Recovery — by Venkata Pavan Vishnu Rachapudi</image:title>
     </image:image>
   </url>
 

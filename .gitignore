@@ -1,6 +1,44 @@
+# ─── AI assistant / editor config ───
 .omni/mcp-port
 .claude/
 .github/
 .cursor/
 .kiro/
 .agents/
+
+# ─── AWS SAM / Lambda backend build artifacts ───
+backend/.aws-sam/
+.aws-sam/
+samconfig.toml
+packaged.yaml
+
+# ─── Python ───
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# ─── Node / tooling (if ever added) ───
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# ─── Environment & secrets ───
+.env
+.env.*
+*.pem
+*.key
+
+# ─── OS / editor cruft ───
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*~
+.vscode/
+.idea/
+
+# ─── Logs ───
+*.log
