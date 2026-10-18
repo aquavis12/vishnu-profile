@@ -18,6 +18,17 @@
   </url>
 
   <url>
+    <loc>https://www.vishnurachapudi.com/books/mastering-amazon-ec2/</loc>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://www.vishnurachapudi.com/books/mastering-amazon-ec2/cover.jpg</image:loc>
+      <image:title>Mastering Amazon EC2: Compute, Storage, Networking and Recovery — by Venkata Pavan Vishnu Rachapudi</image:title>
+    </image:image>
+  </url>
+
+  <url>
     <loc>https://www.vishnurachapudi.com/gallery/</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
