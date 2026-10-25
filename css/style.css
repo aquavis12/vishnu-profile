@@ -4339,3 +4339,28 @@ html { scrollbar-width: thin; scrollbar-color: var(--accent) transparent; }
 .btn-primary:hover {
   box-shadow: 0 6px 20px rgba(79,140,240,0.30);
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   BOOKS LIST (multiple authored books)
+   ═══════════════════════════════════════════════════════════════ */
+.books-list {
+  display: grid;
+  gap: 2.5rem;
+  margin-top: 1.5rem;
+}
+.books-list .book-grid {
+  margin-top: 0;
+  padding-bottom: 2.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.books-list .book-grid:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+.book-name {
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}

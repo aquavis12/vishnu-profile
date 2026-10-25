@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b0e14">
+
+<title>AWS Cloud Practitioner (CLF-C02) & AI Practitioner (AIF-C01): A Simple Guide | Vishnu Rachapudi</title>
+<meta name="description" content="A beginner-friendly study guide by Vishnu Rachapudi to pass both the AWS Cloud Practitioner (CLF-C02) and AI Practitioner (AIF-C01) exams — in simple English, with pictures and practice.">
+<meta name="author" content="Vishnu Rachapudi">
+<meta name="keywords" content="AWS Cloud Practitioner, CLF-C02, AWS AI Practitioner, AIF-C01, AWS certification guide, pass AWS exam, AWS beginner book, Vishnu Rachapudi">
+<link rel="canonical" href="https://www.vishnurachapudi.com/books/aws-practitioner-guide/">
+<link rel="icon" type="image/webp" href="https://www.vishnurachapudi.com/profile.webp">
+
+<meta property="og:type" content="book">
+<meta property="og:title" content="AWS Cloud Practitioner (CLF-C02) & AI Practitioner (AIF-C01): A Simple Guide to Pass Both Exams">
+<meta property="og:description" content="Pass AWS Cloud Practitioner and AI Practitioner, in simple English, with pictures and practice.">
+<meta property="og:url" content="https://www.vishnurachapudi.com/books/aws-practitioner-guide/">
+<meta property="og:image" content="https://www.vishnurachapudi.com/books/aws-practitioner-guide/cover.jpg">
+<meta property="og:site_name" content="Vishnu Rachapudi">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AWS Cloud Practitioner (CLF-C02) & AI Practitioner (AIF-C01): A Simple Guide">
+<meta name="twitter:description" content="Pass AWS Cloud Practitioner and AI Practitioner, in simple English, with pictures and practice.">
+<meta name="twitter:image" content="https://www.vishnurachapudi.com/books/aws-practitioner-guide/cover.jpg">
+<meta name="twitter:creator" content="@vishnu_cloud">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Book",
+  "name": "AWS Cloud Practitioner (CLF-C02) and AI Practitioner (AIF-C01): A Simple Guide to Pass Both Exams",
+  "author": { "@type": "Person", "name": "Vishnu Rachapudi", "url": "https://www.vishnurachapudi.com/" },
+  "bookFormat": "https://schema.org/EBook",
+  "inLanguage": "en",
+  "image": "https://www.vishnurachapudi.com/books/aws-practitioner-guide/cover.jpg",
+  "description": "Pass AWS Cloud Practitioner and AI Practitioner, in simple English, with pictures and practice.",
+  "url": "https://www.vishnurachapudi.com/books/aws-practitioner-guide/",
+  "sameAs": ["https://www.amazon.in/dp/B0HP7MF8GC", "https://www.amazon.com/dp/B0HP7MF8GC"]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.vishnurachapudi.com/" },
+    { "@type": "ListItem", "position": 2, "name": "Books", "item": "https://www.vishnurachapudi.com/books/" },
+    { "@type": "ListItem", "position": 3, "name": "AWS Practitioner Guide", "item": "https://www.vishnurachapudi.com/books/aws-practitioner-guide/" }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#0b0e14; --bg2:#121620; --surface:#1a1f2b; --border:rgba(96,131,189,.16);
+  --text:#eef1f6; --muted:#a3acbd; --faint:#7d879a;
+  --accent:#4f8cf0; --accent2:#5aa7d8; --gold:#e0a93b;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --head:"Space Grotesk",var(--sans);
+  --radius:14px; --radius-sm:9px; --radius-pill:100px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font:400 17px/1.7 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none;transition:color .2s}
+a:hover{color:var(--accent2)}
+.wrap{max-width:1000px;margin:0 auto;padding:0 22px}
+
+nav.bar{position:sticky;top:0;z-index:20;background:rgba(11,14,20,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+nav.bar .wrap{display:flex;align-items:center;gap:18px;height:56px}
+.brand{font-family:var(--mono);font-weight:500;color:#fff;font-size:15px}
+.brand span{color:var(--accent)}
+.back{margin-left:auto;font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+
+.hero{display:grid;grid-template-columns:300px 1fr;gap:3rem;align-items:start;padding:3.5rem 0 2rem}
+.cover-col{display:flex;flex-direction:column;align-items:center;gap:1rem}
+.cover{width:100%;max-width:300px;border-radius:var(--radius-sm);border:1px solid var(--border);box-shadow:0 14px 44px rgba(0,0,0,.5),0 0 40px rgba(79,140,240,.12)}
+.badge{font-family:var(--mono);font-size:.72rem;letter-spacing:.04em;color:var(--gold);background:rgba(224,169,59,.1);border:1px solid rgba(224,169,59,.25);padding:.3rem .8rem;border-radius:var(--radius-pill)}
+
+.eyebrow{font-family:var(--mono);font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:.6rem}
+h1{font-family:var(--head);font-size:clamp(1.7rem,4vw,2.5rem);line-height:1.18;letter-spacing:-.02em;font-weight:700;margin-bottom:.5rem}
+.subtitle{color:var(--muted);font-size:1.05rem;margin-bottom:1rem}
+.tagline{font-family:var(--mono);color:var(--accent2);font-weight:500;font-size:1rem;line-height:1.5;margin-bottom:1.25rem}
+.lead{color:var(--muted);line-height:1.75;margin-bottom:1.5rem}
+
+.btn-row{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.25rem}
+.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.75rem 1.4rem;border-radius:var(--radius-sm);font-weight:600;font-size:.9rem;transition:all .25s;cursor:pointer}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 2px 10px rgba(79,140,240,.22)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(79,140,240,.30);color:#fff}
+.btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
+.btn-ghost:hover{border-color:var(--accent);transform:translateY(-2px)}
+.byline{font-family:var(--mono);font-size:.8rem;color:var(--faint)}
+
+.panel{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:2.25rem;margin-bottom:1.5rem}
+.panel h2{font-family:var(--head);font-size:1.4rem;margin-bottom:1.25rem}
+.learn{list-style:none;display:grid;gap:.7rem}
+.learn li{position:relative;padding-left:1.6rem;color:var(--muted);line-height:1.55}
+.learn li::before{content:'▸';position:absolute;left:0;color:var(--accent);font-weight:700}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.exam-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1.5rem}
+.exam-card .code{font-family:var(--mono);font-size:.72rem;color:var(--gold);letter-spacing:.06em}
+.exam-card h3{font-family:var(--head);font-size:1.1rem;margin:.35rem 0 .6rem}
+.exam-card p{color:var(--muted);font-size:.92rem;line-height:1.6}
+
+.tags{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem}
+.tag{font-family:var(--mono);font-size:.72rem;padding:.35rem .75rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-pill);color:var(--accent2)}
+
+.author-box{display:flex;gap:1.25rem;align-items:center}
+.author-box img{width:72px;height:72px;border-radius:50%;border:2px solid var(--accent);object-fit:cover}
+.author-box .who b{color:var(--text);font-family:var(--head);font-size:1.05rem}
+.author-box .who p{color:var(--muted);font-size:.9rem;margin-top:.25rem}
+
+footer{border-top:1px solid var(--border);padding:2rem 0;text-align:center;color:var(--faint);font-size:.85rem;margin-top:2rem}
+
+@media (max-width:720px){
+  .hero{grid-template-columns:1fr;gap:2rem}
+  .cover-col{max-width:260px;margin:0 auto}
+  .two-col{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav class="bar">
+  <div class="wrap">
+    <a class="brand" href="https://www.vishnurachapudi.com/">vishnu<span>.</span></a>
+    <a class="back" href="https://www.vishnurachapudi.com/#book">← back to portfolio</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <section class="hero">
+    <div class="cover-col">
+      <img class="cover" src="cover.jpg" alt="AWS Cloud Practitioner (CLF-C02) and AI Practitioner (AIF-C01): A Simple Guide to Pass Both Exams — book cover" width="300" height="450" fetchpriority="high">
+      <span class="badge">★ New · Kindle Edition</span>
+    </div>
+
+    <div>
+      <div class="eyebrow">Authored Book</div>
+      <h1>AWS Cloud Practitioner &amp; AI Practitioner</h1>
+      <p class="subtitle">A Simple Guide to Pass Both Exams (CLF-C02 &amp; AIF-C01)</p>
+      <p class="tagline">Pass AWS Cloud Practitioner and AI Practitioner, in simple English, with pictures and practice.</p>
+      <p class="lead">
+        A beginner-friendly study guide that covers both foundational AWS exams in one place.
+        It explains the concepts in plain language, uses visuals to make ideas stick, and gives you
+        practice so you walk into each exam ready — no prior cloud or AI background needed.
+      </p>
+
+      <div class="btn-row">
+        <a class="btn btn-primary" href="https://www.amazon.in/dp/B0HP7MF8GC" target="_blank" rel="noopener noreferrer">Buy on Amazon.in ↗</a>
+        <a class="btn btn-ghost" href="https://www.amazon.com/dp/B0HP7MF8GC" target="_blank" rel="noopener noreferrer">Buy on Amazon.com ↗</a>
+      </div>
+      <p class="byline">By Venkata Pavan Vishnu Rachapudi · Kindle Edition</p>
+
+      <div class="tags">
+        <span class="tag">CLF-C02</span>
+        <span class="tag">AIF-C01</span>
+        <span class="tag">Certification</span>
+        <span class="tag">Beginner-friendly</span>
+        <span class="tag">Practice</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Two exams, one guide</h2>
+    <div class="two-col">
+      <div class="exam-card">
+        <div class="code">CLF-C02</div>
+        <h3>AWS Certified Cloud Practitioner</h3>
+        <p>The foundational AWS certification — cloud concepts, core services, security, pricing, and the shared responsibility model, explained simply.</p>
+      </div>
+      <div class="exam-card">
+        <div class="code">AIF-C01</div>
+        <h3>AWS Certified AI Practitioner</h3>
+        <p>The foundational AI/ML certification — generative AI, machine learning basics, responsible AI, and AWS AI services, in plain English.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Who it's for</h2>
+    <ul class="learn">
+      <li>Students and career switchers starting their AWS journey</li>
+      <li>Anyone who wants both foundational certifications without wading through dense material</li>
+      <li>Readers who learn better with pictures and worked examples than walls of text</li>
+      <li>Professionals who want a quick, confidence-building path to passing both exams</li>
+    </ul>
+  </section>
+
+  <section class="panel">
+    <h2>About the author</h2>
+    <div class="author-box">
+      <img src="https://www.vishnurachapudi.com/profile.webp" alt="Vishnu Rachapudi" width="72" height="72" loading="lazy">
+      <div class="who">
+        <b>Venkata Pavan Vishnu Rachapudi</b>
+        <p>Cloud Engineer, AWS Community Builder in Security, and AWS Golden Jacket holder with 15 AWS certifications. <a href="https://www.vishnurachapudi.com/">See the full portfolio →</a></p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">&copy; 2026 Vishnu Rachapudi · <a href="https://www.vishnurachapudi.com/">vishnurachapudi.com</a></div>
+</footer>
+
+</body>
+</html>
