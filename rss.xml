@@ -3,15 +3,28 @@
   <channel>
     <title>Vishnu Rachapudi — Cloud &amp; AI Blog</title>
     <link>https://www.vishnurachapudi.com/</link>
-    <description>Technical articles on AWS, Generative AI, Cloud Security, DevOps, and Agentic AI by Vishnu Rachapudi — 15x AWS Certified Cloud &amp; AI Engineer.</description>
+    <description>Technical articles on AWS, Generative AI, Cloud Security, DevOps, and Agentic AI by Vishnu Rachapudi — 15x AWS Certified Cloud Engineer.</description>
     <language>en-in</language>
-    <lastBuildDate>Mon, 29 Sep 2026 00:00:00 +0530</lastBuildDate>
+    <lastBuildDate>Thu, 22 Oct 2026 00:00:00 +0530</lastBuildDate>
     <atom:link href="https://www.vishnurachapudi.com/rss.xml" rel="self" type="application/rss+xml"/>
     <image>
       <url>https://www.vishnurachapudi.com/profile.png</url>
       <title>Vishnu Rachapudi</title>
       <link>https://www.vishnurachapudi.com/</link>
     </image>
+
+    <item>
+      <title>I Fed AWS Transform a 1.4 KB CSV. It Built Me a Storage Business Case.</title>
+      <link>https://www.vishnurachapudi.com/blogs/aws-transform-storage-assessment/</link>
+      <description>A hands-on run of the AWS Transform storage assessment in Mumbai: a plain CSV of 9 storage volumes, how Transform routed them, the TCO it produced, and the assumptions behind it.</description>
+      <dc:creator>Vishnu Rachapudi</dc:creator>
+      <pubDate>Thu, 22 Oct 2026 00:00:00 +0530</pubDate>
+      <category>AWS</category>
+      <category>AWS Transform</category>
+      <category>Storage</category>
+      <category>Migration</category>
+      <guid isPermaLink="true">https://www.vishnurachapudi.com/blogs/aws-transform-storage-assessment/</guid>
+    </item>
 
     <item>
       <title>How I Passed AWS Certified AI Business Strategist (AB1-C01 Beta)</title>
