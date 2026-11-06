@@ -5,13 +5,26 @@
     <link>https://www.vishnurachapudi.com/</link>
     <description>Technical articles on AWS, Generative AI, Cloud Security, DevOps, and Agentic AI by Vishnu Rachapudi — 15x AWS Certified Cloud Engineer.</description>
     <language>en-in</language>
-    <lastBuildDate>Thu, 22 Oct 2026 00:00:00 +0530</lastBuildDate>
+    <lastBuildDate>Thu, 06 Nov 2026 00:00:00 +0530</lastBuildDate>
     <atom:link href="https://www.vishnurachapudi.com/rss.xml" rel="self" type="application/rss+xml"/>
     <image>
       <url>https://www.vishnurachapudi.com/profile.png</url>
       <title>Vishnu Rachapudi</title>
       <link>https://www.vishnurachapudi.com/</link>
     </image>
+
+    <item>
+      <title>AWS DevOps Agent Custom Agent: A Monthly AWS Security Audit</title>
+      <link>https://www.vishnurachapudi.com/blogs/aws-devops-agent-monthly-security-audit/</link>
+      <description>I built a custom AWS DevOps Agent that runs a monthly AWS security audit, posts findings to Slack, and found a plaintext password in a Lambda. No code.</description>
+      <dc:creator>Vishnu Rachapudi</dc:creator>
+      <pubDate>Thu, 06 Nov 2026 00:00:00 +0530</pubDate>
+      <category>AWS</category>
+      <category>DevOps</category>
+      <category>Security</category>
+      <category>Agentic AI</category>
+      <guid isPermaLink="true">https://www.vishnurachapudi.com/blogs/aws-devops-agent-monthly-security-audit/</guid>
+    </item>
 
     <item>
       <title>I Fed AWS Transform a 1.4 KB CSV. It Built Me a Storage Business Case.</title>
