@@ -4364,3 +4364,45 @@ html { scrollbar-width: thin; scrollbar-color: var(--accent) transparent; }
   color: var(--text);
   margin-bottom: 0.5rem;
 }
+
+/* ============================================================
+   ✨ Premium aurora hero (v2026-11) — richer nebula glow + drifting orbs.
+   Enhances the existing #hero (keeps its ::before; adds ::after orbs).
+   Theme-aware; reduced-motion freezes the motion.
+   ============================================================ */
+#hero::before {
+  background:
+    radial-gradient(760px 320px at 8% -10%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 60%),
+    radial-gradient(680px 340px at 100% 120%, color-mix(in srgb, var(--accent3, #7b5cff) 20%, transparent), transparent 60%),
+    radial-gradient(520px 260px at 60% 120%, color-mix(in srgb, var(--accent2) 12%, transparent), transparent 60%) !important;
+  opacity: .9;
+}
+/* drifting, blurred glow orbs behind the hero content */
+#hero::after {
+  content: "";
+  position: absolute; z-index: 0; pointer-events: none;
+  width: 320px; height: 320px; border-radius: 50%;
+  top: -120px; right: -80px; filter: blur(60px); opacity: .5;
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent) 65%, transparent), transparent 70%);
+  animation: heroOrb 16s ease-in-out infinite;
+}
+#hero > .wrap { position: relative; z-index: 1; }
+@keyframes heroOrb {
+  0%, 100% { transform: translate(0,0) scale(1); }
+  50% { transform: translate(-50px, 46px) scale(1.15); }
+}
+/* a second orb via a lightweight pseudo on the inner wrap */
+#hero > .wrap::before {
+  content: ""; position: absolute; z-index: -1; pointer-events: none;
+  width: 300px; height: 300px; border-radius: 50%;
+  left: -140px; bottom: -160px; filter: blur(60px); opacity: .42;
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent3, #7b5cff) 60%, transparent), transparent 70%);
+  animation: heroOrb2 20s ease-in-out infinite;
+}
+@keyframes heroOrb2 {
+  0%, 100% { transform: translate(0,0) scale(1); }
+  50% { transform: translate(44px, -38px) scale(1.12); }
+}
+@media (prefers-reduced-motion: reduce) {
+  #hero::after, #hero > .wrap::before { animation: none; }
+}
