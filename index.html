@@ -1,10 +1,10 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#0a0c0f" />
-  <meta name="color-scheme" content="dark light" />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="color-scheme" content="light" />
 
   <!-- ═══ ICONS ═══ -->
   <link rel="icon" type="image/webp" href="https://www.vishnurachapudi.com/profile.webp" />
@@ -329,12 +329,6 @@
     <span></span><span></span><span></span>
   </button>
   <ul class="nav-links">
-    <li>
-      <div class="theme-toggle" id="themeSwitch" role="group" aria-label="Theme switch">
-        <button type="button" data-theme="dark" aria-label="Dark theme" title="Dark">🌙</button>
-        <button type="button" data-theme="light" aria-label="Light theme" title="Light">☀️</button>
-      </div>
-    </li>
     <li><a href="#book">Books</a></li>
     <li><a href="#about">About</a></li>
     <li><a href="#certifications">Certifications</a></li>
@@ -1413,25 +1407,8 @@
     setTimeout(tick, 500);
   })();
 
-  /* ─── THEME TOGGLE (dark/light, localStorage) ─── */
-  const themeSwitch = document.getElementById('themeSwitch');
-  const STORAGE_KEY = 'portfolio-theme';
-
-  function setTheme(theme) {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem(STORAGE_KEY, theme);
-    themeSwitch.querySelectorAll('button').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.theme === theme);
-    });
-  }
-
-  const saved = localStorage.getItem(STORAGE_KEY) || 'light';
-  setTheme(saved);
-
-  themeSwitch.addEventListener('click', e => {
-    const btn = e.target.closest('button[data-theme]');
-    if (btn) setTheme(btn.dataset.theme);
-  });
+  /* ─── THEME: locked to a single white + blue light theme (toggle removed) ─── */
+  document.documentElement.setAttribute('data-theme', 'light');
 
   /* ─── GALLERY CAROUSEL ─── */
   const GALLERY_BASE = 'https://www.vishnurachapudi.com/gallery/';

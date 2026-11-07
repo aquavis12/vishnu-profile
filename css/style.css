@@ -4577,3 +4577,51 @@ html[data-theme="light"] .gallery-item {
   .blog-slide, .award-card, .media-card, .gallery-item,
   .avail-pill, .f-tag, .sec-label, .btn-ghost { background: var(--surface) !important; }
 }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   WHITE + BLUE — single light theme (toggle removed). Clean white page
+   with blue accents; glass panels read crisp over the light backdrop.
+   ═══════════════════════════════════════════════════════════════ */
+html[data-theme="light"] {
+  --bg: #ffffff;
+  --bg2: #f6f9ff;
+  --bg3: #eef3fd;
+  --surface: #ffffff;
+  --raised: #f2f6fe;
+  --text: #0f1b33;
+  --muted: #475569;
+  --faint: #64748b;
+  --accent: #1d6fe0;
+  --accent2: #2563eb;
+  --accent3: #0e7ec4;
+  --link: #1d6fe0;
+  --border: rgba(29,111,224,0.16);
+  --border-hover: rgba(29,111,224,0.32);
+  /* glass over white: lighter fill, crisper blue-tinted border */
+  --glass-bg: rgba(255,255,255,0.62);
+  --glass-bg-strong: rgba(255,255,255,0.80);
+  --glass-border: rgba(29,111,224,0.16);
+  --glass-hi: rgba(255,255,255,0.75);
+}
+/* Soft blue aurora wash behind the page so glass has something to blur */
+html[data-theme="light"] body {
+  background:
+    radial-gradient(900px 480px at 12% 6%, rgba(29,111,224,0.10), transparent 60%),
+    radial-gradient(760px 480px at 88% 22%, rgba(14,126,196,0.08), transparent 60%),
+    var(--bg) !important;
+  background-attachment: fixed;
+}
+/* Light-theme glass shadow: soft blue-grey, not black */
+html[data-theme="light"] .panel,
+html[data-theme="light"] .book-grid,
+html[data-theme="light"] .id-badge,
+html[data-theme="light"] .terminal,
+html[data-theme="light"] .cert-card,
+html[data-theme="light"] .talk-card,
+html[data-theme="light"] .blog-slide,
+html[data-theme="light"] .award-card,
+html[data-theme="light"] .media-card,
+html[data-theme="light"] .gallery-item {
+  box-shadow: 0 6px 24px rgba(29,111,224,0.08), inset 0 1px 0 var(--glass-hi) !important;
+}
