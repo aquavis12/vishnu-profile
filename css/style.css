@@ -4645,3 +4645,57 @@ html[data-theme="light"] .gallery-item {
 .exp-dates { font-family: var(--font-mono); font-size: 0.78rem; color: var(--faint); white-space: nowrap; }
 .exp-org { color: var(--accent); font-weight: 600; font-size: 0.92rem; margin-top: 2px; }
 .exp-desc { color: var(--muted); font-size: 0.9rem; line-height: 1.55; margin-top: 4px; }
+
+
+/* ═══ FINAL FIXES: remove ghost card + make blue visible ═══ */
+
+/* 1) Remove the decorative "outside following" blob behind the ID card */
+.id-badge::before {
+  display: none !important;
+  content: none !important;
+  animation: none !important;
+  background: none !important;
+  opacity: 0 !important;
+}
+
+/* 2) Make the blue actually show up (white + blue theme) */
+html[data-theme="light"] .sec-label {
+  color: var(--accent) !important;
+  opacity: 1;
+}
+html[data-theme="light"] .sec-label::before {
+  color: var(--accent) !important;
+}
+/* Emphasised words in headings turn blue */
+html[data-theme="light"] h1 em,
+html[data-theme="light"] h2 em,
+html[data-theme="light"] h1 span.accent,
+html[data-theme="light"] h2 span.accent,
+html[data-theme="light"] .accent-text {
+  color: var(--accent) !important;
+  font-style: normal;
+}
+/* Links */
+html[data-theme="light"] a:not(.btn):not(.btn-ghost):not(.nav-link) {
+  color: var(--link) !important;
+}
+/* Stat numbers / key figures */
+html[data-theme="light"] .stat-num,
+html[data-theme="light"] .stat-value,
+html[data-theme="light"] .big-num {
+  color: var(--accent) !important;
+}
+/* Pills / tags pick up a faint blue tint so the palette reads as blue */
+html[data-theme="light"] .avail-pill,
+html[data-theme="light"] .f-tag,
+html[data-theme="light"] .book-badge {
+  color: var(--accent) !important;
+  border-color: var(--border-hover) !important;
+}
+/* Blue top accent line on key panels */
+html[data-theme="light"] .panel,
+html[data-theme="light"] .cert-card,
+html[data-theme="light"] .talk-card,
+html[data-theme="light"] .award-card {
+  border-top: 2px solid var(--accent) !important;
+}
