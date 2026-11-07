@@ -4625,3 +4625,23 @@ html[data-theme="light"] .media-card,
 html[data-theme="light"] .gallery-item {
   box-shadow: 0 6px 24px rgba(29,111,224,0.08), inset 0 1px 0 var(--glass-hi) !important;
 }
+
+
+/* ═══ Experience block (About section) ═══ */
+.exp-block { margin: 1.8rem 0 1.4rem; }
+.exp-title { font-size: 1.05rem; margin-bottom: 1rem; color: var(--text); }
+.exp-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; }
+.exp-item {
+  position: relative; padding: 0 0 0 1.1rem;
+  border-left: 2px solid var(--border);
+}
+.exp-item::before {
+  content: ""; position: absolute; left: -5px; top: 6px;
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--accent); box-shadow: 0 0 0 3px var(--bg);
+}
+.exp-top { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.4rem; }
+.exp-role { font-weight: 700; color: var(--text); }
+.exp-dates { font-family: var(--font-mono); font-size: 0.78rem; color: var(--faint); white-space: nowrap; }
+.exp-org { color: var(--accent); font-weight: 600; font-size: 0.92rem; margin-top: 2px; }
+.exp-desc { color: var(--muted); font-size: 0.9rem; line-height: 1.55; margin-top: 4px; }
