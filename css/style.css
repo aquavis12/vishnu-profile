@@ -4493,3 +4493,87 @@ h1, h2, h3 { text-shadow: none !important; }
     scroll-behavior: auto !important;
   }
 }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   GLASS LAYER — subtle glassmorphism (appended after Calm Mode).
+   Frosted translucent panels + soft depth, kept calm and on-brand.
+   Degrades gracefully where backdrop-filter is unsupported.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Glass tokens */
+:root {
+  --glass-bg: rgba(26, 31, 43, 0.55);
+  --glass-bg-strong: rgba(26, 31, 43, 0.68);
+  --glass-border: rgba(150, 180, 230, 0.16);
+  --glass-hi: rgba(255, 255, 255, 0.05);
+  --glass-blur: 14px;
+}
+html[data-theme="light"] {
+  --glass-bg: rgba(255, 255, 255, 0.55);
+  --glass-bg-strong: rgba(255, 255, 255, 0.72);
+  --glass-border: rgba(37, 99, 235, 0.14);
+  --glass-hi: rgba(255, 255, 255, 0.5);
+}
+
+/* Frosted nav bar */
+nav[role="navigation"] {
+  background: var(--glass-bg-strong) !important;
+  -webkit-backdrop-filter: saturate(140%) blur(var(--glass-blur));
+  backdrop-filter: saturate(140%) blur(var(--glass-blur));
+  border-bottom: 1px solid var(--glass-border) !important;
+}
+
+/* Frosted panels & cards — the main glass surfaces */
+.panel, .book-grid, .id-badge, .terminal,
+.cert-card, .talk-card, .blog-slide, .award-card, .media-card, .gallery-item {
+  background: var(--glass-bg) !important;
+  -webkit-backdrop-filter: saturate(135%) blur(var(--glass-blur));
+  backdrop-filter: saturate(135%) blur(var(--glass-blur));
+  border: 1px solid var(--glass-border) !important;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.18), inset 0 1px 0 var(--glass-hi) !important;
+}
+html[data-theme="light"] .panel,
+html[data-theme="light"] .book-grid,
+html[data-theme="light"] .id-badge,
+html[data-theme="light"] .terminal,
+html[data-theme="light"] .cert-card,
+html[data-theme="light"] .talk-card,
+html[data-theme="light"] .blog-slide,
+html[data-theme="light"] .award-card,
+html[data-theme="light"] .media-card,
+html[data-theme="light"] .gallery-item {
+  box-shadow: 0 4px 24px rgba(15,23,42,0.08), inset 0 1px 0 var(--glass-hi) !important;
+}
+
+/* Glass pills / chips */
+.avail-pill, .f-tag, .sec-label {
+  background: var(--glass-bg) !important;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--glass-border) !important;
+}
+
+/* Ghost buttons get a light frost; primary stays solid for contrast */
+.btn-ghost {
+  background: var(--glass-bg) !important;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--glass-border) !important;
+}
+
+/* Gentle lift on hover — subtle, not flashy */
+.panel:hover, .cert-card:hover, .talk-card:hover, .blog-slide:hover,
+.award-card:hover, .media-card:hover, .book-grid:hover {
+  border-color: var(--border-hover) !important;
+  transform: translateY(-2px);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+/* Fallback: no backdrop-filter support -> solid, readable surfaces */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  nav[role="navigation"] { background: var(--bg2) !important; }
+  .panel, .book-grid, .id-badge, .terminal, .cert-card, .talk-card,
+  .blog-slide, .award-card, .media-card, .gallery-item,
+  .avail-pill, .f-tag, .sec-label, .btn-ghost { background: var(--surface) !important; }
+}
