@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
   <channel>
     <title>Vishnu Rachapudi — Cloud &amp; AI Blog</title>
@@ -13,6 +13,18 @@
       <link>https://www.vishnurachapudi.com/</link>
     </image>
 
+    <item>
+      <title>Amazon Inspector AMI Scanning: Find Vulnerabilities Without Launching EC2</title>
+      <link>https://www.vishnurachapudi.com/blogs/aws-inspector-ami/</link>
+      <description>Amazon Inspector now scans EC2 AMIs for software and package vulnerabilities without launching an instance. A hands-on walkthrough, two default settings that hide AMIs, and 226 findings in a Jenkins image.</description>
+      <dc:creator>Vishnu Rachapudi</dc:creator>
+      <pubDate>Fri, 07 Nov 2026 00:00:00 +0530</pubDate>
+      <category>AWS</category>
+      <category>Security</category>
+      <category>Amazon Inspector</category>
+      <category>EC2</category>
+      <guid isPermaLink="true">https://www.vishnurachapudi.com/blogs/aws-inspector-ami/</guid>
+    </item>
     <item>
       <title>AWS DevOps Agent Custom Agent: A Monthly AWS Security Audit</title>
       <link>https://www.vishnurachapudi.com/blogs/aws-devops-agent-monthly-security-audit/</link>

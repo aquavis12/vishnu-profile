@@ -101,7 +101,6 @@ footer a{color:var(--muted);border:0;margin:0 10px}footer a:hover{color:var(--te
 <h2>Why I wanted a monthly audit</h2>
 <p>I have one AWS account that runs a bit of everything: a business website, an LMS with a Bedrock knowledge base, my portfolio, a couple of small APIs and a pile of lab experiments. Nothing checks it regularly. I wanted something that would, without building yet another Lambda, EventBridge and SNS contraption.</p>
 <p>AWS DevOps Agent is usually pitched for incidents: triage, root cause analysis, that sort of thing. It also lets you build custom agents with their own prompt, tools and triggers. So I described the audit I wanted in chat and let it build one.</p>
-<div class="callout"><div class="ch">// heads up</div><p>This is my real lab account, not sample data. Every screenshot is real. Account IDs, ARNs, Slack IDs, role suffixes, usernames and a few resource names are blurred.</p></div>
 <div class="diagram"><svg viewBox="0 0 760 300" role="img" aria-label="Flow: agent space and Slack set up once; monthly cron triggers the custom agent, which runs read-only use_aws calls and writes recommendations, a report artifact and a Slack summary">
 <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6b6b80"/></marker></defs>
 <g font-family="IBM Plex Mono, monospace" font-size="12">
