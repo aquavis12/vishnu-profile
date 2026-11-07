@@ -4769,3 +4769,20 @@ nav { padding-left: clamp(1rem, 4vw, 2.5rem) !important; padding-right: clamp(1r
   .hero-grid { grid-template-columns: 1fr !important; gap: 2.25rem !important; }
   .hero-side { position: static; flex-direction: column; }
 }
+
+
+/* ═══ FIX: nav "Let's Talk" CTA — guarantee white text on blue ═══ */
+.nav-cta,
+html[data-theme="light"] .nav-cta {
+  color: #ffffff !important;
+  background: var(--accent) !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 4px 14px -4px var(--accent) !important;
+  white-space: nowrap;
+}
+.nav-cta span { color: #ffffff !important; -webkit-text-fill-color: #ffffff !important; }
+.nav-cta:hover,
+html[data-theme="light"] .nav-cta:hover {
+  color: #ffffff !important;
+  background: var(--accent2) !important;
+}
