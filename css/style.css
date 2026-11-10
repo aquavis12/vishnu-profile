@@ -4786,3 +4786,34 @@ html[data-theme="light"] .nav-cta:hover {
   color: #ffffff !important;
   background: var(--accent2) !important;
 }
+
+
+/* ═══ HERO TYPOGRAPHY: clear hierarchy (pill → eyebrow → headline → sub) ═══ */
+.hero-main .avail-pill { margin-bottom: 0.9rem; }
+.hero-main .hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.55rem;
+}
+.hero-main h1 {
+  font-family: var(--font-heading);
+  font-size: clamp(2.5rem, 6.4vw, 5rem) !important;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.04;
+  margin-bottom: 1.1rem;
+  text-wrap: balance;
+}
+.hero-main .hero-sub {
+  font-size: clamp(1.02rem, 1.4vw, 1.18rem);
+  line-height: 1.65;
+  max-width: 52ch;
+  margin-bottom: 1.75rem;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+.hero-main .hero-sub strong { color: var(--text); font-weight: 600; }
