@@ -5,13 +5,26 @@
     <link>https://www.vishnurachapudi.com/</link>
     <description>Technical articles on AWS, Generative AI, Cloud Security, DevOps, and Agentic AI by Vishnu Rachapudi — 15x AWS Certified Cloud Engineer.</description>
     <language>en-in</language>
-    <lastBuildDate>Thu, 06 Nov 2026 00:00:00 +0530</lastBuildDate>
+    <lastBuildDate>Sat, 14 Nov 2026 00:00:00 +0530</lastBuildDate>
     <atom:link href="https://www.vishnurachapudi.com/rss.xml" rel="self" type="application/rss+xml"/>
     <image>
       <url>https://www.vishnurachapudi.com/profile.png</url>
       <title>Vishnu Rachapudi</title>
       <link>https://www.vishnurachapudi.com/</link>
     </image>
+
+    <item>
+      <title>Pen Test Your App in CI/CD with AWS Continuum</title>
+      <link>https://www.vishnurachapudi.com/blogs/aws-continuum-pentest-cicd/</link>
+      <description>A hands-on guide to running AWS Continuum (formerly AWS Security Agent) penetration tests as a CI/CD gate in GitHub Actions, with Terraform, GitHub OIDC immutable subject claims, HTTP route domain verification, diff-scoped testing, and what the agent found in a deliberately vulnerable page.</description>
+      <dc:creator>Vishnu Rachapudi</dc:creator>
+      <pubDate>Sat, 14 Nov 2026 00:00:00 +0530</pubDate>
+      <category>AWS</category>
+      <category>AWS Continuum</category>
+      <category>Security</category>
+      <category>CI/CD</category>
+      <guid isPermaLink="true">https://www.vishnurachapudi.com/blogs/aws-continuum-pentest-cicd/</guid>
+    </item>
 
     <item>
       <title>Amazon Inspector AMI Scanning: Find Vulnerabilities Without Launching EC2</title>
